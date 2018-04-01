@@ -1,0 +1,25 @@
+[
+  {
+    "id": "green",
+    "value": 10,
+    "drawableId": "@drawable/chip_green"
+  },
+
+  {
+    "id": "purple",
+    "value": 50,
+    "drawableId": "@drawable/chip_purple"
+  },
+
+  {
+    "id": "red",
+    "value": 250,
+    "drawableId": "@drawable/chip_red"
+  },
+
+  {
+    "id": "blue",
+    "value": 1000,
+    "drawableId": "@drawable/chip_blue"
+  }
+]

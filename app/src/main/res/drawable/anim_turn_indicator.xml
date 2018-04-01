@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+
+    <item
+        android:drawable="@drawable/turn_indicator_arrow0"
+        android:duration="300"/>
+    <item
+        android:drawable="@drawable/turn_indicator_arrow1"
+        android:duration="300"/>
+    <item
+        android:drawable="@drawable/turn_indicator_arrow2"
+        android:duration="300"/>
+    <item
+        android:drawable="@drawable/turn_indicator_arrow3"
+        android:duration="300"/>
+    <item
+        android:drawable="@drawable/turn_indicator_arrow4"
+        android:duration="300"/>
+    <item
+        android:drawable="@drawable/turn_indicator_arrow5"
+        android:duration="300"/>
+    <item
+        android:drawable="@drawable/turn_indicator_arrow6"
+        android:duration="300"/>
+    <item
+        android:drawable="@drawable/turn_indicator_arrow7"
+        android:duration="300"/>
+    <item
+        android:drawable="@drawable/turn_indicator_arrow8"
+        android:duration="300"/>
+    <item
+        android:drawable="@drawable/turn_indicator_arrow9"
+        android:duration="300"/>
+    <item
+        android:drawable="@drawable/turn_indicator_arrow10"
+        android:duration="300"/>
+</animation-list>

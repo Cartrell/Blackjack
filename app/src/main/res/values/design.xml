@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- number of decks used -->
+    <integer name="numDecks">4</integer>
+
+    <!-- max cards per hand -->
+    <integer name="maxCardsPerHand">6</integer>
+
+    <!-- starting credits -->
+    <string name="startingCredits">1200</string>
+
+    <!-- durating, in ms, at which the cards move -->
+    <integer name="cardMoveDuration">250</integer>
+
+    <!-- specified the points needed for blackjack; bust if player exceeds -->
+    <integer name="blackjackPoints">21</integer>
+
+    <!-- dealer will hit if points are below this value, stands otherwise -->
+    <integer name="dealerPointsThreshold">17</integer>
+
+    <!-- amount ratio paid if player beats dealer -->
+    <string name="winRatioNormal">6:5</string>
+
+    <!-- amount ratio paid if player gets blackjack -->
+    <string name="winRatioBlackjack">3:2</string>
+
+    <!-- amount ratio paid if player pushes -->
+    <string name="winRatioPush">1:1</string>
+
+    <!-- amount ratio paid if player gets charlie win -->
+    <string name="winRatioCharlie">5:1</string>
+
+    <!-- amount ratio paid if player gets suited blackjack -->
+    <string name="winRatioSuitedBlackjack">4:1</string>
+
+    <!-- amount ratio paid if player surrenders -->
+    <string name="winRatioSurrender">1:2</string>
+</resources>
