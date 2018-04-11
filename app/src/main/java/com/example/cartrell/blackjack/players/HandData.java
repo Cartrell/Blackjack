@@ -1,12 +1,11 @@
 package com.example.cartrell.blackjack.players;
 
+import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.drawable.AnimationDrawable;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
 import android.support.constraint.Guideline;
 import android.view.View;
-import android.view.ViewTreeObserver;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,13 +27,12 @@ class HandData extends BaseHandData {
   //=========================================================================
   private ArrayList<BjBetChip> m_betChips;
   private ViewDistributor m_betChipsViewDistributor;
-  private Guideline m_guideChipTop;
-  private Guideline m_guideChipLeft;
   private ImageView m_turnIndicatorImage;
-  private TextView m_betValueText;
-  private TextView m_amountWonText;
-  private View m_leftChip;
-  private View m_rightChip;
+  private TextView m_betValueAndAmountWonText;
+  private Point m_chipSize;
+  private float m_xChipsLeft;
+  private float m_xChipsRight;
+  private float m_yChipsTop;
 
   //=========================================================================
   // package-private
@@ -43,11 +41,15 @@ class HandData extends BaseHandData {
   //-------------------------------------------------------------------------
   // ctor
   //-------------------------------------------------------------------------
-  HandData(ConstraintLayout constraintLayout, String uiPositionCode, float xDeck, float yDeck,
-  int maxCardsPerHand) {
-    super(constraintLayout, uiPositionCode, xDeck, yDeck, maxCardsPerHand);
+  HandData(ViewGroup viewGroup, float xDeck, float yDeck, int maxCardsPerHand,
+  Guideline guideCardsLeft, Guideline guideCardsRight, Guideline guideCardsTop,
+  Guideline guideCardsBottom, Guideline guideCardsUi, int cardImageWidth, TextView scoreText,
+  ImageView resultImage, HashMap<String, Object> extraParams) {
+    super(viewGroup, xDeck, yDeck, maxCardsPerHand, guideCardsLeft, guideCardsRight,
+      guideCardsTop, guideCardsBottom, guideCardsUi, cardImageWidth, scoreText, resultImage,
+      extraParams);
     m_betChips = new ArrayList<>();
-    initHdComponentsFromId(uiPositionCode);
+    initHdComponents(extraParams);
   }
 
   //-------------------------------------------------------------------------
@@ -55,26 +57,20 @@ class HandData extends BaseHandData {
   //-------------------------------------------------------------------------
   void addBetChip(BjBetChip betChip) {
     m_betChips.add(betChip);
-    addBetChipToConstraints(betChip);
 
-    //inner functions cant access local variables unless they are declared final
-    final ImageView _betChipImage = betChip.getImage();
+    ImageView betChipImage = betChip.getImage();
 
-    betChip.getImage().getViewTreeObserver().addOnGlobalLayoutListener(
-      new ViewTreeObserver.OnGlobalLayoutListener() {
-        @Override
-        public void onGlobalLayout() {
-          _betChipImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+    //Point size = Metrics.CalcSize(betChipImage, m_yCardsBottom, m_yChipsTop, false);
+    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(m_chipSize.x, m_chipSize.y);
+    m_viewGroup.addView(betChipImage, params);
 
-          if (m_betChipsViewDistributor == null) {
-            m_betChipsViewDistributor = new ViewDistributor(m_leftChip, m_rightChip,
-              m_guideChipTop.getY(), MAX_CHIPS);
-          }
+    if (m_betChipsViewDistributor == null) {
+      m_betChipsViewDistributor = new ViewDistributor(m_xChipsLeft,
+        m_xChipsRight - m_chipSize.x, m_yChipsTop, MAX_CHIPS, m_chipSize.x);
+    }
 
-          m_betChipsViewDistributor.add(_betChipImage);
-          updateBetChipPositions();
-        }
-      });
+    m_betChipsViewDistributor.add(betChipImage);
+    updateBetChipPositions();
   }
 
   //-------------------------------------------------------------------------
@@ -91,7 +87,7 @@ class HandData extends BaseHandData {
   //-------------------------------------------------------------------------
   void removeBetChips() {
     for (BjBetChip betChip : m_betChips) {
-      m_constraintLayout.removeView(betChip.getImage());
+      m_viewGroup.removeView(betChip.getImage());
     }
 
     m_betChips.clear();
@@ -102,31 +98,17 @@ class HandData extends BaseHandData {
   }
 
   //-------------------------------------------------------------------------
-  // setAmountWonValue
+  // setBetAmountWonValue
   //-------------------------------------------------------------------------
-  void setAmountWonValue(int value) {
-    setText(m_amountWonText, value);
+  void setBetAmountWonValue(int value) {
+    setText(m_betValueAndAmountWonText, value);
   }
 
   //-------------------------------------------------------------------------
-  // setAmountWonVisible
+  // setBetAmountWonValueVisible
   //-------------------------------------------------------------------------
-  void setAmountWonVisible(boolean isVisible) {
-    showView(m_amountWonText, isVisible);
-  }
-
-  //-------------------------------------------------------------------------
-  // setBetValue
-  //-------------------------------------------------------------------------
-  void setBetValue(int value) {
-    setText(m_betValueText, value);
-  }
-
-  //-------------------------------------------------------------------------
-  // setBetValueVisible
-  //-------------------------------------------------------------------------
-  void setBetValueVisible(boolean isVisible) {
-    showView(m_betValueText, isVisible);
+  void setBetAmountWonValueVisible(boolean isVisible) {
+    showView(m_betValueAndAmountWonText, isVisible);
   }
 
   //-------------------------------------------------------------------------
@@ -151,31 +133,6 @@ class HandData extends BaseHandData {
   //=========================================================================
 
   //-------------------------------------------------------------------------
-  // addBetChipToConstraints
-  //-------------------------------------------------------------------------
-  private void addBetChipToConstraints(BjBetChip betChip) {
-    if (betChip == null) {
-      return; //sanity check
-    }
-
-    ImageView betChipImage = betChip.getImage();
-    if (betChipImage == null) {
-      return; //sanity check
-    }
-
-    m_constraintLayout.addView(betChipImage);
-
-    ConstraintSet set = new ConstraintSet();
-    int imageId = betChipImage.getId();
-    set.constrainWidth(imageId, ConstraintSet.WRAP_CONTENT);
-    set.constrainHeight(imageId, 0);
-    set.connect(imageId, ConstraintSet.LEFT, m_guideChipLeft.getId(), ConstraintSet.RIGHT);
-    set.connect(imageId, ConstraintSet.TOP, m_guideChipTop.getId(), ConstraintSet.BOTTOM);
-    set.connect(imageId, ConstraintSet.BOTTOM, m_guideBottom.getId(), ConstraintSet.BOTTOM);
-    set.applyTo(m_constraintLayout);
-  }
-
-  //-------------------------------------------------------------------------
   // animateDrawable
   //-------------------------------------------------------------------------
   private void animateDrawable(ImageView imageView, boolean doAnimate) {
@@ -194,37 +151,12 @@ class HandData extends BaseHandData {
   //-------------------------------------------------------------------------
   // initHdComponents
   //-------------------------------------------------------------------------
-  private void initHdComponents(ImageView turnIndicatorImage, View leftChip, View rightChip,
-  Guideline guideChipTop, Guideline guideChipLeft, TextView betValueText, TextView amountWonText) {
-    m_turnIndicatorImage = turnIndicatorImage;
-    m_guideChipTop = guideChipTop;
-    m_guideChipLeft = guideChipLeft;
-    m_leftChip = leftChip;
-    m_rightChip = rightChip;
-    m_betValueText = betValueText;
-    m_amountWonText = amountWonText;
-    showTurnIndicatorImage(false);
-  }
-
-  //-------------------------------------------------------------------------
-  // initHdComponentsFromId
-  //-------------------------------------------------------------------------
-  private void initHdComponentsFromId(String uiPositionCode) {
-    ImageView turnIndicatorImage = (ImageView)getViewImageFromStringId("player" + uiPositionCode + "TurnIndicator");
-    View leftChip = getViewImageFromStringId("player" + uiPositionCode + "LeftChip");
-    View rightChip = getViewImageFromStringId("player" + uiPositionCode + "RightChip");
-    Guideline guideChipTop = (Guideline)getViewImageFromStringId("guidePlayer" + uiPositionCode + "Chips");
-    Guideline guideChipLeft = (Guideline)getViewImageFromStringId("guidePlayer" + uiPositionCode + "LeftChip");
-    TextView betValueText = (TextView)getViewImageFromStringId("txtPlayer" + uiPositionCode + "BetValue");
-    TextView amountWonText = (TextView)getViewImageFromStringId("txtPlayer" + uiPositionCode + "AmountWon");
-
-    initHdComponents(turnIndicatorImage, leftChip, rightChip, guideChipTop, guideChipLeft,
-      betValueText, amountWonText);
-
-    showView(leftChip, false);
-    showView(rightChip, false);
-    //leftChip.setAlpha(0.5f);
-    //rightChip.setAlpha(0.5f);
+  private void initHdComponents(HashMap<String, Object> extraParams) {
+    m_betValueAndAmountWonText = (TextView)extraParams.get("betValueText");
+    m_xChipsLeft = ((Guideline)extraParams.get("guideChipsLeft")).getX();
+    m_xChipsRight = ((Guideline)extraParams.get("guideChipsRight")).getX();
+    m_yChipsTop = ((Guideline)extraParams.get("guideChipsTop")).getY();
+    m_chipSize = (Point)extraParams.get("chipSize");
   }
 
   //-------------------------------------------------------------------------

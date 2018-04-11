@@ -1,13 +1,12 @@
 package com.example.cartrell.blackjack.engine;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.ImageView;
 
 import com.example.cartrell.blackjack.R;
 import com.example.cartrell.blackjack.cards.Deck;
@@ -36,9 +35,10 @@ public class BjEngine implements IBjEngine {
   private BjPlaySystem m_playSystem;
   private BasePlayerData m_dealer;
 
+  private Views m_views;
+
   private Context m_context;
   private ActivityMainBinding m_binding;
-  private ImageView m_deckImage;
 
   private int m_credits;
   private int m_betValue;
@@ -54,18 +54,8 @@ public class BjEngine implements IBjEngine {
   public BjEngine(Context context, ActivityMainBinding binding) {
     m_context = context;
     m_binding = binding;
-
-    m_deckImage = m_binding.deckImage;
-    m_betChips = new BjBetChips(this);
-    m_betSystem = new BjBetSystem(this);
-    m_cardsPrepSystem = new BjCardsPrepSystem(this);
-    m_playSystem = new BjPlaySystem(this);
-
     initDecks();
-
-    ConstraintLayout layout = (ConstraintLayout)m_binding.getRoot();
-    initPlayersData(layout);
-    setCredits(Integer.parseInt(m_context.getString(R.string.startingCredits)));
+    initUi();
   }
 
   //-------------------------------------------------------------------------
@@ -173,14 +163,6 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
-  // getDeckImage
-  //-------------------------------------------------------------------------
-  @Override
-  public ImageView getDeckImage() {
-    return(m_deckImage);
-  }
-
-  //-------------------------------------------------------------------------
   // getIntegerResource
   //-------------------------------------------------------------------------
   @Override
@@ -225,26 +207,34 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
+  // getViews
+  //-------------------------------------------------------------------------
+  @Override
+  public Views getViews() {
+    return(m_views);
+  }
+
+  //-------------------------------------------------------------------------
   // onBetChipClick
   //-------------------------------------------------------------------------
-  public void onBetChipClick(View view) {
+  /*public void onBetChipClick(View view) {
     m_betSystem.onBetChipClick((String)view.getTag());
-  }
+  }*/
 
   //-------------------------------------------------------------------------
   // onClearClick
   //-------------------------------------------------------------------------
-  public void onClearClick() {
+  /*public void onClearClick() {
     m_betSystem.onBetClearClick();
-  }
+  }*/
 
   //-------------------------------------------------------------------------
   // onDealClick
   //-------------------------------------------------------------------------
-  public void onDealClick() {
+  /*public void onDealClick() {
     m_betSystem.onDealClick();
     m_atLeastOneRoundPlayed = true;
-  }
+  }*/
 
   //-------------------------------------------------------------------------
   // onDoubleClick
@@ -289,6 +279,14 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
+  // setAtLeastOneRoundPlayed
+  //-------------------------------------------------------------------------
+  @Override
+  public void setAtLeastOneRoundPlayed() {
+    m_atLeastOneRoundPlayed = true;
+  }
+
+  //-------------------------------------------------------------------------
   // setBetChipVisibility
   //-------------------------------------------------------------------------
   @Override
@@ -303,8 +301,8 @@ public class BjEngine implements IBjEngine {
   @Override
   public void setPlayerBet(PlayerIds playerId, int betValue) {
     PlayerData playerData = m_players.get(playerId);
-    playerData.setBetValue(betValue);
-    playerData.setBetValueVisible(true);
+    playerData.setBetAmountWonValue(betValue);
+    playerData.setBetAmountWonValueVisible(true);
     playerData.removeBetChips();
 
     ArrayList<String> betChipIds = m_betChips.getChipIdsFor(betValue);
@@ -320,7 +318,7 @@ public class BjEngine implements IBjEngine {
   @Override
   public void setCredits(int value) {
     m_credits = value;
-    m_binding.txtCredits.setText("CREDITS: " + String.valueOf(m_credits));
+    m_views.setCredits(value);
   }
 
   //-------------------------------------------------------------------------
@@ -340,11 +338,11 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public void showGameButtons(EnumSet<BjGameButtonFlags> flags) {
-    showView(m_binding.btnDouble, flags.contains(BjGameButtonFlags.DOUBLE));
+    /*showView(m_binding.btnDouble, flags.contains(BjGameButtonFlags.DOUBLE));
     showView(m_binding.btnHit, flags.contains(BjGameButtonFlags.HIT));
     showView(m_binding.btnSplit, flags.contains(BjGameButtonFlags.SPLIT));
     showView(m_binding.btnStand, flags.contains(BjGameButtonFlags.STAND));
-    showView(m_binding.btnSurrender, flags.contains(BjGameButtonFlags.SURRENDER));
+    showView(m_binding.btnSurrender, flags.contains(BjGameButtonFlags.SURRENDER));*/
   }
 
   //-------------------------------------------------------------------------
@@ -372,7 +370,7 @@ public class BjEngine implements IBjEngine {
     }
 
     m_betValue = betValue;
-    m_binding.txtBet.setText("BET: " + String.valueOf(m_betValue));
+    m_views.setBetValue(m_betValue);
   }
 
   //=========================================================================
@@ -388,46 +386,45 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
-  // initPlayerData
+  // initUi
   //-------------------------------------------------------------------------
-  private void initPlayerData(PlayerIds playerId, String uiPositionCode,
-  ConstraintLayout constraintLayout, float xDeck, float yDeck) {
-    final int MAX_CARDS = getIntegerResource(R.integer.maxCardsPerHand);
-    m_players.put(playerId, new PlayerData(constraintLayout, playerId,
-      uiPositionCode, xDeck, yDeck, MAX_CARDS));
-  }
+  private void initUi() {
+    final ConstraintLayout constraintLayout = (ConstraintLayout)m_binding.getRoot();
+    final IBjEngine engine = this;
 
-  //-------------------------------------------------------------------------
-  // initPlayersData
-  //-------------------------------------------------------------------------
-  private void initPlayersData(ConstraintLayout constraintLayout) {
-    final ConstraintLayout _constraintLayout = constraintLayout;
+    LayoutInflater inflater = LayoutInflater.from(m_context);
+    final ConstraintLayout templateLayout = (ConstraintLayout)inflater.inflate(R.layout.main_template,
+      (ViewGroup)m_binding.stubLayout, true);
 
-    m_deckImage.getViewTreeObserver().addOnGlobalLayoutListener(
+    templateLayout.getViewTreeObserver().addOnGlobalLayoutListener(
       new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
-          m_deckImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+          templateLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-          float xDeck = m_deckImage.getX();
-          float yDeck = m_deckImage.getY();
+          m_views = new Views(constraintLayout, templateLayout);
+
+          float xDeck = m_views.getDeckImage().getX();
+          float yDeck = m_views.getDeckImage().getY();
           final int MAX_CARDS = getIntegerResource(R.integer.maxCardsPerHand);
+          PlayersCreator creator = new PlayersCreator(templateLayout, m_binding, xDeck,
+            yDeck, MAX_CARDS, m_views);
 
-          m_dealer = new BasePlayerData(_constraintLayout, PlayerIds.DEALER, "30",
-            xDeck, yDeck, MAX_CARDS);
+          constraintLayout.removeView(templateLayout);
 
-          m_players = new HashMap<>();
-          initPlayerData(PlayerIds.RIGHT_BOTTOM, "00",_constraintLayout, xDeck, yDeck);
-          initPlayerData(PlayerIds.RIGHT_TOP, "01",_constraintLayout, xDeck, yDeck);
-          initPlayerData(PlayerIds.MIDDLE_BOTTOM, "10",_constraintLayout, xDeck, yDeck);
-          initPlayerData(PlayerIds.MIDDLE_TOP, "11",_constraintLayout, xDeck, yDeck);
-          initPlayerData(PlayerIds.LEFT_BOTTOM, "20",_constraintLayout, xDeck, yDeck);
-          initPlayerData(PlayerIds.LEFT_TOP, "21",_constraintLayout, xDeck, yDeck);
+          m_dealer = creator.getDealer();
+          m_players = creator.getPlayers();
+          m_betChips = new BjBetChips(engine);
+          m_betSystem = new BjBetSystem(engine);
+          m_cardsPrepSystem = new BjCardsPrepSystem(engine);
+          m_playSystem = new BjPlaySystem(engine);
 
+          setCredits(Integer.parseInt(m_context.getString(R.string.startingCredits)));
           updateBetValue();
           beginRound();
         }
       });
+
   }
 
   //-------------------------------------------------------------------------

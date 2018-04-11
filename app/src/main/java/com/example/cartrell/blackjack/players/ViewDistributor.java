@@ -16,10 +16,11 @@ class ViewDistributor {
   //=========================================================================
   private ArrayList<View> m_views;
   private HashMap<View, PointF>m_viewPositions;
-  private View m_leftView;
-  private View m_rightView;
+  private float m_xLeft;
+  private float m_xRight;
   private float m_yTop;
   private int m_maxViews;
+  private int m_viewWidth;
 
   //=========================================================================
   // package-private
@@ -28,12 +29,13 @@ class ViewDistributor {
   //-------------------------------------------------------------------------
   // ctor
   //-------------------------------------------------------------------------
-  ViewDistributor(View leftView, View rightView, float yTop, int maxViews) {
+  ViewDistributor(float xLeft, float xRight, float yTop, int maxViews, int viewWidth) {
     m_views = new ArrayList<>();
-    m_leftView = leftView;
-    m_rightView = rightView;
+    m_xLeft = xLeft;
+    m_xRight = xRight;
     m_yTop = yTop;
     m_maxViews = maxViews;
+    m_viewWidth = viewWidth;
     m_viewPositions = new HashMap<>();
   }
 
@@ -84,9 +86,7 @@ class ViewDistributor {
   // calculateViewsOffset
   //-------------------------------------------------------------------------
   private float calculateViewsOffset() {
-    float xLeft = m_leftView.getX();
-    float xRight = m_rightView.getX();
-    float xRange = xRight - xLeft;
+    float xRange = m_xRight - m_xLeft;
 
     int currNumViews = m_views.size();
     int maxViews = currNumViews <= m_maxViews ? m_maxViews : currNumViews;
@@ -98,9 +98,7 @@ class ViewDistributor {
   // calculateViewsWidthRange
   //-------------------------------------------------------------------------
   private float calculateViewsWidthRange() {
-    float xLeft = m_leftView.getX();
-    float xRight = m_rightView.getX();
-    return(xRight - xLeft + m_rightView.getWidth());
+    return(m_xRight - m_xLeft + m_viewWidth);
   }
 
   //-------------------------------------------------------------------------
@@ -108,7 +106,7 @@ class ViewDistributor {
   //-------------------------------------------------------------------------
   private float calculateTotalViewsWidth() {
     float xOffset = calculateViewsOffset();
-    return(m_leftView.getWidth() + xOffset * (m_views.size() -1));
+    return(m_viewWidth + xOffset * (m_views.size() - 1));
   }
 
   //-------------------------------------------------------------------------
@@ -127,7 +125,7 @@ class ViewDistributor {
         isFirstViewSet = true;
         float totalViewsWidth = calculateTotalViewsWidth();
         float range = calculateViewsWidthRange();
-        x = m_leftView.getX() + (range - totalViewsWidth) / 2;
+        x = m_xLeft + (range - totalViewsWidth) / 2;
       } else {
         x += xOffset;
       }

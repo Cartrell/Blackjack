@@ -1,5 +1,6 @@
 package com.example.cartrell.blackjack.engine;
 
+import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -73,7 +74,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_engine = engine;
     m_playerIdsOrder  = new ArrayList<>();
     m_cardsMover = new CardsMover(this);
-    m_baseCardImageChildIndex = m_engine.getIndexOf(m_engine.getDeckImage());
+    m_baseCardImageChildIndex = m_engine.getIndexOf(m_engine.getViews().getDeckImage());
   }
 
   //-------------------------------------------------------------------------
@@ -83,7 +84,13 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_state = BjPlayStates.DEAL_CARDS;
     m_nextCardImageChildIndex = m_baseCardImageChildIndex + 1;
     m_totalCreditsWonOnRound = 0;
-    m_engine.showView(m_engine.getBinding().txtTotalWon, false);
+
+    //m_engine.showView(m_engine.getBinding().txtTotalWon, false);
+    TextView txtTotalWon = m_engine.getViews().getTextTotalWon();
+    if (txtTotalWon != null) {
+      m_engine.showView(txtTotalWon, false);
+    }
+
     initPlayers();
     dealCards();
   }
@@ -94,7 +101,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   void beginDouble() {
     PlayerData playerData = (PlayerData)getTurnPlayerData();
     int playerBetValue = playerData.getBetValue();
-    playerData.setBetValue(playerBetValue * 2);
+    playerData.setBetAmountWonValue(playerBetValue * 2);
     m_engine.setCredits(-playerBetValue, true);
 
     m_state = BjPlayStates.DOUBLE;
@@ -143,8 +150,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     playerData.setResultImageVisible(true);
 
     int creditsWon = calcCreditsWon(m_turnPlayerId, m_engine.getStringResource(R.string.winRatioSurrender));
-    playerData.setAmountWonValue(creditsWon);
-    playerData.setAmountWonVisible(true);
+    playerData.setBetAmountWonValue(creditsWon);
+    playerData.setBetAmountWonValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
 
     beginNextTurnPlayer();
@@ -231,7 +238,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   // beginDealerTurn
   //-------------------------------------------------------------------------
   private void beginDealerTurn() {
-    boolean shouldRevealSecondCard = !m_turnPlayerId.equals(PlayerIds.DEALER);
+    boolean shouldRevealSecondCard = !PlayerIds.DEALER.equals(m_turnPlayerId);
     m_turnPlayerId = PlayerIds.DEALER;
 
     if (shouldRevealSecondCard) {
@@ -286,8 +293,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     playerData.setResultImageVisible(true);
 
     int creditsWon = calcCreditsWon(playerId, m_engine.getStringResource(R.string.winRatioBlackjack));
-    playerData.setAmountWonValue(creditsWon);
-    playerData.setAmountWonVisible(true);
+    playerData.setBetAmountWonValue(creditsWon);
+    playerData.setBetAmountWonValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
   }
 
@@ -301,8 +308,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     playerData.setResultImageVisible(true);
 
     int creditsWon = calcCreditsWon(m_turnPlayerId, m_engine.getStringResource(R.string.winRatioCharlie));
-    playerData.setAmountWonValue(creditsWon);
-    playerData.setAmountWonVisible(true);
+    playerData.setBetAmountWonValue(creditsWon);
+    playerData.setBetAmountWonValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
 
     beginNextTurnPlayer();
@@ -318,7 +325,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
 
     PlayerData playerData = (PlayerData)getPlayerData(playerId);
     playerData.hideBetChips();
-    playerData.setBetValueVisible(false);
+    playerData.setBetAmountWonValueVisible(false);
   }
 
   //-------------------------------------------------------------------------
@@ -329,8 +336,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     playerData.setResultImage(R.drawable.result_label_push);
     playerData.setResultImageVisible(true);
     int creditsWon = calcCreditsWon(playerId, m_engine.getStringResource(R.string.winRatioPush));
-    playerData.setAmountWonValue(creditsWon);
-    playerData.setAmountWonVisible(true);
+    playerData.setBetAmountWonValue(creditsWon);
+    playerData.setBetAmountWonValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
   }
 
@@ -342,8 +349,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     playerData.setResultImage(R.drawable.result_label_win);
     playerData.setResultImageVisible(true);
     int creditsWon = calcCreditsWon(playerId, m_engine.getStringResource(R.string.winRatioNormal));
-    playerData.setAmountWonValue(creditsWon);
-    playerData.setAmountWonVisible(true);
+    playerData.setBetAmountWonValue(creditsWon);
+    playerData.setBetAmountWonValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
   }
 
@@ -626,13 +633,16 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private void initPlayersOrder() {
     m_playerIdsOrder.clear();
 
-    HashMap<PlayerIds, PlayerData> players = m_engine.getPlayers();
-    Iterator iterator = players.entrySet().iterator();
-    while (iterator.hasNext()) {
-      Map.Entry entry = (Map.Entry)iterator.next();
-      PlayerData playerData = (PlayerData)entry.getValue();
+    final PlayerIds[] PLAYER_IDS = new PlayerIds[] {
+      PlayerIds.RIGHT_BOTTOM,
+      PlayerIds.MIDDLE_BOTTOM,
+      PlayerIds.LEFT_BOTTOM
+    };
+
+    for (PlayerIds playerId : PLAYER_IDS) {
+      PlayerData playerData = m_engine.getPlayer(playerId);
       if (playerData.getBetValue() > 0f) {
-        m_playerIdsOrder.add((PlayerIds)entry.getKey());
+        m_playerIdsOrder.add(playerId);
       }
     }
   }
@@ -726,7 +736,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
 
     m_engine.setCredits(m_totalCreditsWonOnRound, true);
 
-    TextView txtTotalWon = m_engine.getBinding().txtTotalWon;
+    AppCompatTextView txtTotalWon = m_engine.getViews().getTextTotalWon();
     txtTotalWon.setText("TOTAL WON: " + String.valueOf(m_totalCreditsWonOnRound));
     m_engine.showView(txtTotalWon, true);
 
@@ -746,7 +756,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
 
       if (isSplitPlayerId(playerData.getId())) {
         playerData.removeBetChips();
-        playerData.setBetValueVisible(false);
+        playerData.setBetAmountWonValueVisible(false);
       }
     }
   }

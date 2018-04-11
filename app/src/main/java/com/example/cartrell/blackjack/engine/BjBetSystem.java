@@ -4,7 +4,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ToggleButton;
 
-import com.example.cartrell.blackjack.databinding.ActivityMainBinding;
+import com.example.cartrell.blackjack.R;
 import com.example.cartrell.blackjack.players.BasePlayerData;
 import com.example.cartrell.blackjack.players.PlayerData;
 import com.example.cartrell.blackjack.players.PlayerIds;
@@ -58,44 +58,6 @@ class BjBetSystem {
   }
 
   //-------------------------------------------------------------------------
-  // onBetChipClick
-  //-------------------------------------------------------------------------
-  void onBetChipClick(String chipId) {
-    BjBetChipData betChipData = m_engine.getBetChipData(chipId);
-    if (betChipData == null) {
-      Log.w(LOG_TAG, "onBetChipClick. Invalid chip id: " + chipId);
-      return;
-    }
-
-    unselectAllBetChips();
-    selectBetChip(chipId);
-  }
-
-  //-------------------------------------------------------------------------
-  // onBetClearClick
-  //-------------------------------------------------------------------------
-  void onBetClearClick() {
-    removePlayersBets();
-    showBetChipButtons();
-    updateDealButtonEnability();
-  }
-
-  //-------------------------------------------------------------------------
-  // onDealClick
-  //-------------------------------------------------------------------------
-  void onDealClick() {
-    m_engine.setCredits(-m_engine.getBetValue(), true);
-    hideBetChipButtons();
-    hidePlaceBetButtons();
-    hideTotalWon();
-    setBetButtonsVisibility(false);
-    restoreDealer();
-    restoreNormalPlayers();
-    removeSplitPlayers();
-    m_engine.beginCardsPrep();
-  }
-
-  //-------------------------------------------------------------------------
   // placeBet
   //-------------------------------------------------------------------------
   void placeBet(PlayerIds playerId) {
@@ -136,17 +98,108 @@ class BjBetSystem {
   // hidePlaceBetButtons
   //-------------------------------------------------------------------------
   private void hidePlaceBetButtons() {
-    ActivityMainBinding binding = m_engine.getBinding();
-    m_engine.showView(binding.btnPlayer0PlaceBet, false);
-    m_engine.showView(binding.btnPlayer1PlaceBet, false);
-    m_engine.showView(binding.btnPlayer2PlaceBet, false);
+    Views views = m_engine.getViews();
+    m_engine.showView(views.getBetButtonLeft(), false);
+    m_engine.showView(views.getBetButtonMid(), false);
+    m_engine.showView(views.getBetButtonRight(), false);
   }
 
   //-------------------------------------------------------------------------
   // hideTotalWon
   //-------------------------------------------------------------------------
   private void hideTotalWon() {
-    m_engine.showView(m_engine.getBinding().txtTotalWon, false);
+    m_engine.showView(m_engine.getViews().getTextTotalWon(), false);
+  }
+
+  //-------------------------------------------------------------------------
+  // initBetButtons
+  //-------------------------------------------------------------------------
+  private void initBetButtons() {
+    View.OnClickListener listener = new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        int id = view.getId();
+        switch (id) {
+          case R.id.btnLeftPlayerBet:
+            placeBet(PlayerIds.LEFT_BOTTOM);
+            break;
+
+          case R.id.btnMidPlayerBet:
+            placeBet(PlayerIds.MIDDLE_BOTTOM);
+            break;
+
+          case R.id.btnRightPlayerBet:
+            placeBet(PlayerIds.RIGHT_BOTTOM);
+            break;
+        }
+      }
+    };
+
+    Views views = m_engine.getViews();
+    views.getBetButtonLeft().setOnClickListener(listener);
+    views.getBetButtonMid().setOnClickListener(listener);
+    views.getBetButtonRight().setOnClickListener(listener);
+  }
+
+  //-------------------------------------------------------------------------
+  // initBetChipButtons
+  //-------------------------------------------------------------------------
+  private void initBetChipButtons() {
+    View.OnClickListener listener = new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        String chipId = (String) view.getTag();
+        BjBetChipData betChipData = m_engine.getBetChipData(chipId);
+        if (betChipData == null) {
+          Log.w(LOG_TAG, "initBetChipButtons.onClick. Warning: Invalid chip id: " + chipId);
+          return;
+        }
+
+        unselectAllBetChips();
+        selectBetChip(chipId);
+      }
+    };
+
+    Views views = m_engine.getViews();
+    views.getBetChipBlue().setOnClickListener(listener);
+    views.getBetChipGreen().setOnClickListener(listener);
+    views.getBetChipPurple().setOnClickListener(listener);
+    views.getBetChipRed().setOnClickListener(listener);
+  }
+
+  //-------------------------------------------------------------------------
+  // initClearButton
+  //-------------------------------------------------------------------------
+  private void initClearButton() {
+    m_engine.getViews().getClearButton().setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        removePlayersBets();
+        showBetChipButtons();
+        updateDealButtonEnability();
+      }
+    });
+  }
+
+  //-------------------------------------------------------------------------
+  // initDealButton
+  //-------------------------------------------------------------------------
+  private void initDealButton() {
+    m_engine.getViews().getDealButton().setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        m_engine.setAtLeastOneRoundPlayed();
+        m_engine.setCredits(-m_engine.getBetValue(), true);
+        hideBetChipButtons();
+        hidePlaceBetButtons();
+        hideTotalWon();
+        setBetButtonsVisibility(false);
+        restoreDealer();
+        restoreNormalPlayers();
+        removeSplitPlayers();
+        m_engine.beginCardsPrep();
+      }
+    });
   }
 
   //-------------------------------------------------------------------------
@@ -159,8 +212,7 @@ class BjBetSystem {
       PlayerData playerData = (PlayerData)entry.getValue();
       playerData.setResultImageVisible(false);
       playerData.setScoreTextVisible(false);
-      playerData.setBetValueVisible(false);
-      playerData.setAmountWonVisible(false);
+      playerData.setBetAmountWonValueVisible(false);
     }
 
     BasePlayerData dealerData = m_engine.getDealerData();
@@ -174,6 +226,10 @@ class BjBetSystem {
   private void initUis() {
     initPlayersUis();
     hideTotalWon();
+    initClearButton();
+    initDealButton();
+    initBetChipButtons();
+    initBetButtons();
   }
 
   //-------------------------------------------------------------------------
@@ -181,12 +237,11 @@ class BjBetSystem {
   //-------------------------------------------------------------------------
   private void removePlayerBet(PlayerIds playerId) {
     PlayerData playerData = m_engine.getPlayer(playerId);
-    playerData.setBetValue(0);
+    playerData.setBetAmountWonValue(0);
     playerData.removeBetChips();
-    playerData.setBetValueVisible(false);
+    playerData.setBetAmountWonValueVisible(false);
     playerData.setResultImageVisible(false);
     playerData.setScoreTextVisible(false);
-    playerData.setAmountWonVisible(false);
   }
 
   //-------------------------------------------------------------------------
@@ -207,10 +262,9 @@ class BjBetSystem {
   //-------------------------------------------------------------------------
   private void removeSplitPlayer(PlayerIds playerId) {
     PlayerData playerData = m_engine.getPlayer(playerId);
-    playerData.setBetValue(0);
-    playerData.setBetValueVisible(false);
+    playerData.setBetAmountWonValue(0);
+    playerData.setBetAmountWonValueVisible(false);
     playerData.setScoreTextVisible(false);
-    playerData.setAmountWonVisible(false);
     playerData.setResultImageVisible(false);
     playerData.removeBetChips();
   }
@@ -239,10 +293,9 @@ class BjBetSystem {
   private void restoreNormalPlayer(PlayerIds playerId) {
     PlayerData playerData = m_engine.getPlayer(playerId);
     if (playerData.getBetValue() > 0) {
-      playerData.setBetValueVisible(true);
+      playerData.setBetAmountWonValueVisible(true);
       playerData.setScoreTextVisible(false);
       playerData.setResultImageVisible(false);
-      playerData.setAmountWonVisible(false);
       playerData.showBetChips();
     }
   }
@@ -272,9 +325,9 @@ class BjBetSystem {
   // setBetButtonsVisibility
   //-------------------------------------------------------------------------
   private void setBetButtonsVisibility(boolean isVisible) {
-    ActivityMainBinding binding = m_engine.getBinding();
-    m_engine.showView(binding.btnClear, isVisible);
-    m_engine.showView(binding.btnDeal, isVisible);
+    Views views = m_engine.getViews();
+    m_engine.showView(views.getClearButton(), isVisible);
+    m_engine.showView(views.getDealButton(), isVisible);
   }
 
   //-------------------------------------------------------------------------
@@ -294,7 +347,7 @@ class BjBetSystem {
   // showPlaceBetButton
   //-------------------------------------------------------------------------
   private void showPlaceBetButton(View view) {
-    view.setVisibility(View.VISIBLE);
+    m_engine.showView(view, true);
     view.getParent().bringChildToFront(view);
   }
 
@@ -302,28 +355,28 @@ class BjBetSystem {
   // showPlaceBetButtons
   //-------------------------------------------------------------------------
   private void showPlaceBetButtons() {
-    ActivityMainBinding binding = m_engine.getBinding();
-    showPlaceBetButton(binding.btnPlayer0PlaceBet);
-    showPlaceBetButton(binding.btnPlayer1PlaceBet);
-    showPlaceBetButton(binding.btnPlayer2PlaceBet);
+    Views views = m_engine.getViews();
+    showPlaceBetButton(views.getBetButtonLeft());
+    showPlaceBetButton(views.getBetButtonMid());
+    showPlaceBetButton(views.getBetButtonRight());
   }
 
   //-------------------------------------------------------------------------
   // updateDealButtonEnability
   //-------------------------------------------------------------------------
   private void updateDealButtonEnability() {
-    m_engine.getBinding().btnDeal.setEnabled(m_engine.getBetValue() > 0);
+    m_engine.getViews().getDealButton().setEnabled(m_engine.getBetValue() > 0);
   }
 
   //-------------------------------------------------------------------------
   // unselectAllBetChips
   //-------------------------------------------------------------------------
   private void unselectAllBetChips() {
-    ActivityMainBinding binding = m_engine.getBinding();
-    unselectBetChip(binding.chipButtonBlue);
-    unselectBetChip(binding.chipButtonGreen);
-    unselectBetChip(binding.chipButtonPurple);
-    unselectBetChip(binding.chipButtonRed);
+    Views views = m_engine.getViews();
+    unselectBetChip(views.getBetChipBlue());
+    unselectBetChip(views.getBetChipGreen());
+    unselectBetChip(views.getBetChipPurple());
+    unselectBetChip(views.getBetChipRed());
     m_selectedChipId = null;
   }
 
@@ -331,7 +384,9 @@ class BjBetSystem {
   // unselectBetChip
   //-------------------------------------------------------------------------
   private void unselectBetChip(ToggleButton button) {
-    button.setChecked(false);
-    button.setEnabled(true);
+    if (button != null) {
+      button.setChecked(false);
+      button.setEnabled(true);
+    }
   }
 }

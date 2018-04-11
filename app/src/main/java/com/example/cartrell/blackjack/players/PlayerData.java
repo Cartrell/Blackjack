@@ -1,10 +1,14 @@
 package com.example.cartrell.blackjack.players;
 
-import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Guideline;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.cartrell.blackjack.engine.BjBetChip;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PlayerData extends BasePlayerData {
   //=========================================================================
@@ -24,9 +28,14 @@ public class PlayerData extends BasePlayerData {
   //-------------------------------------------------------------------------
   // ctor
   //-------------------------------------------------------------------------
-  public PlayerData(ConstraintLayout constraintLayout, PlayerIds playerId, String uiPositionCode,
-  float xDeck, float yDeck, int maxCardsPerHand) {
-    super(constraintLayout, playerId, uiPositionCode, xDeck, yDeck, maxCardsPerHand);
+  public PlayerData(ViewGroup viewGroup, PlayerIds playerId, float xDeck,
+  float yDeck, int maxCardsPerHand, Guideline guideCardsLeft, Guideline guideCardsRight,
+  Guideline guideCardsTop, Guideline guideCardsBottom, Guideline guideCardsUi,
+  int cardImageWidth, TextView scoreText, ImageView resultImage, HashMap<String, Object> extraParams) {
+    super(viewGroup, playerId, xDeck, yDeck, maxCardsPerHand, guideCardsLeft,
+      guideCardsRight, guideCardsTop, guideCardsBottom, guideCardsUi, cardImageWidth, scoreText,
+      resultImage, extraParams);
+
     m_betValue = 0;
   }
 
@@ -46,8 +55,8 @@ public class PlayerData extends BasePlayerData {
   // addBetValue
   //-------------------------------------------------------------------------
   public void addBetValue(int betChipValue) {
-    setBetValue(m_betValue + betChipValue);
-    setBetValueVisible(true);
+    setBetAmountWonValue(m_betValue + betChipValue);
+    setBetAmountWonValueVisible(true);
   }
 
   //-------------------------------------------------------------------------
@@ -122,36 +131,20 @@ public class PlayerData extends BasePlayerData {
   }
 
   //-------------------------------------------------------------------------
-  // setAmountWonValue
+  // setBetAmountWonValue
   //-------------------------------------------------------------------------
-  public void setAmountWonValue(int value) {
-    HandData handData = (HandData)getHandData();
-    handData.setAmountWonValue(value);
-  }
-
-  //-------------------------------------------------------------------------
-  // setAmountWonVisible
-  //-------------------------------------------------------------------------
-  public void setAmountWonVisible(boolean isVisible) {
-    HandData handData = (HandData)getHandData();
-    handData.setAmountWonVisible(isVisible);
-  }
-
-  //-------------------------------------------------------------------------
-  // setBetValue
-  //-------------------------------------------------------------------------
-  public void setBetValue(int value) {
+  public void setBetAmountWonValue(int value) {
     m_betValue = Math.max(0, value);
     HandData handData = (HandData)getHandData();
-    handData.setBetValue(m_betValue);
+    handData.setBetAmountWonValue(m_betValue);
   }
 
   //-------------------------------------------------------------------------
-  // setBetValueVisible
+  // setBetAmountWonValueVisible
   //-------------------------------------------------------------------------
-  public void setBetValueVisible(boolean isVisible) {
+  public void setBetAmountWonValueVisible(boolean isVisible) {
     HandData handData = (HandData)getHandData();
-    handData.setBetValueVisible(isVisible);
+    handData.setBetAmountWonValueVisible(isVisible);
   }
 
   //-------------------------------------------------------------------------
@@ -206,8 +199,13 @@ public class PlayerData extends BasePlayerData {
   // onCreateHandData
   //-------------------------------------------------------------------------
   @Override
-  protected BaseHandData onCreateHandData(ConstraintLayout constraintLayout, String uiPositionCode,
-  float xDeck, float yDeck, int maxCardsPerHand) {
-    return(new HandData(constraintLayout, uiPositionCode, xDeck, yDeck, maxCardsPerHand));
+  protected BaseHandData onCreateHandData(ViewGroup viewGroup, float xDeck,
+  float yDeck, int maxCardsPerHand, Guideline guideCardsLeft, Guideline guideCardsRight,
+  Guideline guideCardsTop, Guideline guideCardsBottom, Guideline guideCardsUi,
+  int cardImageWidth, TextView scoreText, ImageView resultImage,
+  HashMap<String, Object> extraParams) {
+    return(new HandData(viewGroup, xDeck, yDeck, maxCardsPerHand, guideCardsLeft,
+      guideCardsRight, guideCardsTop, guideCardsBottom, guideCardsUi, cardImageWidth,
+      scoreText, resultImage, extraParams));
   }
 }

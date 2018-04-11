@@ -1,11 +1,15 @@
 package com.example.cartrell.blackjack.players;
 
-import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Guideline;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.cartrell.blackjack.cards.Card;
 import com.example.cartrell.blackjack.cards.CardsMover;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BasePlayerData {
   //=========================================================================
@@ -26,11 +30,16 @@ public class BasePlayerData {
   //-------------------------------------------------------------------------
   // ctor
   //-------------------------------------------------------------------------
-  public BasePlayerData(ConstraintLayout constraintLayout, PlayerIds playerId, String uiPositionCode, float xDeck,
-  float yDeck, int maxCardsPerHand) {
+  public BasePlayerData(ViewGroup viewGroup, PlayerIds playerId, float xDeck,
+  float yDeck, int maxCardsPerHand, Guideline guideCardsLeft, Guideline guideCardsRight,
+  Guideline guideCardsTop, Guideline guideCardsBottom, Guideline guideCardsUi,
+  int cardImageWidth, TextView scoreText, ImageView resultImage,
+  HashMap<String, Object> extraParams) {
     m_cardKeys = new ArrayList<>();
     m_playerId = playerId;
-    m_handData = onCreateHandData(constraintLayout, uiPositionCode, xDeck, yDeck, maxCardsPerHand);
+    m_handData = onCreateHandData(viewGroup, xDeck, yDeck, maxCardsPerHand,
+      guideCardsLeft, guideCardsRight, guideCardsTop, guideCardsBottom, guideCardsUi,
+      cardImageWidth, scoreText, resultImage, extraParams);
     m_score = 0;
     resetStatus();
   }
@@ -227,8 +236,12 @@ public class BasePlayerData {
   //-------------------------------------------------------------------------
   // onCreateHandData
   //-------------------------------------------------------------------------
-  protected BaseHandData onCreateHandData(ConstraintLayout constraintLayout, String uiPositionCode,
-  float xDeck, float yDeck, int maxCardsPerHand) {
-    return(new BaseHandData(constraintLayout, uiPositionCode, xDeck, yDeck, maxCardsPerHand));
+  protected BaseHandData onCreateHandData(ViewGroup viewGroup, float xDeck,
+  float yDeck, int maxCardsPerHand, Guideline guideCardsLeft, Guideline guideCardsRight,
+  Guideline guideCardsTop, Guideline guideCardsBottom, Guideline guideCardsUi,
+  int cardImageWidth, TextView textView, ImageView resultImage, HashMap<String, Object> extraParams) {
+    return(new BaseHandData(viewGroup, xDeck, yDeck, maxCardsPerHand, guideCardsLeft,
+      guideCardsRight, guideCardsTop, guideCardsBottom, guideCardsUi, cardImageWidth, textView,
+      resultImage, extraParams));
   }
 }

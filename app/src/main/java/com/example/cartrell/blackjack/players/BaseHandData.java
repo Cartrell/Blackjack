@@ -5,19 +5,18 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Point;
 import android.graphics.PointF;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
 import android.support.constraint.Guideline;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.cartrell.blackjack.R;
 import com.example.cartrell.blackjack.cards.Card;
 import com.example.cartrell.blackjack.cards.CardsMover;
+import com.example.cartrell.blackjack.utils.Metrics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,43 +32,26 @@ public class BaseHandData {
   //=========================================================================
   // members
   //=========================================================================
-  protected ConstraintLayout m_constraintLayout;
-  protected Guideline m_guideBottom;
+  ViewGroup m_viewGroup;
+  float m_yCardsBottom;
+
+  private float m_xDeck;
+  private float m_yDeck;
+  private float m_yCardsUi;
+  private float m_xCardsLeft;
+  private float m_xCardsRight;
+  private float m_yCardsTop;
+  private int m_maxCardsPerHand;
+  private int m_cardImageWidth;
 
   private ArrayList<Card> m_cards;
   private ViewDistributor m_cardsViewDistributor;
-  private Guideline m_guideLeft;
-  private Guideline m_guideRight;
-  private Guideline m_guideTop;
   private TextView m_scoreText;
   private ImageView m_resultImage;
-  private View m_leftCard;
-  private View m_rightCard;
-  private float m_xDeck;
-  private float m_yDeck;
-  private int m_maxCardsPerHand;
 
   //=========================================================================
   // protected
   //=========================================================================
-
-  //-------------------------------------------------------------------------
-  // setText
-  //-------------------------------------------------------------------------
-  protected void setText(TextView textView, Object text) {
-    if (textView != null && text != null) {
-      textView.setText(String.valueOf(text));
-    }
-  }
-
-  //-------------------------------------------------------------------------
-  // showView
-  //-------------------------------------------------------------------------
-  protected void showView(View view, boolean isVisible) {
-    if (view != null) {
-      view.setVisibility(isVisible ? View.VISIBLE : View.INVISIBLE);
-    }
-  }
 
   //=========================================================================
   // package-private
@@ -78,17 +60,19 @@ public class BaseHandData {
   //-------------------------------------------------------------------------
   // ctor
   //-------------------------------------------------------------------------
-  BaseHandData(ConstraintLayout constraintLayout, String uiPositionCode, float xDeck, float yDeck,
-  int maxCardsPerHand) {
+  BaseHandData(ViewGroup viewGroup, float xDeck, float yDeck, int maxCardsPerHand,
+  Guideline guideCardsLeft, Guideline guideCardsRight, Guideline guideCardsTop,
+  Guideline guideCardsBottom, Guideline guideCardsUi, int cardImageWidth, TextView scoreText,
+  ImageView resultImage, HashMap<String, Object> extraParams) {
     m_cards = new ArrayList<>();
-    m_constraintLayout = constraintLayout;
+    m_viewGroup = viewGroup;
     m_xDeck = xDeck;
     m_yDeck = yDeck;
     m_maxCardsPerHand = maxCardsPerHand;
+    m_cardImageWidth = cardImageWidth;
 
-    if (uiPositionCode != null) {
-      initComponentsFromId(uiPositionCode);
-    }
+    initComponents(guideCardsLeft, guideCardsRight, guideCardsTop, guideCardsBottom, guideCardsUi,
+      scoreText, resultImage);
   }
 
   //-------------------------------------------------------------------------
@@ -98,16 +82,10 @@ public class BaseHandData {
   boolean startAnimation, int cardImageIndex) {
     m_cards.add(card);
 
-    //inner functions cant access local variables unless they are declared final
-    final Card _card = card;
-    final ImageView cardImage = _card.getImage();
-    final CardsMover _cardsMover = cardsMover;
-    final boolean isCardAlreadyInPlay = m_constraintLayout.indexOfChild(cardImage) != -1;
-    final long _moveStartDelay = moveStartDelay;
-    final long _moveDuration = moveDuration;
-    final boolean _startAnimation = startAnimation;
-    final float xCard;
-    final float yCard;
+    ImageView cardImage = card.getImage();
+    boolean isCardAlreadyInPlay = m_viewGroup.indexOfChild(cardImage) != -1;
+    float xCard;
+    float yCard;
 
     if (isCardAlreadyInPlay) {
       xCard = cardImage.getX();
@@ -117,28 +95,20 @@ public class BaseHandData {
       yCard = m_yDeck;
     }
 
-    addCardToConstraints(card, cardImageIndex);
+    Point size = Metrics.CalcSize(cardImage, m_yCardsBottom, m_yCardsTop, false);
+    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(size.x, size.y);
+    if (!isCardAlreadyInPlay) {
+      m_viewGroup.addView(cardImage, params);
+    }
+    card.setPosition(xCard, yCard);
 
-    card.getImage().getViewTreeObserver().addOnGlobalLayoutListener(
-      new ViewTreeObserver.OnGlobalLayoutListener() {
-        @Override
-        public void onGlobalLayout() {
-          cardImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-          _card.setPosition(xCard, yCard);
+    if (m_cardsViewDistributor == null) {
+      m_cardsViewDistributor = new ViewDistributor(m_xCardsLeft,
+        m_xCardsRight - m_cardImageWidth, m_yCardsTop, m_maxCardsPerHand, m_cardImageWidth);
+    }
 
-          if (!isCardAlreadyInPlay) {
-            cardImage.setVisibility(View.INVISIBLE);
-          }
-
-          if (m_cardsViewDistributor == null) {
-            m_cardsViewDistributor = new ViewDistributor(m_leftCard, m_rightCard, m_guideTop.getY(),
-              m_maxCardsPerHand);
-          }
-
-          m_cardsViewDistributor.add(cardImage);
-          updateCardPositions(_cardsMover, _moveStartDelay, _moveDuration, _startAnimation);
-        }
-      });
+    m_cardsViewDistributor.add(cardImage);
+    updateCardPositions(cardsMover, moveStartDelay, moveDuration, startAnimation);
   }
 
   //-------------------------------------------------------------------------
@@ -168,7 +138,7 @@ public class BaseHandData {
   // popTopCard
   //-------------------------------------------------------------------------
   Card popTopCard(CardsMover cardsMover, long startDelay, long moveDuration,
-                  boolean startAnimation) {
+  boolean startAnimation) {
     if (m_cards.size() == 0) {
       return(null); //nothing to remove
     }
@@ -184,7 +154,7 @@ public class BaseHandData {
   //-------------------------------------------------------------------------
   void removeAllCards() {
     for (Card card : m_cards) {
-      m_constraintLayout.removeView(card.getImage());
+      m_viewGroup.removeView(card.getImage());
     }
 
     m_cards.clear();
@@ -239,6 +209,24 @@ public class BaseHandData {
     showView(m_scoreText, isVisible);
   }
 
+  //-------------------------------------------------------------------------
+  // setText
+  //-------------------------------------------------------------------------
+  void setText(TextView textView, Object text) {
+    if (textView != null && text != null) {
+      textView.setText(String.valueOf(text));
+    }
+  }
+
+  //-------------------------------------------------------------------------
+  // showView
+  //-------------------------------------------------------------------------
+  void showView(View view, boolean isVisible) {
+    if (view != null) {
+      view.setVisibility(isVisible ? View.VISIBLE : View.INVISIBLE);
+    }
+  }
+
   //=========================================================================
   // protected
   //=========================================================================
@@ -247,7 +235,7 @@ public class BaseHandData {
   // getViewFromStringId
   //-------------------------------------------------------------------------
   protected View getViewImageFromStringId(String stringId) {
-    Context context = m_constraintLayout.getContext();
+    Context context = m_viewGroup.getContext();
     int resourceId = context.getResources().getIdentifier(stringId, "id",
       context.getPackageName());
 
@@ -256,7 +244,7 @@ public class BaseHandData {
       return(null);
     }
 
-    return(m_constraintLayout.findViewById(resourceId));
+    return(m_viewGroup.findViewById(resourceId));
   }
 
   //=========================================================================
@@ -264,76 +252,34 @@ public class BaseHandData {
   //=========================================================================
 
   //-------------------------------------------------------------------------
-  // addCardToConstraints
-  //-------------------------------------------------------------------------
-  private void addCardToConstraints(Card card, int cardImageIndex) {
-    if (card == null) {
-      return; //sanity check
-    }
-
-    ImageView cardImage = card.getImage();
-    if (cardImage == null) {
-      return; //sanity check
-    }
-
-    ConstraintSet set = new ConstraintSet();
-    int cardImageId = cardImage.getId();
-
-    if (m_constraintLayout.indexOfChild(cardImage) == -1) {
-      m_constraintLayout.addView(cardImage, cardImageIndex);
-    } else {
-      set.clone(m_constraintLayout);
-      set.clear(cardImageId);
-    }
-
-    set.constrainWidth(cardImageId, ConstraintSet.WRAP_CONTENT);
-    set.constrainHeight(cardImageId, 0);
-    set.connect(cardImageId, ConstraintSet.TOP, m_guideTop.getId(), ConstraintSet.TOP);
-    set.connect(cardImageId, ConstraintSet.BOTTOM, m_guideBottom.getId(), ConstraintSet.BOTTOM);
-    set.applyTo(m_constraintLayout);
-  }
-
-  //-------------------------------------------------------------------------
   // initComponents
   //-------------------------------------------------------------------------
-  private void initComponents(View leftCard, View rightCard, Guideline guideLeft,
-  Guideline guideRight, Guideline guideTop, Guideline guideBottom, TextView scoreText,
-  ImageView resultsImage) {
-    m_leftCard = leftCard;
-    m_rightCard = rightCard;
-    m_guideLeft = guideLeft;
-    m_guideRight = guideRight;
-    m_guideTop = guideTop;
-    m_guideBottom = guideBottom;
+  private void initComponents(Guideline guideCardsLeft, Guideline guideCardsRight,
+  Guideline guideCardsTop, Guideline guideCardsBottom, Guideline guideCardsUi, TextView scoreText,
+  ImageView resultImage) {
+    m_xCardsLeft = guideCardsLeft.getX();
+    m_xCardsRight = guideCardsRight.getX();
+    m_yCardsTop = guideCardsTop.getY();
+    m_yCardsBottom = guideCardsBottom.getY();
+    m_yCardsUi = guideCardsUi.getY();
     m_scoreText = scoreText;
-    m_resultImage = resultsImage;
-
-    setScoreTextVisible(false);
-    setResultImageVisible(false);
+    m_resultImage = resultImage;
   }
 
   //-------------------------------------------------------------------------
-  // initComponentsFromId
+  // initResultsImage
   //-------------------------------------------------------------------------
-  private void initComponentsFromId(String uiPositionCode) {
-    View leftCard = getViewImageFromStringId("player" + uiPositionCode + "LeftCard");
-    View rightCard = getViewImageFromStringId("player" + uiPositionCode + "RightCard");
-    Guideline guideTop = (Guideline)getViewImageFromStringId("guidePlayer" + uiPositionCode + "CardsTop");
-    Guideline guideBottom = (Guideline)getViewImageFromStringId("guidePlayer" + uiPositionCode + "CardsBottom");
-    TextView scoreText = (TextView)getViewImageFromStringId("txtPlayer" + uiPositionCode + "Score");
-    ImageView resultImage = (ImageView)getViewImageFromStringId("player" + uiPositionCode + "Result");
+  private void initResultsImage(ImageView resultImage) {
+    /*m_resultImage = new ImageView(m_viewGroup.getContext());
+    m_resultImage.setImageResource(R.drawable.result_label_blackjack);
 
-    String positionId = uiPositionCode.substring(0, 1);
-    Guideline guideLeft = (Guideline)getViewImageFromStringId("guidePlayer" + positionId + "CardsLeft");
-    Guideline guideRight = (Guideline)getViewImageFromStringId("guidePlayer" + positionId + "CardsRight");
+    Point size = Metrics.CalcSize(m_resultImage, m_xCardsRight, m_xCardsLeft, true);
+    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(size.x, size.y);
+    m_resultImage.setX(m_xCardsLeft);
+    m_resultImage.setY(m_yCardsTop - size.y);
+    m_viewGroup.addView(m_resultImage, params);*/
 
-    initComponents(leftCard, rightCard, guideLeft, guideRight, guideTop, guideBottom,
-      scoreText, resultImage);
-
-    showView(leftCard, false);
-    showView(rightCard, false);
-    //leftCard.setAlpha(0.5f);
-    //rightCard.setAlpha(0.5f);
+    //setResultImageVisible(false);
   }
 
   //-------------------------------------------------------------------------

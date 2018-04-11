@@ -20,29 +20,29 @@ public class MainActivity extends AppCompatActivity {
   //-------------------------------------------------------------------------
   // onBetChipClick
   //-------------------------------------------------------------------------
-  public void onBetChipClick(View view) {
+  /*public void onBetChipClick(View view) {
     m_engine.onBetChipClick(view);
-  }
+  }*/
 
   //-------------------------------------------------------------------------
   // onClearClick
   //-------------------------------------------------------------------------
-  public void onClearClick(View view) {
+  /*public void onClearClick(View view) {
     m_engine.onClearClick();
-  }
+  }*/
 
   //-------------------------------------------------------------------------
   // onDealClick
   //-------------------------------------------------------------------------
-  public void onDealClick(View view) {
+  /*public void onDealClick(View view) {
     m_engine.onDealClick();
-  }
+  }*/
 
   //-------------------------------------------------------------------------
   // beginDouble
   //-------------------------------------------------------------------------
   public void onDoubleClick(View view) {
-    m_engine.onDoubleClick();
+  //  m_engine.onDoubleClick();
   }
 
   //-------------------------------------------------------------------------
@@ -50,34 +50,35 @@ public class MainActivity extends AppCompatActivity {
   //-------------------------------------------------------------------------
   public void onHitClick(View view) {
     m_engine.onHitClick();
+
   }
 
   //-------------------------------------------------------------------------
-  // onPlayer0PlaceBetClick
+  // onPlayerLeftPlaceBetClick
   //-------------------------------------------------------------------------
-  public void onPlayer0PlaceBetClick(View view) {
-    m_engine.placeBet(PlayerIds.RIGHT_BOTTOM);
+  public void onPlayerLeftPlaceBetClick(View view) {
+    m_engine.placeBet(PlayerIds.LEFT_BOTTOM);
   }
 
   //-------------------------------------------------------------------------
-  // onPlayer1PlaceBetClick
+  // onPlayerMidPlaceBetClick
   //-------------------------------------------------------------------------
-  public void onPlayer1PlaceBetClick(View view) {
+  public void onPlayerMidPlaceBetClick(View view) {
     m_engine.placeBet(PlayerIds.MIDDLE_BOTTOM);
   }
 
   //-------------------------------------------------------------------------
-  // onPlayer2PlaceBetClick
+  // onPlayerRightPlaceBetClick
   //-------------------------------------------------------------------------
-  public void onPlayer2PlaceBetClick(View view) {
-    m_engine.placeBet(PlayerIds.LEFT_BOTTOM);
+  public void onPlayerRightPlaceBetClick(View view) {
+    m_engine.placeBet(PlayerIds.RIGHT_BOTTOM);
   }
 
   //-------------------------------------------------------------------------
   // beginSplit
   //-------------------------------------------------------------------------
   public void onSplitClick(View view) {
-    m_engine.onSplitClick();
+    //m_engine.onSplitClick();
   }
 
   //-------------------------------------------------------------------------

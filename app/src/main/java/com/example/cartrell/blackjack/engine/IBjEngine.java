@@ -2,7 +2,6 @@ package com.example.cartrell.blackjack.engine;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.example.cartrell.blackjack.cards.Deck;
 import com.example.cartrell.blackjack.databinding.ActivityMainBinding;
@@ -27,13 +26,14 @@ public interface IBjEngine {
   int getCredits();
   BasePlayerData getDealerData();
   Deck getDeck();
-  ImageView getDeckImage();
   int getColorResource(int resourceId);
   int getIndexOf(View view);
   PlayerData getPlayer(PlayerIds playerId);
   HashMap<PlayerIds, PlayerData> getPlayers();
   int getIntegerResource(int resourceId);
   String getStringResource(int resourceId);
+  Views getViews();
+  void setAtLeastOneRoundPlayed();
   void setBetChipVisibility(String chipId, boolean isVisible);
   void setCredits(int value);
   void setCredits(int credits, boolean isOffset);
