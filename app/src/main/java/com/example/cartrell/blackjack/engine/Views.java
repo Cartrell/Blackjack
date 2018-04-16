@@ -3,10 +3,12 @@ package com.example.cartrell.blackjack.engine;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ToggleButton;
@@ -47,6 +49,13 @@ class Views {
   private ImageView m_resultsMidRight;
   private ImageView m_resultsUpperMid;
 
+  private ImageView m_turnPlayerLowerLeft;
+  private ImageView m_turnPlayerLowerMid;
+  private ImageView m_turnPlayerLowerRight;
+  private ImageView m_turnPlayerMidLeft;
+  private ImageView m_turnPlayerMidMid;
+  private ImageView m_turnPlayerMidRight;
+
   private ToggleButton m_btnBetChipBlue;
   private ToggleButton m_btnBetChipRed;
   private ToggleButton m_btnBetChipPurple;
@@ -58,6 +67,12 @@ class Views {
 
   private ImageButton m_clearButton;
   private ImageButton m_dealButton;
+
+  private ImageButton m_hitButton;
+  private ImageButton m_standButton;
+  private ImageButton m_doubleButton;
+  private ImageButton m_splitButton;
+  private ImageButton m_surrenderButton;
 
   private Point m_cardSize;
   private Point m_chipSize;
@@ -109,20 +124,6 @@ class Views {
 
   public AppCompatTextView getMidRightBetValueTextView() {
     return m_txtMidRightBetValue;
-  }
-
-  //-------------------------------------------------------------------------
-  // getTextBet
-  //-------------------------------------------------------------------------
-  public AppCompatTextView getTextBet() {
-    return(m_txtBet);
-  }
-
-  //-------------------------------------------------------------------------
-  // getTextCredits
-  //-------------------------------------------------------------------------
-  public AppCompatTextView getTextCredits() {
-    return(m_txtCredits);
   }
 
   //-------------------------------------------------------------------------
@@ -227,6 +228,32 @@ class Views {
       R.id.parentBottom, R.id.guideBottomPanel, false);
     m_btnBetChipBlue = initToggleButton(targetGroup, sourceGroup, R.id.chipButtonBlue,
       R.id.parentBottom, R.id.guideBottomPanel, false);
+
+    m_hitButton = initImageButton(targetGroup, sourceGroup, R.id.btnHit, R.id.parentBottom,
+      R.id.guideBottomPanel, false);
+    m_standButton = initImageButton(targetGroup, sourceGroup, R.id.btnStand, R.id.parentBottom,
+      R.id.guideBottomPanel, false);
+    m_doubleButton = initImageButton(targetGroup, sourceGroup, R.id.btnDouble, R.id.parentBottom,
+      R.id.guideBottomPanel, false);
+    m_splitButton = initImageButton(targetGroup, sourceGroup, R.id.btnSplit, R.id.parentBottom,
+      R.id.guideBottomPanel, false);
+    m_surrenderButton = initImageButton(targetGroup, sourceGroup, R.id.btnSurrender,
+      R.id.parentBottom, R.id.guideBottomPanel, false);
+
+    m_turnPlayerLowerLeft = initImageView(targetGroup, sourceGroup, R.id.turnPlayerLowerLeft,
+      R.id.guideLowerCardsTop, R.id.guideMidCardsBottom, false);
+    m_turnPlayerLowerMid = initImageView(targetGroup, sourceGroup, R.id.turnPlayerLowerMid,
+      R.id.guideLowerCardsTop, R.id.guideMidCardsBottom, false);
+    m_turnPlayerLowerRight = initImageView(targetGroup, sourceGroup, R.id.turnPlayerLowerRight,
+      R.id.guideLowerCardsTop, R.id.guideMidCardsBottom, false);
+
+    m_turnPlayerMidLeft = initImageView(targetGroup, sourceGroup, R.id.turnPlayerMidLeft,
+      R.id.guideMidCardsTop, R.id.guideUpperCardsBottom, false);
+    m_turnPlayerMidMid = initImageView(targetGroup, sourceGroup, R.id.turnPlayerMidMid,
+      R.id.guideMidCardsTop, R.id.guideUpperCardsBottom, false);
+    m_turnPlayerMidRight = initImageView(targetGroup, sourceGroup, R.id.turnPlayerMidRight,
+      R.id.guideMidCardsTop, R.id.guideUpperCardsBottom, false);
+
   }
 
   //-------------------------------------------------------------------------
@@ -313,15 +340,16 @@ class Views {
   //-------------------------------------------------------------------------
   // initTextView
   //-------------------------------------------------------------------------
-  private AppCompatTextView initTextView(ViewGroup targetGroup, ViewGroup sourceGroup,
+  private AppCompatTextView initTextView(final ViewGroup targetGroup, ViewGroup sourceGroup,
   int sourceResourceId) {
-    AppCompatTextView targetTextView = new AppCompatTextView(sourceGroup.getContext());
-    AppCompatTextView sourceTextView = sourceGroup.findViewById(sourceResourceId);
+    final AppCompatTextView targetTextView = new AppCompatTextView(sourceGroup.getContext());
+    final AppCompatTextView sourceTextView = sourceGroup.findViewById(sourceResourceId);
 
     targetTextView.setTag(sourceTextView.getTag());
     targetTextView.setTextColor(sourceTextView.getTextColors());
     targetTextView.setTextSize(sourceTextView.getTextSize());
     targetTextView.setTypeface(sourceTextView.getTypeface());
+    targetTextView.setText(sourceTextView.getText());
     targetTextView.setX(sourceTextView.getX());
     targetTextView.setY(sourceTextView.getY());
 
@@ -342,10 +370,18 @@ class Views {
       targetTextView.setBackgroundColor(colorDrawable.getColor());
     }
 
-    Point size = Metrics.CalcSize(sourceTextView);
-    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(size.x, size.y);
+    sourceTextView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+      @Override
+      public void onGlobalLayout() {
+        sourceTextView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+        int width = sourceTextView.getWidth();
+        int height = sourceTextView.getHeight();
+        ConstraintLayout.LayoutParams targetParams = new ConstraintLayout.LayoutParams(width, height);
+        targetTextView.setLayoutParams(targetParams);
+      }
+    });
 
-    targetGroup.addView(targetTextView, params);
+    targetGroup.addView(targetTextView);
     return(targetTextView);
   }
 
@@ -473,5 +509,49 @@ class Views {
 
   public ImageButton getDealButton() {
     return m_dealButton;
+  }
+
+  public ImageButton getHitButton() {
+    return m_hitButton;
+  }
+
+  public ImageButton getStandButton() {
+    return m_standButton;
+  }
+
+  public ImageButton getDoubleButton() {
+    return m_doubleButton;
+  }
+
+  public ImageButton getSplitButton() {
+    return m_splitButton;
+  }
+
+  public ImageButton getSurrenderButton() {
+    return m_surrenderButton;
+  }
+
+  public ImageView getTurnPlayerLowerLeft() {
+    return m_turnPlayerLowerLeft;
+  }
+
+  public ImageView getTurnPlayerLowerMid() {
+    return m_turnPlayerLowerMid;
+  }
+
+  public ImageView getTurnPlayerLowerRight() {
+    return m_turnPlayerLowerRight;
+  }
+
+  public ImageView getTurnPlayerMidLeft() {
+    return m_turnPlayerMidLeft;
+  }
+
+  public ImageView getTurnPlayerMidMid() {
+    return m_turnPlayerMidMid;
+  }
+
+  public ImageView getTurnPlayerMidRight() {
+    return m_turnPlayerMidRight;
   }
 }

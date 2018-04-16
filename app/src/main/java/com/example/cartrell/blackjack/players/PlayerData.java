@@ -14,8 +14,8 @@ public class PlayerData extends BasePlayerData {
   //=========================================================================
   // members
   //=========================================================================
-  private ArrayList<String>m_cardKeys;
   private int m_betValue;
+  private int m_origBetValue;
   private boolean m_isDoubleDown;
   private boolean m_isCharlieWin;
   private boolean m_hasSurrendered;
@@ -37,26 +37,7 @@ public class PlayerData extends BasePlayerData {
       resultImage, extraParams);
 
     m_betValue = 0;
-  }
-
-  //-------------------------------------------------------------------------
-  // addBetChip
-  //-------------------------------------------------------------------------
-  public void addBetChip(BjBetChip betChip) {
-    if (betChip == null) {
-      return; //sanity check
-    }
-
-    HandData handData = (HandData)getHandData();
-    handData.addBetChip(betChip);
-  }
-
-  //-------------------------------------------------------------------------
-  // addBetValue
-  //-------------------------------------------------------------------------
-  public void addBetValue(int betChipValue) {
-    setBetAmountWonValue(m_betValue + betChipValue);
-    setBetAmountWonValueVisible(true);
+    m_origBetValue = 0;
   }
 
   //-------------------------------------------------------------------------
@@ -95,6 +76,13 @@ public class PlayerData extends BasePlayerData {
   }
 
   //-------------------------------------------------------------------------
+  // getOrigBetValue
+  //-------------------------------------------------------------------------
+  public int getOrigBetValue() {
+    return(m_origBetValue);
+  }
+
+  //-------------------------------------------------------------------------
   // hideBetChips
   //-------------------------------------------------------------------------
   public void hideBetChips() {
@@ -103,10 +91,10 @@ public class PlayerData extends BasePlayerData {
   }
 
   //-------------------------------------------------------------------------
-  // isLeftVsDealer
+  // isVsDealer
   //-------------------------------------------------------------------------
-  public boolean isLeftVsDealer() {
-    return(m_betValue > 0 &&
+  public boolean isVsDealer() {
+    return(m_origBetValue > 0 &&
       !getHasBlackjack() &&
       !getIsBust() &&
       !getIsCharlieWin() &&
@@ -131,20 +119,39 @@ public class PlayerData extends BasePlayerData {
   }
 
   //-------------------------------------------------------------------------
-  // setBetAmountWonValue
+  // setBetChips
   //-------------------------------------------------------------------------
-  public void setBetAmountWonValue(int value) {
-    m_betValue = Math.max(0, value);
-    HandData handData = (HandData)getHandData();
-    handData.setBetAmountWonValue(m_betValue);
+  public void setBetChips(ArrayList<BjBetChip> betChips) {
+    removeBetChips();
+    for (BjBetChip betChip : betChips) {
+      addBetChip(betChip);
+    }
   }
 
   //-------------------------------------------------------------------------
-  // setBetAmountWonValueVisible
+  // setBetValue
   //-------------------------------------------------------------------------
-  public void setBetAmountWonValueVisible(boolean isVisible) {
+  public void setBetValue(int value) {
+    m_betValue = Math.max(0, value);
     HandData handData = (HandData)getHandData();
-    handData.setBetAmountWonValueVisible(isVisible);
+    handData.setBetValue(m_betValue);
+  }
+
+  //-------------------------------------------------------------------------
+  // setBetValueVisible
+  //-------------------------------------------------------------------------
+  public void setBetValueVisible(boolean isVisible) {
+    HandData handData = (HandData)getHandData();
+    handData.setBetValueVisible(isVisible);
+  }
+
+  //-------------------------------------------------------------------------
+  // setOrigBetValue
+  //-------------------------------------------------------------------------
+  public void setOrigBetValue(int value) {
+    m_origBetValue = Math.max(0, value);
+    HandData handData = (HandData)getHandData();
+    handData.setBetValue(m_origBetValue);
   }
 
   //-------------------------------------------------------------------------
@@ -207,5 +214,21 @@ public class PlayerData extends BasePlayerData {
     return(new HandData(viewGroup, xDeck, yDeck, maxCardsPerHand, guideCardsLeft,
       guideCardsRight, guideCardsTop, guideCardsBottom, guideCardsUi, cardImageWidth,
       scoreText, resultImage, extraParams));
+  }
+
+  //=========================================================================
+  // private
+  //=========================================================================
+
+  //-------------------------------------------------------------------------
+  // addBetChip
+  //-------------------------------------------------------------------------
+  private void addBetChip(BjBetChip betChip) {
+    if (betChip == null) {
+      return; //sanity check
+    }
+
+    HandData handData = (HandData)getHandData();
+    handData.addBetChip(betChip);
   }
 }

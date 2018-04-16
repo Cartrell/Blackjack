@@ -2,6 +2,7 @@ package com.example.cartrell.blackjack.engine;
 
 import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.cartrell.blackjack.R;
@@ -38,6 +39,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private int m_baseCardImageChildIndex;
   private int m_nextCardImageChildIndex;
   private int m_totalCreditsWonOnRound;
+  private boolean m_wereAcesSplit;
 
   //=========================================================================
   // public
@@ -75,6 +77,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_playerIdsOrder  = new ArrayList<>();
     m_cardsMover = new CardsMover(this);
     m_baseCardImageChildIndex = m_engine.getIndexOf(m_engine.getViews().getDeckImage());
+    initGameButtons();
   }
 
   //-------------------------------------------------------------------------
@@ -85,7 +88,6 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_nextCardImageChildIndex = m_baseCardImageChildIndex + 1;
     m_totalCreditsWonOnRound = 0;
 
-    //m_engine.showView(m_engine.getBinding().txtTotalWon, false);
     TextView txtTotalWon = m_engine.getViews().getTextTotalWon();
     if (txtTotalWon != null) {
       m_engine.showView(txtTotalWon, false);
@@ -101,8 +103,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   void beginDouble() {
     PlayerData playerData = (PlayerData)getTurnPlayerData();
     int playerBetValue = playerData.getBetValue();
-    playerData.setBetAmountWonValue(playerBetValue * 2);
     m_engine.setCredits(-playerBetValue, true);
+    m_engine.setPlayerBet(playerData.getId(), playerBetValue * 2, false);
 
     m_state = BjPlayStates.DOUBLE;
     drawCard(m_turnPlayerId, true, 0, true);
@@ -130,6 +132,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     turnPlayerData.setSplit();
     splitPlayerData.setSplit();
     m_engine.setCredits(-turnPlayerData.getBetValue(), true);
+
+    m_wereAcesSplit = wereAcesSplit();
     moveTopCardFromTo(turnPlayerData, splitPlayerData);
   }
 
@@ -150,8 +154,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     playerData.setResultImageVisible(true);
 
     int creditsWon = calcCreditsWon(m_turnPlayerId, m_engine.getStringResource(R.string.winRatioSurrender));
-    playerData.setBetAmountWonValue(creditsWon);
-    playerData.setBetAmountWonValueVisible(true);
+    playerData.setBetValue(creditsWon);
+    playerData.setBetValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
 
     beginNextTurnPlayer();
@@ -182,7 +186,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
       }
 
       PlayerData playerData = (PlayerData)getPlayerData(playerId);
-      if (playerData.isLeftVsDealer()) {
+      if (playerData.isVsDealer()) {
         return(true);
       }
     }
@@ -226,7 +230,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
       }
 
       PlayerData playerData = (PlayerData)getPlayerData(playerId);
-      if (playerData.isLeftVsDealer()) {
+      if (playerData.isVsDealer()) {
         beginPlayerWon(playerId);
       }
     }
@@ -293,8 +297,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     playerData.setResultImageVisible(true);
 
     int creditsWon = calcCreditsWon(playerId, m_engine.getStringResource(R.string.winRatioBlackjack));
-    playerData.setBetAmountWonValue(creditsWon);
-    playerData.setBetAmountWonValueVisible(true);
+    playerData.setBetValue(creditsWon);
+    playerData.setBetValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
   }
 
@@ -308,8 +312,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     playerData.setResultImageVisible(true);
 
     int creditsWon = calcCreditsWon(m_turnPlayerId, m_engine.getStringResource(R.string.winRatioCharlie));
-    playerData.setBetAmountWonValue(creditsWon);
-    playerData.setBetAmountWonValueVisible(true);
+    playerData.setBetValue(creditsWon);
+    playerData.setBetValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
 
     beginNextTurnPlayer();
@@ -325,7 +329,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
 
     PlayerData playerData = (PlayerData)getPlayerData(playerId);
     playerData.hideBetChips();
-    playerData.setBetAmountWonValueVisible(false);
+    playerData.setBetValueVisible(false);
   }
 
   //-------------------------------------------------------------------------
@@ -336,8 +340,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     playerData.setResultImage(R.drawable.result_label_push);
     playerData.setResultImageVisible(true);
     int creditsWon = calcCreditsWon(playerId, m_engine.getStringResource(R.string.winRatioPush));
-    playerData.setBetAmountWonValue(creditsWon);
-    playerData.setBetAmountWonValueVisible(true);
+    playerData.setBetValue(creditsWon);
+    playerData.setBetValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
   }
 
@@ -349,8 +353,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     playerData.setResultImage(R.drawable.result_label_win);
     playerData.setResultImageVisible(true);
     int creditsWon = calcCreditsWon(playerId, m_engine.getStringResource(R.string.winRatioNormal));
-    playerData.setBetAmountWonValue(creditsWon);
-    playerData.setBetAmountWonValueVisible(true);
+    playerData.setBetValue(creditsWon);
+    playerData.setBetValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
   }
 
@@ -437,7 +441,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     }
 
     float winRatio = divisor / dividend;
-    float amountWonF = (float)playerData.getBetValue() * winRatio;
+    float betValue = (float)playerData.getBetValue();
+    float amountWonF = betValue + betValue * winRatio;
     int amountWon = (int)amountWonF;
     if (playerData.getIsDoubleDown()) {
       amountWon *= 2;
@@ -464,7 +469,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
       }
 
       PlayerData playerData = (PlayerData)getPlayerData(playerId);
-      if (!playerData.isLeftVsDealer()) {
+      if (!playerData.isVsDealer()) {
         continue; //player is not eligible vs dealer
       }
 
@@ -620,6 +625,77 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   }
 
   //-------------------------------------------------------------------------
+  // initGameButtonDouble
+  //-------------------------------------------------------------------------
+  private void initGameButtonDouble() {
+    m_engine.getViews().getDoubleButton().setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        beginDouble();
+      }
+    });
+  }
+
+  //-------------------------------------------------------------------------
+  // initGameButtonHit
+  //-------------------------------------------------------------------------
+  private void initGameButtonHit() {
+    m_engine.getViews().getHitButton().setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        beginHit();
+      }
+    });
+  }
+
+  //-------------------------------------------------------------------------
+  // initGameButtons
+  //-------------------------------------------------------------------------
+  private void initGameButtons() {
+    initGameButtonHit();
+    initGameButtonStand();
+    initGameButtonDouble();
+    initGameButtonSplit();
+    initGameButtonSurrender();
+  }
+
+  //-------------------------------------------------------------------------
+  // initGameButtonSplit
+  //-------------------------------------------------------------------------
+  private void initGameButtonSplit() {
+    m_engine.getViews().getSplitButton().setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        beginSplit();
+      }
+    });
+  }
+
+  //-------------------------------------------------------------------------
+  // initGameButtonStand
+  //-------------------------------------------------------------------------
+  private void initGameButtonStand() {
+    m_engine.getViews().getStandButton().setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        beginStand();
+      }
+    });
+  }
+
+  //-------------------------------------------------------------------------
+  // initGameButtonSurrender
+  //-------------------------------------------------------------------------
+  private void initGameButtonSurrender() {
+    m_engine.getViews().getSurrenderButton().setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        beginSurrender();
+      }
+    });
+  }
+
+  //-------------------------------------------------------------------------
   // initPlayers
   //-------------------------------------------------------------------------
   private void initPlayers() {
@@ -756,7 +832,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
 
       if (isSplitPlayerId(playerData.getId())) {
         playerData.removeBetChips();
-        playerData.setBetAmountWonValueVisible(false);
+        playerData.setBetValueVisible(false);
       }
     }
   }
@@ -821,17 +897,24 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     //setup the new split player
     PlayerData splitPlayerData = getSplitPlayerData(m_turnPlayerId);
     if (splitPlayerData == null) {
+      //sanity check
       Log.w(LOG_TAG, "resolvePlayersAfterSplit. Unable to obtain split player for ID: " +
         m_turnPlayerId);
-      return; //sanity check
+      return;
     }
 
     PlayerData playerData = (PlayerData)getTurnPlayerData();
     PlayerIds splitPlayerId = splitPlayerData.getId();
-    m_engine.setPlayerBet(splitPlayerId, playerData.getBetValue());
+    m_engine.setPlayerBet(splitPlayerId, playerData.getBetValue(), true);
 
     m_playerIdsOrder.add(0, splitPlayerId);
     updatePlayerPoints(splitPlayerId);
+
+    if (m_wereAcesSplit) {
+      m_wereAcesSplit = false;
+      beginStand();
+      beginStand();
+    }
   }
 
   //-------------------------------------------------------------------------
@@ -913,5 +996,19 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     }
 
     updatePlayerPoints(PlayerIds.DEALER);
+  }
+
+  //-------------------------------------------------------------------------
+  // wereAcesSplit
+  //-------------------------------------------------------------------------
+  private boolean wereAcesSplit() {
+    PlayerData playerData = (PlayerData)getTurnPlayerData();
+    Card card = m_engine.getDeck().getCard(playerData.getCardKetAt(0));
+    if (!CardValues.ACE.equals(card.getValue())) {
+      return(false);
+    }
+
+    card = m_engine.getDeck().getCard(playerData.getCardKetAt(1));
+    return(CardValues.ACE.equals(card.getValue()));
   }
 }

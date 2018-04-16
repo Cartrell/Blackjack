@@ -69,7 +69,8 @@ class PlayersCreator {
       views.getLowerRightScoreTextView(),
       views.getResultsLowerRight(),
       (Guideline)templateLayout.findViewById(R.id.guideLowerChipsTop),
-      views.getLowerRightBetValueTextView());
+      views.getLowerRightBetValueTextView(),
+      views.getTurnPlayerLowerRight());
 
     initPlayerData(PlayerIds.MIDDLE_BOTTOM,
       targetLayout,
@@ -88,7 +89,8 @@ class PlayersCreator {
       views.getLowerMidScoreTextView(),
       views.getResultsLowerMid(),
       (Guideline)templateLayout.findViewById(R.id.guideLowerChipsTop),
-      views.getLowerMidBetValueTextView());
+      views.getLowerMidBetValueTextView(),
+      views.getTurnPlayerLowerMid());
 
     initPlayerData(PlayerIds.LEFT_BOTTOM,
       targetLayout,
@@ -107,7 +109,8 @@ class PlayersCreator {
       views.getLowerLeftScoreTextView(),
       views.getResultsLowerLeft(),
       (Guideline)templateLayout.findViewById(R.id.guideLowerChipsTop),
-      views.getLowerLeftBetValueTextView());
+      views.getLowerLeftBetValueTextView(),
+      views.getTurnPlayerLowerLeft());
 
     initPlayerData(PlayerIds.RIGHT_TOP,
       targetLayout,
@@ -125,8 +128,9 @@ class PlayersCreator {
       chipSize,
       views.getMidRightScoreTextView(),
       views.getResultsMidRight(),
-      (Guideline)templateLayout.findViewById(R.id.guideUpperChipsTop),
-      views.getMidRightBetValueTextView());
+      (Guideline)templateLayout.findViewById(R.id.guideMidChipsTop),
+      views.getMidRightBetValueTextView(),
+      views.getTurnPlayerMidRight());
 
     initPlayerData(PlayerIds.MIDDLE_TOP,
       targetLayout,
@@ -144,8 +148,9 @@ class PlayersCreator {
       chipSize,
       views.getMidMidScoreTextView(),
       views.getResultsMidMid(),
-      (Guideline)templateLayout.findViewById(R.id.guideUpperChipsTop),
-      views.getMidMidBetValueTextView());
+      (Guideline)templateLayout.findViewById(R.id.guideMidChipsTop),
+      views.getMidMidBetValueTextView(),
+      views.getTurnPlayerMidMid());
 
     initPlayerData(PlayerIds.LEFT_TOP,
       targetLayout,
@@ -163,8 +168,9 @@ class PlayersCreator {
       chipSize,
       views.getMidLeftScoreTextView(),
       views.getResultsMidLeft(),
-      (Guideline)templateLayout.findViewById(R.id.guideUpperChipsTop),
-      views.getMidLeftBetValueTextView());
+      (Guideline)templateLayout.findViewById(R.id.guideMidChipsTop),
+      views.getMidLeftBetValueTextView(),
+      views.getTurnPlayerMidLeft());
   }
 
   //-------------------------------------------------------------------------
@@ -192,13 +198,15 @@ class PlayersCreator {
   float yDeck, int maxCards, Guideline guideCardsLeft, Guideline guideCardsRight,
   Guideline guideCardsTop, Guideline guideCardsBottom, Guideline guideCardsUi, int cardImageWidth,
   Guideline guideChipsLeft, Guideline guideChipsRight, Point chipSize, TextView scoreText,
-  ImageView resultImage, Guideline guideChipsTop, TextView betValueText) {
+  ImageView resultImage, Guideline guideChipsTop, TextView betValueText,
+  ImageView turnIndicatorImage) {
     HashMap<String, Object> extraParams = new HashMap<>();
     extraParams.put("guideChipsLeft", guideChipsLeft);
     extraParams.put("guideChipsRight", guideChipsRight);
     extraParams.put("chipSize", chipSize);
     extraParams.put("guideChipsTop", guideChipsTop);
     extraParams.put("betValueText", betValueText);
+    extraParams.put("turnIndicatorImage", turnIndicatorImage);
 
     m_players.put(playerId, new PlayerData(viewGroup, playerId, xDeck, yDeck, maxCards,
       guideCardsLeft, guideCardsRight, guideCardsTop, guideCardsBottom, guideCardsUi,

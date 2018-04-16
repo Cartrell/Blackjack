@@ -239,37 +239,37 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   // onDoubleClick
   //-------------------------------------------------------------------------
-  public void onDoubleClick() {
+  /*public void onDoubleClick() {
     m_playSystem.beginDouble();
-  }
+  }*/
 
   //-------------------------------------------------------------------------
   // onHitClick
   //-------------------------------------------------------------------------
-  public void onHitClick() {
+  /*public void onHitClick() {
     m_playSystem.beginHit();
-  }
+  }*/
 
   //-------------------------------------------------------------------------
   // onSplitClick
   //-------------------------------------------------------------------------
-  public void onSplitClick() {
+  /*public void onSplitClick() {
     m_playSystem.beginSplit();
-  }
+  }*/
 
   //-------------------------------------------------------------------------
   // onStandClick
   //-------------------------------------------------------------------------
-  public void onStandClick() {
+  /*public void onStandClick() {
     m_playSystem.beginStand();
-  }
+  }*/
 
   //-------------------------------------------------------------------------
   // onSurrenderClick
   //-------------------------------------------------------------------------
-  public void onSurrenderClick() {
+  /*public void onSurrenderClick() {
     m_playSystem.beginSurrender();
-  }
+  }*/
 
   //-------------------------------------------------------------------------
   // placeBet
@@ -296,23 +296,6 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
-  // setPlayerBet
-  //-------------------------------------------------------------------------
-  @Override
-  public void setPlayerBet(PlayerIds playerId, int betValue) {
-    PlayerData playerData = m_players.get(playerId);
-    playerData.setBetAmountWonValue(betValue);
-    playerData.setBetAmountWonValueVisible(true);
-    playerData.removeBetChips();
-
-    ArrayList<String> betChipIds = m_betChips.getChipIdsFor(betValue);
-    for (String betChipId : betChipIds) {
-      BjBetChip betChip = new BjBetChip(m_context, betChipId);
-      playerData.addBetChip(betChip);
-    }
-  }
-
-  //-------------------------------------------------------------------------
   // setCredits
   //-------------------------------------------------------------------------
   @Override
@@ -334,15 +317,32 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
+  // setPlayerBet
+  //-------------------------------------------------------------------------
+  @Override
+  public void setPlayerBet(PlayerIds playerId, int betValue, boolean isOrigBet) {
+    PlayerData playerData = m_players.get(playerId);
+    playerData.setBetValueVisible(betValue > 0);
+
+    if (isOrigBet) {
+      playerData.setOrigBetValue(betValue);
+    }
+
+    playerData.setBetValue(betValue);
+    ArrayList<BjBetChip> betChips = createBetChips(m_betChips.getChipIdsFor(betValue));
+    playerData.setBetChips(betChips);
+  }
+
+  //-------------------------------------------------------------------------
   // showGameButtons
   //-------------------------------------------------------------------------
   @Override
   public void showGameButtons(EnumSet<BjGameButtonFlags> flags) {
-    /*showView(m_binding.btnDouble, flags.contains(BjGameButtonFlags.DOUBLE));
-    showView(m_binding.btnHit, flags.contains(BjGameButtonFlags.HIT));
-    showView(m_binding.btnSplit, flags.contains(BjGameButtonFlags.SPLIT));
-    showView(m_binding.btnStand, flags.contains(BjGameButtonFlags.STAND));
-    showView(m_binding.btnSurrender, flags.contains(BjGameButtonFlags.SURRENDER));*/
+    showView(m_views.getDoubleButton(), flags.contains(BjGameButtonFlags.DOUBLE));
+    showView(m_views.getHitButton(), flags.contains(BjGameButtonFlags.HIT));
+    showView(m_views.getSplitButton(), flags.contains(BjGameButtonFlags.SPLIT));
+    showView(m_views.getStandButton(), flags.contains(BjGameButtonFlags.STAND));
+    showView(m_views.getSurrenderButton(), flags.contains(BjGameButtonFlags.SURRENDER));
   }
 
   //-------------------------------------------------------------------------
@@ -376,6 +376,17 @@ public class BjEngine implements IBjEngine {
   //=========================================================================
   // private
   //=========================================================================
+
+  //-------------------------------------------------------------------------
+  // createBetChips
+  //-------------------------------------------------------------------------
+  private ArrayList<BjBetChip> createBetChips(ArrayList<String> chipIds) {
+    ArrayList<BjBetChip> betChips = new ArrayList<>();
+    for (String chipId : chipIds) {
+      betChips.add(new BjBetChip(m_context, chipId));
+    }
+    return(betChips);
+  }
 
   //-------------------------------------------------------------------------
   // initDecks

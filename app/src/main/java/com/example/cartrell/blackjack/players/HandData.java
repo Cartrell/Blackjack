@@ -28,7 +28,7 @@ class HandData extends BaseHandData {
   private ArrayList<BjBetChip> m_betChips;
   private ViewDistributor m_betChipsViewDistributor;
   private ImageView m_turnIndicatorImage;
-  private TextView m_betValueAndAmountWonText;
+  private TextView m_betValueText;
   private Point m_chipSize;
   private float m_xChipsLeft;
   private float m_xChipsRight;
@@ -60,7 +60,6 @@ class HandData extends BaseHandData {
 
     ImageView betChipImage = betChip.getImage();
 
-    //Point size = Metrics.CalcSize(betChipImage, m_yCardsBottom, m_yChipsTop, false);
     ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(m_chipSize.x, m_chipSize.y);
     m_viewGroup.addView(betChipImage, params);
 
@@ -98,17 +97,17 @@ class HandData extends BaseHandData {
   }
 
   //-------------------------------------------------------------------------
-  // setBetAmountWonValue
+  // setBetValue
   //-------------------------------------------------------------------------
-  void setBetAmountWonValue(int value) {
-    setText(m_betValueAndAmountWonText, value);
+  void setBetValue(int value) {
+    setText(m_betValueText, value);
   }
 
   //-------------------------------------------------------------------------
-  // setBetAmountWonValueVisible
+  // setBetValueVisible
   //-------------------------------------------------------------------------
-  void setBetAmountWonValueVisible(boolean isVisible) {
-    showView(m_betValueAndAmountWonText, isVisible);
+  void setBetValueVisible(boolean isVisible) {
+    showView(m_betValueText, isVisible);
   }
 
   //-------------------------------------------------------------------------
@@ -152,11 +151,14 @@ class HandData extends BaseHandData {
   // initHdComponents
   //-------------------------------------------------------------------------
   private void initHdComponents(HashMap<String, Object> extraParams) {
-    m_betValueAndAmountWonText = (TextView)extraParams.get("betValueText");
+    m_betValueText = (TextView)extraParams.get("betValueText");
     m_xChipsLeft = ((Guideline)extraParams.get("guideChipsLeft")).getX();
     m_xChipsRight = ((Guideline)extraParams.get("guideChipsRight")).getX();
     m_yChipsTop = ((Guideline)extraParams.get("guideChipsTop")).getY();
     m_chipSize = (Point)extraParams.get("chipSize");
+    m_turnIndicatorImage = (ImageView)extraParams.get("turnIndicatorImage");
+
+    showTurnIndicatorImage(false);
   }
 
   //-------------------------------------------------------------------------

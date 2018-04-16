@@ -74,7 +74,7 @@ class BjBetSystem {
     }
 
     int betChipValue = betChipData.getValue();
-    m_engine.setPlayerBet(playerId, playerData.getBetValue() + betChipValue);
+    m_engine.setPlayerBet(playerId, playerData.getOrigBetValue() + betChipValue, true);
     m_engine.updateBetValue();
     showBetChipButtons();
     updateDealButtonEnability();
@@ -188,7 +188,6 @@ class BjBetSystem {
     m_engine.getViews().getDealButton().setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        m_engine.setAtLeastOneRoundPlayed();
         m_engine.setCredits(-m_engine.getBetValue(), true);
         hideBetChipButtons();
         hidePlaceBetButtons();
@@ -198,6 +197,7 @@ class BjBetSystem {
         restoreNormalPlayers();
         removeSplitPlayers();
         m_engine.beginCardsPrep();
+        m_engine.setAtLeastOneRoundPlayed();
       }
     });
   }
@@ -212,7 +212,7 @@ class BjBetSystem {
       PlayerData playerData = (PlayerData)entry.getValue();
       playerData.setResultImageVisible(false);
       playerData.setScoreTextVisible(false);
-      playerData.setBetAmountWonValueVisible(false);
+      playerData.setBetValueVisible(false);
     }
 
     BasePlayerData dealerData = m_engine.getDealerData();
@@ -233,24 +233,12 @@ class BjBetSystem {
   }
 
   //-------------------------------------------------------------------------
-  // removePlayerBet
-  //-------------------------------------------------------------------------
-  private void removePlayerBet(PlayerIds playerId) {
-    PlayerData playerData = m_engine.getPlayer(playerId);
-    playerData.setBetAmountWonValue(0);
-    playerData.removeBetChips();
-    playerData.setBetAmountWonValueVisible(false);
-    playerData.setResultImageVisible(false);
-    playerData.setScoreTextVisible(false);
-  }
-
-  //-------------------------------------------------------------------------
   // removePlayersBets
   //-------------------------------------------------------------------------
   private void removePlayersBets() {
     Set<PlayerIds>playerIds = m_engine.getPlayers().keySet();
     for (PlayerIds playerId : playerIds) {
-      removePlayerBet(playerId);
+      m_engine.setPlayerBet(playerId, 0, true);
     }
 
     m_engine.updateBetValue();
@@ -261,12 +249,10 @@ class BjBetSystem {
   // removeSplitPlayer
   //-------------------------------------------------------------------------
   private void removeSplitPlayer(PlayerIds playerId) {
+    m_engine.setPlayerBet(playerId, 0, true);
     PlayerData playerData = m_engine.getPlayer(playerId);
-    playerData.setBetAmountWonValue(0);
-    playerData.setBetAmountWonValueVisible(false);
     playerData.setScoreTextVisible(false);
     playerData.setResultImageVisible(false);
-    playerData.removeBetChips();
   }
 
   //-------------------------------------------------------------------------
@@ -292,11 +278,10 @@ class BjBetSystem {
   //-------------------------------------------------------------------------
   private void restoreNormalPlayer(PlayerIds playerId) {
     PlayerData playerData = m_engine.getPlayer(playerId);
-    if (playerData.getBetValue() > 0) {
-      playerData.setBetAmountWonValueVisible(true);
+    if (playerData.getOrigBetValue() > 0) {
+      m_engine.setPlayerBet(playerId, playerData.getOrigBetValue(), false);
       playerData.setScoreTextVisible(false);
       playerData.setResultImageVisible(false);
-      playerData.showBetChips();
     }
   }
 

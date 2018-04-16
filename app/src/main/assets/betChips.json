@@ -1,5 +1,11 @@
 [
   {
+    "id": "cyan",
+    "value": 5,
+    "drawableId": "@drawable/chip_cyan"
+  },
+
+  {
     "id": "green",
     "value": 10,
     "drawableId": "@drawable/chip_green"

@@ -41,17 +41,16 @@ public class MainActivity extends AppCompatActivity {
   //-------------------------------------------------------------------------
   // beginDouble
   //-------------------------------------------------------------------------
-  public void onDoubleClick(View view) {
-  //  m_engine.onDoubleClick();
-  }
+  /*public void onDoubleClick(View view) {
+    m_engine.onDoubleClick();
+  }*/
 
   //-------------------------------------------------------------------------
   // beginHit
   //-------------------------------------------------------------------------
-  public void onHitClick(View view) {
+  /*public void onHitClick(View view) {
     m_engine.onHitClick();
-
-  }
+  }*/
 
   //-------------------------------------------------------------------------
   // onPlayerLeftPlaceBetClick
@@ -84,16 +83,16 @@ public class MainActivity extends AppCompatActivity {
   //-------------------------------------------------------------------------
   // onStandClick
   //-------------------------------------------------------------------------
-  public void onStandClick(View view) {
+  /*public void onStandClick(View view) {
     m_engine.onStandClick();
-  }
+  }*/
 
   //-------------------------------------------------------------------------
   // onSurrenderClick
   //-------------------------------------------------------------------------
-  public void onSurrenderClick(View view) {
+  /*public void onSurrenderClick(View view) {
     m_engine.onSurrenderClick();
-  }
+  }*/
 
   //=========================================================================
   // protected

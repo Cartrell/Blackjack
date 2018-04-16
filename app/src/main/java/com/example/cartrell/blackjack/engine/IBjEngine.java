@@ -37,7 +37,7 @@ public interface IBjEngine {
   void setBetChipVisibility(String chipId, boolean isVisible);
   void setCredits(int value);
   void setCredits(int credits, boolean isOffset);
-  void setPlayerBet(PlayerIds playerId, int betValue);
+  void setPlayerBet(PlayerIds playerId, int betValue, boolean isOrigBet);
   void showGameButtons(EnumSet<BjGameButtonFlags> flags);
   void showView(View view, boolean isVisible);
   void updateBetValue();
