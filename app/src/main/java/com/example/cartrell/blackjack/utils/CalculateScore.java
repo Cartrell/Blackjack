@@ -1,6 +1,8 @@
-package com.example.cartrell.blackjack.cards;
+package com.example.cartrell.blackjack.utils;
 
 import com.example.cartrell.blackjack.R;
+import com.example.cartrell.blackjack.cards.Card;
+import com.example.cartrell.blackjack.cards.CardValues;
 import com.example.cartrell.blackjack.engine.IBjEngine;
 
 import java.util.ArrayList;

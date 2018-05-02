@@ -2,9 +2,9 @@ package com.example.cartrell.blackjack.engine;
 
 import android.util.Log;
 
-import com.example.cartrell.blackjack.cards.CardsMover;
+import com.example.cartrell.blackjack.utils.CardsMover;
 import com.example.cartrell.blackjack.cards.Deck;
-import com.example.cartrell.blackjack.cards.ICardsMoverCallbacks;
+import com.example.cartrell.blackjack.utils.ICardsMoverCallbacks;
 import com.example.cartrell.blackjack.players.PlayerData;
 
 import java.util.Iterator;

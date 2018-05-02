@@ -1,10 +1,10 @@
-package com.example.cartrell.blackjack.cards;
+package com.example.cartrell.blackjack.utils;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 
-public class CardsMover {
+public final class CardsMover {
   //=========================================================================
   // const
   //=========================================================================

@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cartrell.blackjack.cards.Card;
-import com.example.cartrell.blackjack.cards.CardsMover;
+import com.example.cartrell.blackjack.utils.CardsMover;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,7 +79,7 @@ public class BasePlayerData {
     int size = m_cardKeys.size();
     ArrayList<String> out_keys = new ArrayList<String>(size);
     for (int index = 0; index < size; index++) {
-      out_keys.set(index, m_cardKeys.get(index));
+      out_keys.add(m_cardKeys.get(index));
     }
     return(out_keys);
   }

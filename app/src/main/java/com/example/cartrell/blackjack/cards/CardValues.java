@@ -19,27 +19,65 @@ public enum CardValues {
   private final int m_secondValue;
   private final String m_key;
 
+  //-------------------------------------------------------------------------
+  // ctor
+  //-------------------------------------------------------------------------
   CardValues(int value, String key) {
     m_value = value;
     m_key = key;
     m_secondValue = 0;
   }
 
+  //-------------------------------------------------------------------------
+  // ctor
+  //-------------------------------------------------------------------------
   CardValues(int value, String key, int secondValue) {
     m_value = value;
     m_key = key;
     m_secondValue = secondValue;
   }
 
+  //-------------------------------------------------------------------------
+  // getKey
+  //-------------------------------------------------------------------------
   public String getKey() {
     return(m_key);
   }
 
+  //-------------------------------------------------------------------------
+  // getSecondValue
+  //-------------------------------------------------------------------------
   public int getSecondValue() {
     return(m_secondValue);
   }
 
+  //-------------------------------------------------------------------------
+  // getValue
+  //-------------------------------------------------------------------------
   public int getValue() {
     return(m_value);
+  }
+
+  //-------------------------------------------------------------------------
+  // GetValueFromCardKey
+  //-------------------------------------------------------------------------
+  public static CardValues GetValueFromCardKey(String cardKey) {
+    if (cardKey == null) {
+      return(null);
+    }
+
+    String[] parts = cardKey.split("_");
+    if (parts.length != 3) {
+      return(null);
+    }
+
+    final String valueKey = parts[0];
+    for (CardValues value : CardValues.values()) {
+      if (value.getKey().equals(valueKey)) {
+        return(value);
+      }
+    }
+
+    return(null);
   }
 }

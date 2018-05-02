@@ -125,7 +125,7 @@ public class Card {
     m_context = context;
     m_value = value;
     m_suit = suit;
-    m_key = m_value.getKey() + m_suit.getKey() + "_" + String.valueOf(deckIndex);
+    m_key = m_value.getKey() + "_" + m_suit.getKey() + "_" + String.valueOf(deckIndex);
     m_isFaceUp = true;
   }
 

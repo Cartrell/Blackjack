@@ -51,6 +51,13 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.9" />
 
+        <android.support.constraint.Guideline
+            android:id="@+id/guideBottomPanelBtm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.92" />
+
         <!-- ///////////////////////////////////////////////////// -->
         <!-- card guides -->
         <!-- ///////////////////////////////////////////////////// -->
@@ -204,7 +211,8 @@
             android:text="99"
             android:textColor="#ffffff"
             android:textStyle="bold"
-            android:background="#004080"
+            android:background="@drawable/score_text_shape"
+            android:layout_marginLeft="8dp"
             app:layout_constraintTop_toBottomOf="@+id/guideLowerCardsUi"
             app:layout_constraintBottom_toTopOf="@+id/guideLowerCardsTop"
             app:layout_constraintLeft_toLeftOf="@+id/guideLeftChipsLeft"
@@ -223,7 +231,7 @@
             android:text="99"
             android:textColor="#ffffff"
             android:textStyle="bold"
-            android:background="#004080"
+            android:background="@drawable/score_text_shape"
             app:layout_constraintTop_toBottomOf="@+id/guideLowerCardsUi"
             app:layout_constraintBottom_toTopOf="@+id/guideLowerCardsTop"
             app:layout_constraintLeft_toLeftOf="@+id/guideMidChipsLeft"
@@ -242,7 +250,7 @@
             android:text="99"
             android:textColor="#ffffff"
             android:textStyle="bold"
-            android:background="#004080"
+            android:background="@drawable/score_text_shape"
             app:layout_constraintTop_toBottomOf="@+id/guideLowerCardsUi"
             app:layout_constraintBottom_toTopOf="@+id/guideLowerCardsTop"
             app:layout_constraintLeft_toLeftOf="@+id/guideRightChipsLeft"
@@ -264,7 +272,8 @@
             android:text="99"
             android:textColor="#ffffff"
             android:textStyle="bold"
-            android:background="#004080"
+            android:background="@drawable/score_text_shape"
+            android:layout_marginLeft="8dp"
             app:layout_constraintTop_toBottomOf="@+id/guideMidCardsUi"
             app:layout_constraintBottom_toTopOf="@+id/guideMidCardsTop"
             app:layout_constraintLeft_toLeftOf="@+id/guideLeftChipsLeft"
@@ -283,7 +292,7 @@
             android:text="99"
             android:textColor="#ffffff"
             android:textStyle="bold"
-            android:background="#004080"
+            android:background="@drawable/score_text_shape"
             app:layout_constraintTop_toBottomOf="@+id/guideMidCardsUi"
             app:layout_constraintBottom_toTopOf="@+id/guideMidCardsTop"
             app:layout_constraintLeft_toLeftOf="@+id/guideMidChipsLeft"
@@ -302,7 +311,7 @@
             android:text="99"
             android:textColor="#ffffff"
             android:textStyle="bold"
-            android:background="#004080"
+            android:background="@drawable/score_text_shape"
             app:layout_constraintTop_toBottomOf="@+id/guideMidCardsUi"
             app:layout_constraintBottom_toTopOf="@+id/guideMidCardsTop"
             app:layout_constraintLeft_toLeftOf="@+id/guideRightChipsLeft"
@@ -324,7 +333,7 @@
             android:text="99"
             android:textColor="#ffffff"
             android:textStyle="bold"
-            android:background="#004080"
+            android:background="@drawable/score_text_shape"
             app:layout_constraintTop_toBottomOf="@+id/guideUpperCardsUi"
             app:layout_constraintBottom_toTopOf="@+id/guideUpperCardsTop"
             app:layout_constraintLeft_toLeftOf="@+id/guideMidChipsLeft"
@@ -346,7 +355,8 @@
             android:text="9999"
             android:textColor="#ffffff"
             android:textStyle="bold"
-            android:background="#008000"
+            android:background="@drawable/bet_text_shape"
+            android:layout_marginLeft="8dp"
             app:layout_constraintBottom_toTopOf="@+id/guideBottomPanel"
             app:layout_constraintTop_toBottomOf="@+id/guideLowerChipsTop"
             app:layout_constraintLeft_toRightOf="@+id/guideLeftCardsRight"
@@ -365,7 +375,8 @@
             android:text="9999"
             android:textColor="#ffffff"
             android:textStyle="bold"
-            android:background="#008000"
+            android:background="@drawable/bet_text_shape"
+            android:layout_marginLeft="8dp"
             app:layout_constraintBottom_toTopOf="@+id/guideBottomPanel"
             app:layout_constraintTop_toBottomOf="@+id/guideLowerChipsTop"
             app:layout_constraintLeft_toRightOf="@+id/guideMidCardsRight"
@@ -384,7 +395,9 @@
             android:text="9999"
             android:textColor="#ffffff"
             android:textStyle="bold"
-            android:background="#008000"
+            android:background="@drawable/bet_text_shape"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             app:layout_constraintBottom_toTopOf="@+id/guideBottomPanel"
             app:layout_constraintTop_toBottomOf="@+id/guideLowerChipsTop"
             app:layout_constraintLeft_toRightOf="@+id/guideRightCardsRight"
@@ -406,7 +419,9 @@
             android:text="9999"
             android:textColor="#ffffff"
             android:textStyle="bold"
-            android:background="#008000"
+            android:background="@drawable/bet_text_shape"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/guideMidCardsBottom"
             app:layout_constraintTop_toBottomOf="@+id/guideMidChipsTop"
             app:layout_constraintLeft_toRightOf="@+id/guideLeftCardsRight"
@@ -425,7 +440,9 @@
             android:text="9999"
             android:textColor="#ffffff"
             android:textStyle="bold"
-            android:background="#008000"
+            android:background="@drawable/bet_text_shape"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/guideMidCardsBottom"
             app:layout_constraintTop_toBottomOf="@+id/guideMidChipsTop"
             app:layout_constraintLeft_toRightOf="@+id/guideMidCardsRight"
@@ -444,7 +461,10 @@
             android:text="9999"
             android:textColor="#ffffff"
             android:textStyle="bold"
-            android:background="#008000"
+            android:background="@drawable/bet_text_shape"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
             app:layout_constraintBottom_toTopOf="@+id/guideMidCardsBottom"
             app:layout_constraintTop_toBottomOf="@+id/guideMidChipsTop"
             app:layout_constraintLeft_toRightOf="@+id/guideRightCardsRight"
@@ -656,20 +676,22 @@
             android:id="@+id/btnClear"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginRight="8dp"
             android:background="@drawable/button_selector_clear"
-            app:layout_constraintRight_toRightOf="@+id/parentRight"
-            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanel"
             app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
-            app:layout_constraintDimensionRatio="W,212:59"/>
+            app:layout_constraintDimensionRatio="W,212:59"
+            app:layout_constraintRight_toRightOf="@+id/parentRight"
+            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm" />
 
         <ImageButton
             android:id="@+id/btnDeal"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginRight="8dp"
             android:background="@drawable/button_selector_deal"
             app:layout_constraintRight_toLeftOf="@+id/btnClear"
-            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanel"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
+            app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
             app:layout_constraintDimensionRatio="W,212:59"/>
 
         <!-- ///////////////////////////////////////////////////// -->
@@ -680,10 +702,11 @@
             android:tag="green"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginRight="8dp"
             android:background="@drawable/chip_selector_green"
             android:textOn="@null"
             android:textOff="@null"
-            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanel"
+            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
             app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
             app:layout_constraintRight_toLeftOf="@+id/btnDeal"
             app:layout_constraintDimensionRatio="W,1:1"/>
@@ -696,7 +719,7 @@
             android:background="@drawable/chip_selector_purple"
             android:textOn="@null"
             android:textOff="@null"
-            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanel"
+            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
             app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
             app:layout_constraintRight_toLeftOf="@+id/chipButtonGreen"
             app:layout_constraintDimensionRatio="W,1:1"/>
@@ -709,7 +732,7 @@
             android:background="@drawable/chip_selector_red"
             android:textOn="@null"
             android:textOff="@null"
-            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanel"
+            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
             app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
             app:layout_constraintRight_toLeftOf="@+id/chipButtonPurple"
             app:layout_constraintDimensionRatio="W,1:1"/>
@@ -722,7 +745,7 @@
             android:background="@drawable/chip_selector_blue"
             android:textOn="@null"
             android:textOff="@null"
-            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanel"
+            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
             app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
             app:layout_constraintRight_toLeftOf="@+id/chipButtonRed"
             app:layout_constraintDimensionRatio="W,1:1"/>
@@ -730,13 +753,21 @@
         <!-- ///////////////////////////////////////////////////// -->
         <!-- game buttons -->
         <!-- ///////////////////////////////////////////////////// -->
+        <android.support.constraint.Group
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="btnSurrender,btnStand,btnDouble,btnHit,btnSplit"
+            />
+
         <ImageButton
             android:id="@+id/btnSurrender"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/button_selector_surrender"
             app:layout_constraintLeft_toLeftOf="@+id/parentLeft"
-            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanel"
+            app:layout_constraintRight_toLeftOf="@+id/btnDouble"
+            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
             app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
             app:layout_constraintDimensionRatio="W,212:59" />
 
@@ -747,7 +778,7 @@
             android:background="@drawable/button_selector_double"
             app:layout_constraintLeft_toRightOf="@+id/btnSurrender"
             app:layout_constraintRight_toLeftOf="@+id/btnHit"
-            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanel"
+            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
             app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
             app:layout_constraintDimensionRatio="W,212:59" />
 
@@ -758,7 +789,7 @@
             android:background="@drawable/button_selector_hit"
             app:layout_constraintLeft_toRightOf="@+id/btnDouble"
             app:layout_constraintRight_toLeftOf="@+id/btnStand"
-            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanel"
+            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
             app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
             app:layout_constraintDimensionRatio="W,212:59" />
 
@@ -769,7 +800,7 @@
             android:background="@drawable/button_selector_stand"
             app:layout_constraintLeft_toRightOf="@+id/btnHit"
             app:layout_constraintRight_toLeftOf="@+id/btnSplit"
-            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanel"
+            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
             app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
             app:layout_constraintDimensionRatio="W,212:59" />
 
@@ -780,7 +811,7 @@
             android:background="@drawable/button_selector_split"
             app:layout_constraintLeft_toRightOf="@+id/btnStand"
             app:layout_constraintRight_toRightOf="@+id/parentRight"
-            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanel"
+            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
             app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
             app:layout_constraintDimensionRatio="W,212:59" />
 
@@ -820,7 +851,6 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txtBet"
-            android:background="#000080"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:lines="1"
@@ -879,6 +909,8 @@
             android:layout_height="0dp"
             android:src="@drawable/deck"
             android:adjustViewBounds="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/guideDeckBottom"
@@ -915,7 +947,7 @@
             android:layout_height="0dp"
             android:background="@drawable/button_selector_bet"
             android:onClick="onPlayerLeftPlaceBetClick"
-           app:layout_constraintLeft_toLeftOf="@+id/guideLeftChipsRight"
+            app:layout_constraintLeft_toLeftOf="@+id/guideLeftChipsRight"
             app:layout_constraintRight_toRightOf="@+id/guideLeftCardsRight"
             app:layout_constraintBottom_toBottomOf="@+id/guideBottomPanel"
             app:layout_constraintDimensionRatio="H,212:59"

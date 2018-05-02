@@ -6,12 +6,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.cartrell.blackjack.R;
-import com.example.cartrell.blackjack.cards.CalculateScore;
+import com.example.cartrell.blackjack.utils.CalculateScore;
 import com.example.cartrell.blackjack.cards.Card;
 import com.example.cartrell.blackjack.cards.CardValues;
-import com.example.cartrell.blackjack.cards.CardsMover;
+import com.example.cartrell.blackjack.utils.CardsMatcher;
+import com.example.cartrell.blackjack.utils.CardsMover;
 import com.example.cartrell.blackjack.cards.Deck;
-import com.example.cartrell.blackjack.cards.ICardsMoverCallbacks;
+import com.example.cartrell.blackjack.utils.ICardsMoverCallbacks;
 import com.example.cartrell.blackjack.players.BasePlayerData;
 import com.example.cartrell.blackjack.players.PlayerData;
 import com.example.cartrell.blackjack.players.PlayerIds;
@@ -29,12 +30,14 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private final String LOG_TAG = "BjPlaySystem";
 
   private final String[] DEBUG_CARD_KEYS = {
+    "a_c_0", "2_d_0", "10_c_0"
   };
 
   private ArrayList<PlayerIds> m_playerIdsOrder;
   private IBjEngine m_engine;
   private BjPlayStates m_state;
   private CardsMover m_cardsMover;
+  private CardsMatcher m_cardsMatcher;
   private PlayerIds m_turnPlayerId;
   private int m_baseCardImageChildIndex;
   private int m_nextCardImageChildIndex;
@@ -76,6 +79,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_engine = engine;
     m_playerIdsOrder  = new ArrayList<>();
     m_cardsMover = new CardsMover(this);
+    m_cardsMatcher = new CardsMatcher(m_engine.getIntegerResource(R.integer.blackjackPoints),
+      m_engine.getIntegerResource(R.integer.maxCardsPerHand));
     m_baseCardImageChildIndex = m_engine.getIndexOf(m_engine.getViews().getDeckImage());
     initGameButtons();
   }
@@ -346,6 +351,21 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   }
 
   //-------------------------------------------------------------------------
+  // beginPlayerSuitedBlackjack
+  //-------------------------------------------------------------------------
+  private void beginPlayerSuitedBlackjack(PlayerIds playerId) {
+    PlayerData playerData = (PlayerData)getPlayerData(playerId);
+    playerData.setBlackjack();
+    playerData.setResultImage(R.drawable.result_label_suited_blackjack);
+    playerData.setResultImageVisible(true);
+
+    int creditsWon = calcCreditsWon(playerId, m_engine.getStringResource(R.string.winRatioSuitedBlackjack));
+    playerData.setBetValue(creditsWon);
+    playerData.setBetValueVisible(true);
+    m_totalCreditsWonOnRound += creditsWon;
+  }
+
+  //-------------------------------------------------------------------------
   // beginPlayerWon
   //-------------------------------------------------------------------------
   private void beginPlayerWon(PlayerIds playerId) {
@@ -364,7 +384,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private void beginRoundStart() {
     updatePlayersPoints();
 
-    if (doesDealerHaveBlackjack()) {
+    if (m_cardsMatcher.doesPlayerHaveBlackjack(getPlayerData(PlayerIds.DEALER))) {
       beginDealerBlackjack();
     } else {
       checkPlayersForBlackjack();
@@ -403,7 +423,11 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     Iterator<PlayerIds>iterator = m_playerIdsOrder.iterator();
     while (iterator.hasNext()) {
       PlayerIds playerId = iterator.next();
-      if (doesPlayerHaveBlackjack(playerId)) {
+      BasePlayerData playerData = getPlayerData(playerId);
+      if (m_cardsMatcher.doesPlayerHaveSuitedBlackjack(playerData)) {
+        beginPlayerSuitedBlackjack(playerId);
+        iterator.remove();
+      } else if (m_cardsMatcher.doesPlayerHaveBlackjack(playerData)) {
         beginPlayerBlackjack(playerId);
         iterator.remove();
       }
@@ -514,34 +538,17 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   }
 
   //-------------------------------------------------------------------------
-  // doesDealerHaveBlackjack
-  //-------------------------------------------------------------------------
-  private boolean doesDealerHaveBlackjack() {
-    return(doesPlayerHaveBlackjack(PlayerIds.DEALER));
-  }
-
-  //-------------------------------------------------------------------------
-  // doesPlayerHaveBlackjack
-  //-------------------------------------------------------------------------
-  private boolean doesPlayerHaveBlackjack(PlayerIds playerId) {
-    BasePlayerData playerData = getPlayerData(playerId);
-    return(
-      playerData.getNumCards() == 2 &&
-      playerData.getScore() == m_engine.getIntegerResource(R.integer.blackjackPoints));
-  }
-
-  //-------------------------------------------------------------------------
   // doesTurnPlayerHaveMaxCards
   //-------------------------------------------------------------------------
   private boolean doesTurnPlayerHaveMaxCards() {
-    return(getTurnPlayerData().getNumCards() ==
-      m_engine.getIntegerResource(R.integer.maxCardsPerHand));
+    return(m_cardsMatcher.doesPlayerHaveMaxCards(getTurnPlayerData()));
   }
 
   //-------------------------------------------------------------------------
   // drawCard
   //-------------------------------------------------------------------------
-  private void drawCard(PlayerIds playerId, boolean isFaceUp, long moveStartDelay, boolean startAnimation) {
+  private void drawCard(PlayerIds playerId, boolean isFaceUp, long moveStartDelay,
+  boolean startAnimation) {
     Card card = m_engine.getDeck().next();
     if (card == null) {
       //sanity check
@@ -751,24 +758,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   // isSplitAvailable
   //-------------------------------------------------------------------------
   private boolean isSplitAvailable() {
-    PlayerData playerData = (PlayerData)getTurnPlayerData();
-    if (playerData.getNumCards() != 2) {
-      return(false);
-    }
-
-    if (playerData.getHasSplit()) {
-      return(false);
-    }
-
-    Deck deck = m_engine.getDeck();
-
-    Card card0 = deck.getCard(playerData.getCardKetAt(0));
-    CardValues card0Value = card0.getValue();
-
-    Card card1 = deck.getCard(playerData.getCardKetAt(1));
-    CardValues card1Value = card1.getValue();
-
-    return(card0Value.getValue() == card1Value.getValue());
+    return(m_cardsMatcher.canPlayerSplit((PlayerData)getTurnPlayerData()));
   }
 
   //-------------------------------------------------------------------------

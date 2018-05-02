@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cartrell.blackjack.cards.Card;
-import com.example.cartrell.blackjack.cards.CardsMover;
+import com.example.cartrell.blackjack.utils.CardsMover;
 import com.example.cartrell.blackjack.utils.Metrics;
 
 import java.util.ArrayList;
