@@ -229,16 +229,16 @@ class Views {
     m_btnBetChipBlue = initToggleButton(targetGroup, sourceGroup, R.id.chipButtonBlue,
       R.id.parentBottom, R.id.guideBottomPanelBtm, false);
 
-    m_hitButton = initImageButton(targetGroup, sourceGroup, R.id.btnHit, R.id.parentBottom,
-      R.id.guideBottomPanelBtm, false);
-    m_standButton = initImageButton(targetGroup, sourceGroup, R.id.btnStand, R.id.parentBottom,
-      R.id.guideBottomPanelBtm, false);
-    m_doubleButton = initImageButton(targetGroup, sourceGroup, R.id.btnDouble, R.id.parentBottom,
-      R.id.guideBottomPanelBtm, false);
-    m_splitButton = initImageButton(targetGroup, sourceGroup, R.id.btnSplit, R.id.parentBottom,
-      R.id.guideBottomPanelBtm, false);
+    m_hitButton = initImageButton(targetGroup, sourceGroup, R.id.btnHit,
+      R.id.parentBottom, R.id.guideBottomPanelBtm, false);
+    m_standButton = initImageButton(targetGroup, sourceGroup, R.id.btnStand,
+      R.id.parentBottom, R.id.guideBottomPanelBtm, false);
+    m_doubleButton = initImageButton(targetGroup, sourceGroup, R.id.btnDouble,
+      R.id.parentBottom, R.id.guideBottomPanelBtm, false);
+    m_splitButton = initImageButton(targetGroup, sourceGroup, R.id.btnSplit,
+      R.id.parentBottom, R.id.guideBottomPanelBtm, false);
     m_surrenderButton = initImageButton(targetGroup, sourceGroup, R.id.btnSurrender,
-      R.id.guideBottomPanelBtm, R.id.guideBottomPanel, false);
+      R.id.parentBottom, R.id.guideBottomPanelBtm, false);
 
     m_turnPlayerLowerLeft = initImageView(targetGroup, sourceGroup, R.id.turnPlayerLowerLeft,
       R.id.guideLowerCardsTop, R.id.guideMidCardsBottom, false);
