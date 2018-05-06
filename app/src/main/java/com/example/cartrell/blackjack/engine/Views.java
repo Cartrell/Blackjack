@@ -366,8 +366,10 @@ class Views {
     targetTextView.setGravity(sourceTextView.getGravity());
 
     if (sourceTextView.getBackground() instanceof ColorDrawable) {
-      ColorDrawable colorDrawable = (ColorDrawable)sourceTextView.getBackground();
+      ColorDrawable colorDrawable = (ColorDrawable) sourceTextView.getBackground();
       targetTextView.setBackgroundColor(colorDrawable.getColor());
+    } else {
+      targetTextView.setBackground(sourceTextView.getBackground());
     }
 
     sourceTextView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
