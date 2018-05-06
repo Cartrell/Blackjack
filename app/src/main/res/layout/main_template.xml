@@ -672,6 +672,13 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.20" />
 
+        <android.support.constraint.Group
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="btnClear,btnDeal"
+            />
+
         <ImageButton
             android:id="@+id/btnClear"
             android:layout_width="0dp"
