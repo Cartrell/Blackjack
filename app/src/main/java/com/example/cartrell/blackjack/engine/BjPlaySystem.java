@@ -30,7 +30,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private final String LOG_TAG = "BjPlaySystem";
 
   private final String[] DEBUG_CARD_KEYS = {
-    "a_c_0", "2_d_0", "10_c_0"
+    //"a_c_0", "2_d_0", "10_c_0"
   };
 
   private ArrayList<PlayerIds> m_playerIdsOrder;

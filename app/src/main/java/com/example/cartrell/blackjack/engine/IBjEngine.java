@@ -8,6 +8,7 @@ import com.example.cartrell.blackjack.databinding.ActivityMainBinding;
 import com.example.cartrell.blackjack.players.BasePlayerData;
 import com.example.cartrell.blackjack.players.PlayerData;
 import com.example.cartrell.blackjack.players.PlayerIds;
+import com.example.cartrell.blackjack.settings.Settings;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public interface IBjEngine {
   PlayerData getPlayer(PlayerIds playerId);
   HashMap<PlayerIds, PlayerData> getPlayers();
   int getIntegerResource(int resourceId);
+  Settings getSettings();
   String getStringResource(int resourceId);
   Views getViews();
   void setAtLeastOneRoundPlayed();
@@ -41,4 +43,5 @@ public interface IBjEngine {
   void showGameButtons(EnumSet<BjGameButtonFlags> flags);
   void showView(View view, boolean isVisible);
   void updateBetValue();
+  void writeSettings();
 }

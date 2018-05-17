@@ -1,5 +1,6 @@
 package com.example.cartrell.blackjack.engine;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +15,8 @@ import com.example.cartrell.blackjack.databinding.ActivityMainBinding;
 import com.example.cartrell.blackjack.players.BasePlayerData;
 import com.example.cartrell.blackjack.players.PlayerData;
 import com.example.cartrell.blackjack.players.PlayerIds;
+import com.example.cartrell.blackjack.settings.Settings;
+import com.example.cartrell.blackjack.settings.SettingsStorage;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -36,7 +39,11 @@ public class BjEngine implements IBjEngine {
   private BasePlayerData m_dealer;
 
   private Views m_views;
+  private BackgroundViewManager m_bgViewMgr;
 
+  private Settings m_settings;
+
+  private Activity m_activity;
   private Context m_context;
   private ActivityMainBinding m_binding;
 
@@ -51,9 +58,11 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   // ctor
   //-------------------------------------------------------------------------
-  public BjEngine(Context context, ActivityMainBinding binding) {
-    m_context = context;
+  public BjEngine(Activity activity, ActivityMainBinding binding) {
+    m_activity = activity;
+    m_context = m_activity;
     m_binding = binding;
+    initSettings();
     initDecks();
     initUi();
   }
@@ -204,6 +213,14 @@ public class BjEngine implements IBjEngine {
     }
     ViewGroup group = (ViewGroup)view.getParent();
     return(group != null ? group.indexOfChild(view) : -1);
+  }
+
+  //-------------------------------------------------------------------------
+  // getSettings
+  //-------------------------------------------------------------------------
+  @Override
+  public Settings getSettings() {
+    return(m_settings);
   }
 
   //-------------------------------------------------------------------------
@@ -373,9 +390,24 @@ public class BjEngine implements IBjEngine {
     m_views.setBetValue(m_betValue);
   }
 
+  //-------------------------------------------------------------------------
+  // writeSettings
+  //-------------------------------------------------------------------------
+  public void writeSettings() {
+    SettingsStorage storage = new SettingsStorage(m_activity);
+    storage.write(m_settings);
+  }
+
   //=========================================================================
   // private
   //=========================================================================
+
+  //-------------------------------------------------------------------------
+  // changeBackgroundColor
+  //-------------------------------------------------------------------------
+  private void changeBackgroundColor() {
+    m_bgViewMgr = new BackgroundViewManager(m_views.getBackgroundImage());
+  }
 
   //-------------------------------------------------------------------------
   // createBetChips
@@ -394,6 +426,14 @@ public class BjEngine implements IBjEngine {
   private void initDecks() {
     final int NUM_DECKS = Math.max(1, getIntegerResource(R.integer.numDecks));
     m_deck = new Deck(m_context, NUM_DECKS);
+  }
+
+  //-------------------------------------------------------------------------
+  // initSettings
+  //-------------------------------------------------------------------------
+  private void initSettings() {
+    m_settings = new Settings();
+    readSettings();
   }
 
   //-------------------------------------------------------------------------
@@ -423,6 +463,8 @@ public class BjEngine implements IBjEngine {
 
           constraintLayout.removeView(templateLayout);
 
+          changeBackgroundColor();
+
           m_dealer = creator.getDealer();
           m_players = creator.getPlayers();
           m_betChips = new BjBetChips(engine);
@@ -445,5 +487,13 @@ public class BjEngine implements IBjEngine {
     int maxCardsPerHand = getIntegerResource(R.integer.maxCardsPerHand);
     PlayerData playerData = m_players.get(playerId);
     return(playerData != null && playerData.getNumCards() >= maxCardsPerHand);
+  }
+
+  //-------------------------------------------------------------------------
+  // readSettings
+  //-------------------------------------------------------------------------
+  private void readSettings() {
+    SettingsStorage storage = new SettingsStorage(m_activity);
+    storage.read(m_settings);
   }
 }
