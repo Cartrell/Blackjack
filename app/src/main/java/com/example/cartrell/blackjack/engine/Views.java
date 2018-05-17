@@ -40,6 +40,7 @@ class Views {
   private AppCompatTextView m_txtUpperMidScore;
 
   private ImageView m_deckImage;
+  private ImageView m_backgroundImage;
 
   private ImageView m_resultsLowerLeft;
   private ImageView m_resultsLowerMid;
@@ -80,6 +81,13 @@ class Views {
   //=========================================================================
   // public
   //=========================================================================
+
+  //-------------------------------------------------------------------------
+  // getBackgroundImage
+  //-------------------------------------------------------------------------
+  public ImageView getBackgroundImage() {
+    return(m_backgroundImage);
+  }
 
   //-------------------------------------------------------------------------
   // getCardSize
@@ -169,6 +177,9 @@ class Views {
     initCardSize(sourceGroup);
     initChipSize(sourceGroup);
 
+    m_backgroundImage = initImageView(targetGroup, sourceGroup, R.id.backgroundImage,
+      R.id.parentLeft, R.id.parentRight, true);
+
     m_txtCredits = initTextView(targetGroup, sourceGroup, R.id.txtCredits);
     m_txtBet = initTextView(targetGroup, sourceGroup, R.id.txtBet);
     m_txtTotalWon = initTextView(targetGroup, sourceGroup, R.id.txtTotalWon);
@@ -253,7 +264,6 @@ class Views {
       R.id.guideMidCardsTop, R.id.guideUpperCardsBottom, false);
     m_turnPlayerMidRight = initImageView(targetGroup, sourceGroup, R.id.turnPlayerMidRight,
       R.id.guideMidCardsTop, R.id.guideUpperCardsBottom, false);
-
   }
 
   //-------------------------------------------------------------------------

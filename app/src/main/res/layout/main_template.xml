@@ -11,6 +11,19 @@
         tools:context="com.example.cartrell.blackjack.MainActivity" >
 
         <!-- ///////////////////////////////////////////////////// -->
+        <!-- background -->
+        <!-- ///////////////////////////////////////////////////// -->
+        <ImageView
+            android:id="@+id/backgroundImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/background"
+            app:layout_constraintLeft_toLeftOf="@+id/parentLeft"
+            app:layout_constraintRight_toRightOf="@+id/parentRight"
+            android:scaleType="centerCrop"
+            />
+
+        <!-- ///////////////////////////////////////////////////// -->
         <!-- view guides -->
         <!-- ///////////////////////////////////////////////////// -->
         <android.support.constraint.Guideline
