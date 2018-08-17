@@ -230,6 +230,7 @@ class BjBetSystem {
       playerData.setResultImageVisible(false);
       playerData.setScoreTextVisible(false);
       playerData.setBetValueVisible(false);
+      playerData.setAmountWonValueVisible(false);
     }
 
     BasePlayerData dealerData = m_engine.getDealerData();
