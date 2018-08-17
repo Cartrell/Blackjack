@@ -423,6 +423,70 @@
             />
 
         <!-- ///////////////////////////////////////////////////// -->
+        <!-- lower score amount won texts -->
+        <!-- ///////////////////////////////////////////////////// -->
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txtLowerLeftAmountWon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="9999"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:background="@drawable/amount_won_text_shape"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideBottomPanel"
+            app:layout_constraintTop_toBottomOf="@+id/guideLowerChipsTop"
+            app:layout_constraintLeft_toRightOf="@+id/guideLeftCardsRight"
+            app:layout_constraintRight_toLeftOf="@+id/guideMidChipsLeft"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMinTextSize="1sp"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeStepGranularity="1sp"
+            android:gravity="center"
+            />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txtLowerMidAmountWon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="9999"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:background="@drawable/amount_won_text_shape"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideBottomPanel"
+            app:layout_constraintTop_toBottomOf="@+id/guideLowerChipsTop"
+            app:layout_constraintLeft_toRightOf="@+id/guideMidCardsRight"
+            app:layout_constraintRight_toLeftOf="@+id/guideRightChipsLeft"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMinTextSize="1sp"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeStepGranularity="1sp"
+            android:gravity="center"
+            />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txtLowerRightAmountWon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="9999"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:background="@drawable/amount_won_text_shape"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideBottomPanel"
+            app:layout_constraintTop_toBottomOf="@+id/guideLowerChipsTop"
+            app:layout_constraintLeft_toRightOf="@+id/guideRightCardsRight"
+            app:layout_constraintRight_toRightOf="parent"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMinTextSize="1sp"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeStepGranularity="1sp"
+            android:gravity="center"
+            />
+
+        <!-- ///////////////////////////////////////////////////// -->
         <!-- mid score bet value texts -->
         <!-- ///////////////////////////////////////////////////// -->
         <android.support.v7.widget.AppCompatTextView
@@ -475,6 +539,73 @@
             android:textColor="#ffffff"
             android:textStyle="bold"
             android:background="@drawable/bet_text_shape"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideMidCardsBottom"
+            app:layout_constraintTop_toBottomOf="@+id/guideMidChipsTop"
+            app:layout_constraintLeft_toRightOf="@+id/guideRightCardsRight"
+            app:layout_constraintRight_toRightOf="parent"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMinTextSize="1sp"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeStepGranularity="1sp"
+            android:gravity="center"
+            />
+
+        <!-- ///////////////////////////////////////////////////// -->
+        <!-- mid score amount won texts -->
+        <!-- ///////////////////////////////////////////////////// -->
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txtMidLeftAmountWon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="9999"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:background="@drawable/amount_won_text_shape"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideMidCardsBottom"
+            app:layout_constraintTop_toBottomOf="@+id/guideMidChipsTop"
+            app:layout_constraintLeft_toRightOf="@+id/guideLeftCardsRight"
+            app:layout_constraintRight_toLeftOf="@+id/guideMidChipsLeft"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMinTextSize="1sp"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeStepGranularity="1sp"
+            android:gravity="center"
+            />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txtMidMidAmountWon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="9999"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:background="@drawable/amount_won_text_shape"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideMidCardsBottom"
+            app:layout_constraintTop_toBottomOf="@+id/guideMidChipsTop"
+            app:layout_constraintLeft_toRightOf="@+id/guideMidCardsRight"
+            app:layout_constraintRight_toLeftOf="@+id/guideRightChipsLeft"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMinTextSize="1sp"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeStepGranularity="1sp"
+            android:gravity="center"
+            />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txtMidRightAmountWon"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="9999"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:background="@drawable/amount_won_text_shape"
             android:layout_marginLeft="8dp"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"
@@ -914,6 +1045,29 @@
             />
 
         <!-- ///////////////////////////////////////////////////// -->
+        <!-- settings button -->
+        <!-- ///////////////////////////////////////////////////// -->
+        <android.support.constraint.Guideline
+            android:id="@+id/guideSettingsButtonBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.08" />
+
+        <ImageButton
+            android:id="@+id/btnSettings"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/button_selector_settings"
+            app:layout_constraintRight_toRightOf="@+id/parentRight"
+            app:layout_constraintBottom_toTopOf="@+id/guideSettingsButtonBottom"
+            app:layout_constraintTop_toBottomOf="@+id/parentTop"
+            app:layout_constraintDimensionRatio="W,1:1"
+            />
+
+        <!-- ///////////////////////////////////////////////////// -->
         <!-- deck -->
         <!-- ///////////////////////////////////////////////////// -->
         <android.support.constraint.Guideline
@@ -930,8 +1084,8 @@
             android:src="@drawable/deck"
             android:adjustViewBounds="true"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="16dp"
+            app:layout_constraintRight_toLeftOf="@+id/btnSettings"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/guideDeckBottom"
             />
@@ -966,7 +1120,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/button_selector_bet"
-            android:onClick="onPlayerLeftPlaceBetClick"
             app:layout_constraintLeft_toLeftOf="@+id/guideLeftChipsRight"
             app:layout_constraintRight_toRightOf="@+id/guideLeftCardsRight"
             app:layout_constraintBottom_toBottomOf="@+id/guideBottomPanel"

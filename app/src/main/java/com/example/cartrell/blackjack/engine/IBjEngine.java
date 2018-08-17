@@ -25,6 +25,7 @@ public interface IBjEngine {
   int getBetValue();
   ActivityMainBinding getBinding();
   int getCredits();
+  int getCreditsAtStartOfRound();
   BasePlayerData getDealerData();
   Deck getDeck();
   int getColorResource(int resourceId);
@@ -35,6 +36,7 @@ public interface IBjEngine {
   Settings getSettings();
   String getStringResource(int resourceId);
   Views getViews();
+  boolean isSplitPlayerId(PlayerIds playerId);
   void setAtLeastOneRoundPlayed();
   void setBetChipVisibility(String chipId, boolean isVisible);
   void setCredits(int value);
@@ -43,5 +45,6 @@ public interface IBjEngine {
   void showGameButtons(EnumSet<BjGameButtonFlags> flags);
   void showView(View view, boolean isVisible);
   void updateBetValue();
+  void updateCreditsAtStartOfRound();
   void writeSettings();
 }

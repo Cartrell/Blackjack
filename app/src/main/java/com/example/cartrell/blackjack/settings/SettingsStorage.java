@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.cartrell.blackjack.MainActivity;
+
 public class SettingsStorage {
   //=========================================================================
   // members
@@ -18,14 +20,14 @@ public class SettingsStorage {
   // ctor
   //-------------------------------------------------------------------------
   public SettingsStorage(Activity activity) {
-    m_activity = activity;
+    //m_activity = activity;
   }
 
   //-------------------------------------------------------------------------
   // read
   //-------------------------------------------------------------------------
   public void read(Settings targetSettings) {
-    SharedPreferences sharedPreferences = m_activity.getPreferences(Context.MODE_PRIVATE);
+    SharedPreferences sharedPreferences = MainActivity.sm_mainActivity.getPreferences(Context.MODE_PRIVATE);
     targetSettings.setCredits(sharedPreferences.getInt("credits", 0));
     targetSettings.setIsSoundOn(sharedPreferences.getBoolean("isSoundOn", true));
     targetSettings.setIsMusicOn(sharedPreferences.getBoolean("isMusicOn", true));
@@ -41,7 +43,7 @@ public class SettingsStorage {
   // write
   //-------------------------------------------------------------------------
   public void write(Settings sourceSettings) {
-    SharedPreferences sharedPreferences = m_activity.getPreferences(Context.MODE_PRIVATE);
+    SharedPreferences sharedPreferences = MainActivity.sm_mainActivity.getPreferences(Context.MODE_PRIVATE);
     SharedPreferences.Editor editor = sharedPreferences.edit();
     editor.putInt("credits", sourceSettings.getCredits());
     editor.putBoolean("isSoundOn", sourceSettings.getIsSoundOn());

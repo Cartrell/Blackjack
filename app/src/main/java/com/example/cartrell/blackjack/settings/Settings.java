@@ -1,6 +1,14 @@
 package com.example.cartrell.blackjack.settings;
 
-public class Settings {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Settings implements Parcelable {
+  //=========================================================================
+  // static / const
+  //=========================================================================
+  public final static String INTENT_KEY = "settings";
+
   //=========================================================================
   // members
   //=========================================================================
@@ -13,6 +21,7 @@ public class Settings {
   private int m_numSplits;
   private int m_numSurrenders;
   private int m_numCharlies;
+  private int m_numDoubles;
 
   //=========================================================================
   // public
@@ -22,6 +31,34 @@ public class Settings {
   // ctor
   //-------------------------------------------------------------------------
   public Settings() {
+  }
+
+  //-------------------------------------------------------------------------
+  // CREATOR
+  //-------------------------------------------------------------------------
+  public static final Parcelable.Creator<Settings> CREATOR = new Parcelable.Creator<Settings>() {
+
+    //-------------------------------------------------------------------------
+    // createFromParcel
+    //-------------------------------------------------------------------------
+    public Settings createFromParcel(Parcel in) {
+      return(new Settings(in));
+    }
+
+    //-------------------------------------------------------------------------
+    // newArray
+    //-------------------------------------------------------------------------
+    public Settings[] newArray(int size) {
+      return(new Settings[size]);
+    }
+  };
+
+  //-------------------------------------------------------------------------
+  // describeContents
+  //-------------------------------------------------------------------------
+  @Override
+  public int describeContents() {
+    return(0);
   }
 
   //-------------------------------------------------------------------------
@@ -60,6 +97,13 @@ public class Settings {
   }
 
   //-------------------------------------------------------------------------
+  // getNumDoubles
+  //-------------------------------------------------------------------------
+  public int getNumDoubles() {
+    return(m_numDoubles);
+  }
+
+  //-------------------------------------------------------------------------
   // getNumSplits
   //-------------------------------------------------------------------------
   public int getNumSplits() {
@@ -85,6 +129,14 @@ public class Settings {
   //-------------------------------------------------------------------------
   public int getTotalGamesWon() {
     return(m_totalGamesWon);
+  }
+
+  //-------------------------------------------------------------------------
+  // reset
+  //-------------------------------------------------------------------------
+  public void reset() {
+    m_credits = m_totalGamesPlayed = m_totalGamesWon = m_numBj = m_numSplits = m_numSurrenders =
+      m_numCharlies = m_numDoubles = 0;
   }
 
   //-------------------------------------------------------------------------
@@ -123,6 +175,13 @@ public class Settings {
   }
 
   //-------------------------------------------------------------------------
+  // setNumDoublesWon
+  //-------------------------------------------------------------------------
+  public void setNumDoublesWon(int value) {
+    m_numDoubles = value;
+  }
+
+  //-------------------------------------------------------------------------
   // setNumSplits
   //-------------------------------------------------------------------------
   public void setNumSplits(int value) {
@@ -150,7 +209,40 @@ public class Settings {
     m_totalGamesWon = value;
   }
 
+  //-------------------------------------------------------------------------
+  // writeToParcel
+  //-------------------------------------------------------------------------
+  @Override
+  public void writeToParcel(Parcel out, int flags) {
+    out.writeInt(m_credits);
+    out.writeInt(m_isSoundOn ? 1 : 0);
+    out.writeInt(m_isMusicOn ? 1 : 0);
+    out.writeInt(m_totalGamesPlayed);
+    out.writeInt(m_totalGamesWon);
+    out.writeInt(m_numBj);
+    out.writeInt(m_numSplits);
+    out.writeInt(m_numSurrenders);
+    out.writeInt(m_numCharlies);
+    out.writeInt(m_numDoubles);
+  }
+
   //=========================================================================
   // private
   //=========================================================================
+
+  //-------------------------------------------------------------------------
+  // ctor
+  //-------------------------------------------------------------------------
+  private Settings(Parcel in) {
+    m_credits = in.readInt();
+    m_isSoundOn = in.readInt() == 1;
+    m_isMusicOn = in.readInt() == 1;
+    m_totalGamesPlayed = in.readInt();
+    m_totalGamesWon = in.readInt();
+    m_numBj = in.readInt();
+    m_numSplits = in.readInt();
+    m_numSurrenders = in.readInt();
+    m_numCharlies = in.readInt();
+    m_numDoubles = in.readInt();
+  }
 }

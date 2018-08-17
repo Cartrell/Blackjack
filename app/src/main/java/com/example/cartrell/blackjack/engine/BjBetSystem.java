@@ -18,7 +18,7 @@ class BjBetSystem {
   //=========================================================================
   // const
   //=========================================================================
-  private static final String LOG_TAG = "BjBetSystem";
+  private static final String LOG_TAG = BjBetSystem.class.getName();
 
   //=========================================================================
   // members
@@ -116,6 +116,10 @@ class BjBetSystem {
   //-------------------------------------------------------------------------
   private void initBetButtons() {
     View.OnClickListener listener = new View.OnClickListener() {
+
+      //-------------------------------------------------------------------------
+      // onClick
+      //-------------------------------------------------------------------------
       @Override
       public void onClick(View view) {
         int id = view.getId();
@@ -146,6 +150,10 @@ class BjBetSystem {
   //-------------------------------------------------------------------------
   private void initBetChipButtons() {
     View.OnClickListener listener = new View.OnClickListener() {
+
+      //-------------------------------------------------------------------------
+      // onClick
+      //-------------------------------------------------------------------------
       @Override
       public void onClick(View view) {
         String chipId = (String) view.getTag();
@@ -172,6 +180,10 @@ class BjBetSystem {
   //-------------------------------------------------------------------------
   private void initClearButton() {
     m_engine.getViews().getClearButton().setOnClickListener(new View.OnClickListener() {
+
+      //-------------------------------------------------------------------------
+      // onClick
+      //-------------------------------------------------------------------------
       @Override
       public void onClick(View view) {
         removePlayersBets();
@@ -186,9 +198,12 @@ class BjBetSystem {
   //-------------------------------------------------------------------------
   private void initDealButton() {
     m_engine.getViews().getDealButton().setOnClickListener(new View.OnClickListener() {
+
+      //-------------------------------------------------------------------------
+      // onClick
+      //-------------------------------------------------------------------------
       @Override
       public void onClick(View view) {
-        m_engine.setCredits(-m_engine.getBetValue(), true);
         hideBetChipButtons();
         hidePlaceBetButtons();
         hideTotalWon();
@@ -196,6 +211,8 @@ class BjBetSystem {
         restoreDealer();
         restoreNormalPlayers();
         removeSplitPlayers();
+        m_engine.updateCreditsAtStartOfRound();
+        m_engine.setCredits(-m_engine.getBetValue(), true);
         m_engine.beginCardsPrep();
         m_engine.setAtLeastOneRoundPlayed();
       }
@@ -253,6 +270,7 @@ class BjBetSystem {
     PlayerData playerData = m_engine.getPlayer(playerId);
     playerData.setScoreTextVisible(false);
     playerData.setResultImageVisible(false);
+    playerData.setAmountWonValueVisible(false);
   }
 
   //-------------------------------------------------------------------------
@@ -280,9 +298,11 @@ class BjBetSystem {
     PlayerData playerData = m_engine.getPlayer(playerId);
     if (playerData.getOrigBetValue() > 0) {
       m_engine.setPlayerBet(playerId, playerData.getOrigBetValue(), false);
-      playerData.setScoreTextVisible(false);
-      playerData.setResultImageVisible(false);
     }
+
+    playerData.setScoreTextVisible(false);
+    playerData.setResultImageVisible(false);
+    playerData.setAmountWonValueVisible(false);
   }
 
   //-------------------------------------------------------------------------

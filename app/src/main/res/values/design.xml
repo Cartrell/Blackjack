@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- number of decks used -->
-    <integer name="numDecks">4</integer>
+    <integer name="numDecks">1</integer>
 
     <!-- max cards per hand -->
     <integer name="maxCardsPerHand">6</integer>

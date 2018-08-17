@@ -38,6 +38,9 @@ public final class CardsMover {
 
     m_animatorSet = new AnimatorSet();
     m_animatorSet.addListener(new AnimatorListenerAdapter() {
+      //---------------------------------------------------------------------
+      // onAnimationEnd
+      //---------------------------------------------------------------------
       @Override
       public void onAnimationEnd(Animator animation) {
         m_animatorSet.removeAllListeners();

@@ -6,16 +6,16 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.cartrell.blackjack.R;
-import com.example.cartrell.blackjack.utils.CalculateScore;
 import com.example.cartrell.blackjack.cards.Card;
 import com.example.cartrell.blackjack.cards.CardValues;
-import com.example.cartrell.blackjack.utils.CardsMatcher;
-import com.example.cartrell.blackjack.utils.CardsMover;
 import com.example.cartrell.blackjack.cards.Deck;
-import com.example.cartrell.blackjack.utils.ICardsMoverCallbacks;
 import com.example.cartrell.blackjack.players.BasePlayerData;
 import com.example.cartrell.blackjack.players.PlayerData;
 import com.example.cartrell.blackjack.players.PlayerIds;
+import com.example.cartrell.blackjack.utils.CalculateScore;
+import com.example.cartrell.blackjack.utils.CardsMatcher;
+import com.example.cartrell.blackjack.utils.CardsMover;
+import com.example.cartrell.blackjack.utils.ICardsMoverCallbacks;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -27,15 +27,17 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   //=========================================================================
   // members
   //=========================================================================
-  private final String LOG_TAG = "BjPlaySystem";
+  private final String LOG_TAG = BjPlaySystem.class.getName();
 
   private final String[] DEBUG_CARD_KEYS = {
-    //"a_c_0", "2_d_0", "10_c_0"
+    "10_c_0", "10_d_0", "5_c_0", "5_h_0",
+    "10_h_0", "4_d_0", "5_s_0"
   };
 
   private ArrayList<PlayerIds> m_playerIdsOrder;
   private IBjEngine m_engine;
   private BjPlayStates m_state;
+  private BjPlaySettingsManager m_playSettingsManager;
   private CardsMover m_cardsMover;
   private CardsMatcher m_cardsMatcher;
   private PlayerIds m_turnPlayerId;
@@ -82,6 +84,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_cardsMatcher = new CardsMatcher(m_engine.getIntegerResource(R.integer.blackjackPoints),
       m_engine.getIntegerResource(R.integer.maxCardsPerHand));
     m_baseCardImageChildIndex = m_engine.getIndexOf(m_engine.getViews().getDeckImage());
+    m_playSettingsManager = new BjPlaySettingsManager(m_engine);
     initGameButtons();
   }
 
@@ -109,6 +112,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     PlayerData playerData = (PlayerData)getTurnPlayerData();
     int playerBetValue = playerData.getBetValue();
     m_engine.setCredits(-playerBetValue, true);
+    playerData.setDoubleDown();
     m_engine.setPlayerBet(playerData.getId(), playerBetValue * 2, false);
 
     m_state = BjPlayStates.DOUBLE;
@@ -300,10 +304,11 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     playerData.setBlackjack();
     playerData.setResultImage(R.drawable.result_label_blackjack);
     playerData.setResultImageVisible(true);
+    playerData.setBetValueVisible(false);
 
     int creditsWon = calcCreditsWon(playerId, m_engine.getStringResource(R.string.winRatioBlackjack));
-    playerData.setBetValue(creditsWon);
-    playerData.setBetValueVisible(true);
+    playerData.setAmountWonValue(creditsWon);
+    playerData.setAmountWonValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
   }
 
@@ -315,10 +320,11 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     playerData.setCharlieWin();
     playerData.setResultImage(R.drawable.result_label_charlie);
     playerData.setResultImageVisible(true);
+    playerData.setBetValueVisible(false);
 
     int creditsWon = calcCreditsWon(m_turnPlayerId, m_engine.getStringResource(R.string.winRatioCharlie));
-    playerData.setBetValue(creditsWon);
-    playerData.setBetValueVisible(true);
+    playerData.setAmountWonValue(creditsWon);
+    playerData.setAmountWonValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
 
     beginNextTurnPlayer();
@@ -344,9 +350,11 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     PlayerData playerData = (PlayerData)getPlayerData(playerId);
     playerData.setResultImage(R.drawable.result_label_push);
     playerData.setResultImageVisible(true);
+    playerData.setBetValueVisible(false);
+
     int creditsWon = calcCreditsWon(playerId, m_engine.getStringResource(R.string.winRatioPush));
-    playerData.setBetValue(creditsWon);
-    playerData.setBetValueVisible(true);
+    playerData.setAmountWonValue(creditsWon);
+    playerData.setAmountWonValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
   }
 
@@ -358,10 +366,11 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     playerData.setBlackjack();
     playerData.setResultImage(R.drawable.result_label_suited_blackjack);
     playerData.setResultImageVisible(true);
+    playerData.setBetValueVisible(false);
 
     int creditsWon = calcCreditsWon(playerId, m_engine.getStringResource(R.string.winRatioSuitedBlackjack));
-    playerData.setBetValue(creditsWon);
-    playerData.setBetValueVisible(true);
+    playerData.setAmountWonValue(creditsWon);
+    playerData.setAmountWonValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
   }
 
@@ -370,11 +379,14 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   //-------------------------------------------------------------------------
   private void beginPlayerWon(PlayerIds playerId) {
     PlayerData playerData = (PlayerData)getPlayerData(playerId);
+    playerData.setNormalWin();
     playerData.setResultImage(R.drawable.result_label_win);
     playerData.setResultImageVisible(true);
+    playerData.setBetValueVisible(false);
+
     int creditsWon = calcCreditsWon(playerId, m_engine.getStringResource(R.string.winRatioNormal));
-    playerData.setBetValue(creditsWon);
-    playerData.setBetValueVisible(true);
+    playerData.setAmountWonValue(creditsWon);
+    playerData.setAmountWonValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
   }
 
@@ -489,7 +501,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
 
     for (PlayerIds playerId : PlayerIds.values()) {
       if (isDealerId(playerId)) {
-        continue; //cant compare dealer with self!
+        continue; //cant compare dealer with itself!
       }
 
       PlayerData playerData = (PlayerData)getPlayerData(playerId);
@@ -573,6 +585,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_engine.showGameButtons(BjGameButtonFlags.NONE);
     compareHands();
     presentWonCredits();
+    updatePlaySettings();
     m_engine.beginRound();
   }
 
@@ -770,16 +783,6 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   }
 
   //-------------------------------------------------------------------------
-  // isSplitPlayerId
-  //-------------------------------------------------------------------------
-  private boolean isSplitPlayerId(PlayerIds playerId) {
-    return(
-      PlayerIds.RIGHT_TOP.equals(playerId) ||
-      PlayerIds.MIDDLE_TOP.equals(playerId) ||
-      PlayerIds.LEFT_TOP.equals(playerId));
-  }
-
-  //-------------------------------------------------------------------------
   // moveTopCardFromTo
   //-------------------------------------------------------------------------
   private void moveTopCardFromTo(PlayerData sourcePlayerData, PlayerData targetPlayerData) {
@@ -820,7 +823,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
       PlayerData playerData = (PlayerData)entry.getValue();
       playerData.resetStatus();
 
-      if (isSplitPlayerId(playerData.getId())) {
+      if (m_engine.isSplitPlayerId(playerData.getId())) {
         playerData.removeBetChips();
         playerData.setBetValueVisible(false);
       }
@@ -880,8 +883,6 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   // resolvePlayersAfterSplit
   //-------------------------------------------------------------------------
   private void resolvePlayersAfterSplit() {
-    m_engine.updateBetValue();
-
     updatePlayerPoints(m_turnPlayerId);
 
     //setup the new split player
@@ -905,6 +906,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
       beginStand();
       beginStand();
     }
+
+    m_engine.updateBetValue();
   }
 
   //-------------------------------------------------------------------------
@@ -986,6 +989,14 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     }
 
     updatePlayerPoints(PlayerIds.DEALER);
+  }
+
+  //-------------------------------------------------------------------------
+  // updatePlaySettings
+  //-------------------------------------------------------------------------
+  private void updatePlaySettings() {
+    m_playSettingsManager.update();
+    m_engine.writeSettings();
   }
 
   //-------------------------------------------------------------------------

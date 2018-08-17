@@ -28,6 +28,7 @@ class HandData extends BaseHandData {
   private ArrayList<BjBetChip> m_betChips;
   private ViewDistributor m_betChipsViewDistributor;
   private ImageView m_turnIndicatorImage;
+  private TextView m_amountWonValueText;
   private TextView m_betValueText;
   private Point m_chipSize;
   private float m_xChipsLeft;
@@ -97,6 +98,20 @@ class HandData extends BaseHandData {
   }
 
   //-------------------------------------------------------------------------
+  // setAmountWonValue
+  //-------------------------------------------------------------------------
+  void setAmountWonValue(int value) {
+    setText(m_amountWonValueText, value);
+  }
+
+  //-------------------------------------------------------------------------
+  // setAmountWonValueVisible
+  //-------------------------------------------------------------------------
+  void setAmountWonValueVisible(boolean isVisible) {
+    showView(m_amountWonValueText, isVisible);
+  }
+
+  //-------------------------------------------------------------------------
   // setBetValue
   //-------------------------------------------------------------------------
   void setBetValue(int value) {
@@ -151,6 +166,7 @@ class HandData extends BaseHandData {
   // initHdComponents
   //-------------------------------------------------------------------------
   private void initHdComponents(HashMap<String, Object> extraParams) {
+    m_amountWonValueText = (TextView)extraParams.get("amountWonValueText");
     m_betValueText = (TextView)extraParams.get("betValueText");
     m_xChipsLeft = ((Guideline)extraParams.get("guideChipsLeft")).getX();
     m_xChipsRight = ((Guideline)extraParams.get("guideChipsRight")).getX();

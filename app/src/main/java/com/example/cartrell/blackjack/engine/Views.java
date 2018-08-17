@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -30,6 +31,13 @@ class Views {
   private AppCompatTextView m_txtMidLeftBetValue;
   private AppCompatTextView m_txtMidMidBetValue;
   private AppCompatTextView m_txtMidRightBetValue;
+
+  private AppCompatTextView m_txtLowerLeftAmountWonValue;
+  private AppCompatTextView m_txtLowerMidAmountWonValue;
+  private AppCompatTextView m_txtLowerRightAmountWonValue;
+  private AppCompatTextView m_txtMidLeftAmountWonValue;
+  private AppCompatTextView m_txtMidMidAmountWonValue;
+  private AppCompatTextView m_txtMidRightAmountWonValue;
 
   private AppCompatTextView m_txtLowerLeftScore;
   private AppCompatTextView m_txtLowerMidScore;
@@ -75,6 +83,8 @@ class Views {
   private ImageButton m_splitButton;
   private ImageButton m_surrenderButton;
 
+  private ImageButton m_settingsButton;
+
   private Point m_cardSize;
   private Point m_chipSize;
 
@@ -110,28 +120,95 @@ class Views {
     return(m_deckImage);
   }
 
+  //-------------------------------------------------------------------------
+  // getLowerLeftAmountWonTextView
+  //-------------------------------------------------------------------------
+  public AppCompatTextView getLowerLeftAmountWonTextView() {
+    return m_txtLowerLeftAmountWonValue;
+  }
+
+  //-------------------------------------------------------------------------
+  // getLowerLeftBetValueTextView
+  //-------------------------------------------------------------------------
   public AppCompatTextView getLowerLeftBetValueTextView() {
     return m_txtLowerLeftBetValue;
   }
 
+  //-------------------------------------------------------------------------
+  // getLowerMidAmountWonTextView
+  //-------------------------------------------------------------------------
+  public AppCompatTextView getLowerMidAmountWonTextView() {
+    return m_txtLowerMidAmountWonValue;
+  }
+
+  //-------------------------------------------------------------------------
+  // getLowerMidBetValueTextView
+  //-------------------------------------------------------------------------
   public AppCompatTextView getLowerMidBetValueTextView() {
     return m_txtLowerMidBetValue;
   }
 
+  //-------------------------------------------------------------------------
+  // getLowerRightAmountWonTextView
+  //-------------------------------------------------------------------------
+  public AppCompatTextView getLowerRightAmountWonTextView() {
+    return m_txtLowerRightAmountWonValue;
+  }
+
+  //-------------------------------------------------------------------------
+  // getLowerRightBetValueTextView
+  //-------------------------------------------------------------------------
   public AppCompatTextView getLowerRightBetValueTextView() {
     return m_txtLowerRightBetValue;
   }
 
+  //-------------------------------------------------------------------------
+  // getMidLeftAmountWonTextView
+  //-------------------------------------------------------------------------
+  public AppCompatTextView getMidLeftAmountWonTextView() {
+    return m_txtMidLeftAmountWonValue;
+  }
+
+  //-------------------------------------------------------------------------
+  // getMidLeftBetValueTextView
+  //-------------------------------------------------------------------------
   public AppCompatTextView getMidLeftBetValueTextView() {
     return m_txtMidLeftBetValue;
   }
 
+  //-------------------------------------------------------------------------
+  // getMidMidAmountWonTextView
+  //-------------------------------------------------------------------------
+  public AppCompatTextView getMidMidAmountWonTextView() {
+    return m_txtMidMidAmountWonValue;
+  }
+
+  //-------------------------------------------------------------------------
+  // getMidMidBetValueTextView
+  //-------------------------------------------------------------------------
   public AppCompatTextView getMidMidBetValueTextView() {
     return m_txtMidMidBetValue;
   }
 
+  //-------------------------------------------------------------------------
+  // getMidRightAmountWonTextView
+  //-------------------------------------------------------------------------
+  public AppCompatTextView getMidRightAmountWonTextView() {
+    return m_txtMidRightAmountWonValue;
+  }
+
+  //-------------------------------------------------------------------------
+  // getMidRightBetValueTextView
+  //-------------------------------------------------------------------------
   public AppCompatTextView getMidRightBetValueTextView() {
     return m_txtMidRightBetValue;
+  }
+
+  //-------------------------------------------------------------------------
+  // getSettingsButton
+  //-------------------------------------------------------------------------
+  public ImageButton getSettingsButton() {
+    return(m_settingsButton);
   }
 
   //-------------------------------------------------------------------------
@@ -183,7 +260,13 @@ class Views {
     m_txtCredits = initTextView(targetGroup, sourceGroup, R.id.txtCredits);
     m_txtBet = initTextView(targetGroup, sourceGroup, R.id.txtBet);
     m_txtTotalWon = initTextView(targetGroup, sourceGroup, R.id.txtTotalWon);
-    
+
+    m_settingsButton = initImageButton(targetGroup, sourceGroup, R.id.btnSettings,
+      0, 0, false);
+
+    ImageButton b = sourceGroup.findViewById(R.id.btnSettings);
+    Log.i("Views", String.valueOf(b.getWidth()));
+
     m_deckImage = initImageView(targetGroup, sourceGroup, R.id.deckImage, R.id.guideDeckBottom,
       0, false);
     
@@ -193,6 +276,13 @@ class Views {
     m_txtMidLeftBetValue = initTextView(targetGroup, sourceGroup, R.id.txtMidLeftBetValue);
     m_txtMidMidBetValue = initTextView(targetGroup, sourceGroup, R.id.txtMidMidBetValue);
     m_txtMidRightBetValue = initTextView(targetGroup, sourceGroup, R.id.txtMidRightBetValue);
+
+    m_txtLowerLeftAmountWonValue = initTextView(targetGroup, sourceGroup, R.id.txtLowerLeftAmountWon);
+    m_txtLowerMidAmountWonValue = initTextView(targetGroup, sourceGroup, R.id.txtLowerMidAmountWon);
+    m_txtLowerRightAmountWonValue = initTextView(targetGroup, sourceGroup, R.id.txtLowerRightAmountWon);
+    m_txtMidLeftAmountWonValue = initTextView(targetGroup, sourceGroup, R.id.txtMidLeftAmountWon);
+    m_txtMidMidAmountWonValue = initTextView(targetGroup, sourceGroup, R.id.txtMidMidAmountWon);
+    m_txtMidRightAmountWonValue = initTextView(targetGroup, sourceGroup, R.id.txtMidRightAmountWon);
 
     m_txtLowerLeftScore = initTextView(targetGroup, sourceGroup, R.id.txtLowerLeftScore);
     m_txtLowerMidScore = initTextView(targetGroup, sourceGroup, R.id.txtLowerMidScore);
@@ -315,8 +405,13 @@ class Views {
 
     View baseViewHigh = sourceGroup.findViewById(baseViewHighResourceId);
     View baseViewLow = sourceGroup.findViewById(baseViewLowResourceId);
-    Point size = Metrics.CalcSize(sourceButton, baseViewHigh, baseViewLow, resizeByWidth);
-    ViewGroup.LayoutParams targetParams = new ViewGroup.LayoutParams(size.x, size.y);
+    ViewGroup.LayoutParams targetParams;
+    if (baseViewHigh == null && baseViewLow == null) {
+      targetParams = new ViewGroup.LayoutParams(sourceButton.getWidth(), sourceButton.getHeight());
+    } else {
+      Point size = Metrics.CalcSize(sourceButton, baseViewHigh, baseViewLow, resizeByWidth);
+      targetParams = new ViewGroup.LayoutParams(size.x, size.y);
+    }
 
     targetButton.setId(sourceButton.getId());
     targetButton.setTag(sourceButton.getTag());

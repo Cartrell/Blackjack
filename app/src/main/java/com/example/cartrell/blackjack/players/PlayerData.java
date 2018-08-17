@@ -20,6 +20,7 @@ public class PlayerData extends BasePlayerData {
   private boolean m_isCharlieWin;
   private boolean m_hasSurrendered;
   private boolean m_hasSplit;
+  private boolean m_isNormalWin;
 
   //=========================================================================
   // public
@@ -76,6 +77,13 @@ public class PlayerData extends BasePlayerData {
   }
 
   //-------------------------------------------------------------------------
+  // getIsNormalWin
+  //-------------------------------------------------------------------------
+  public boolean getIsNormalWin() {
+    return(m_isNormalWin);
+  }
+
+  //-------------------------------------------------------------------------
   // getOrigBetValue
   //-------------------------------------------------------------------------
   public int getOrigBetValue() {
@@ -115,7 +123,7 @@ public class PlayerData extends BasePlayerData {
   @Override
   public void resetStatus() {
     super.resetStatus();
-    m_isDoubleDown = m_isCharlieWin = m_hasSurrendered = m_hasSplit = false;
+    m_isDoubleDown = m_isCharlieWin = m_hasSurrendered = m_hasSplit = m_isNormalWin = false;
   }
 
   //-------------------------------------------------------------------------
@@ -126,6 +134,23 @@ public class PlayerData extends BasePlayerData {
     for (BjBetChip betChip : betChips) {
       addBetChip(betChip);
     }
+  }
+
+  //-------------------------------------------------------------------------
+  // setAmountWonValue
+  //-------------------------------------------------------------------------
+  public void setAmountWonValue(int value) {
+    value = Math.max(0, value);
+    HandData handData = (HandData)getHandData();
+    handData.setAmountWonValue(value);
+  }
+
+  //-------------------------------------------------------------------------
+  // setAmountWonValueVisible
+  //-------------------------------------------------------------------------
+  public void setAmountWonValueVisible(boolean isVisible) {
+    HandData handData = (HandData)getHandData();
+    handData.setAmountWonValueVisible(isVisible);
   }
 
   //-------------------------------------------------------------------------
@@ -166,6 +191,13 @@ public class PlayerData extends BasePlayerData {
   //-------------------------------------------------------------------------
   public void setDoubleDown() {
     m_isDoubleDown = true;
+  }
+
+  //-------------------------------------------------------------------------
+  // setNormalWin
+  //-------------------------------------------------------------------------
+  public void setNormalWin() {
+    m_isNormalWin = true;
   }
 
   //-------------------------------------------------------------------------

@@ -2,6 +2,7 @@ package com.example.cartrell.blackjack.engine;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.example.cartrell.blackjack.R;
+import com.example.cartrell.blackjack.StatsActivity;
 import com.example.cartrell.blackjack.cards.Deck;
 import com.example.cartrell.blackjack.databinding.ActivityMainBinding;
 import com.example.cartrell.blackjack.players.BasePlayerData;
@@ -49,6 +51,7 @@ public class BjEngine implements IBjEngine {
 
   private int m_credits;
   private int m_betValue;
+  private int m_creditsAtStartOfRound;
   private boolean m_atLeastOneRoundPlayed;
 
   //=========================================================================
@@ -62,7 +65,7 @@ public class BjEngine implements IBjEngine {
     m_activity = activity;
     m_context = m_activity;
     m_binding = binding;
-    initSettings();
+    //initSettings();
     initDecks();
     initUi();
   }
@@ -156,6 +159,14 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
+  // getCreditsAtStartOfRound
+  //-------------------------------------------------------------------------
+  @Override
+  public int getCreditsAtStartOfRound() {
+    return(m_creditsAtStartOfRound);
+  }
+
+  //-------------------------------------------------------------------------
   // getDealerData
   //-------------------------------------------------------------------------
   @Override
@@ -232,61 +243,21 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
-  // onBetChipClick
+  // isSplitPlayerId
   //-------------------------------------------------------------------------
-  /*public void onBetChipClick(View view) {
-    m_betSystem.onBetChipClick((String)view.getTag());
-  }*/
+  public boolean isSplitPlayerId(PlayerIds playerId) {
+    return(
+      PlayerIds.RIGHT_TOP.equals(playerId) ||
+      PlayerIds.MIDDLE_TOP.equals(playerId) ||
+      PlayerIds.LEFT_TOP.equals(playerId));
+  }
 
   //-------------------------------------------------------------------------
-  // onClearClick
+  // onResume
   //-------------------------------------------------------------------------
-  /*public void onClearClick() {
-    m_betSystem.onBetClearClick();
-  }*/
-
-  //-------------------------------------------------------------------------
-  // onDealClick
-  //-------------------------------------------------------------------------
-  /*public void onDealClick() {
-    m_betSystem.onDealClick();
-    m_atLeastOneRoundPlayed = true;
-  }*/
-
-  //-------------------------------------------------------------------------
-  // onDoubleClick
-  //-------------------------------------------------------------------------
-  /*public void onDoubleClick() {
-    m_playSystem.beginDouble();
-  }*/
-
-  //-------------------------------------------------------------------------
-  // onHitClick
-  //-------------------------------------------------------------------------
-  /*public void onHitClick() {
-    m_playSystem.beginHit();
-  }*/
-
-  //-------------------------------------------------------------------------
-  // onSplitClick
-  //-------------------------------------------------------------------------
-  /*public void onSplitClick() {
-    m_playSystem.beginSplit();
-  }*/
-
-  //-------------------------------------------------------------------------
-  // onStandClick
-  //-------------------------------------------------------------------------
-  /*public void onStandClick() {
-    m_playSystem.beginStand();
-  }*/
-
-  //-------------------------------------------------------------------------
-  // onSurrenderClick
-  //-------------------------------------------------------------------------
-  /*public void onSurrenderClick() {
-    m_playSystem.beginSurrender();
-  }*/
+  public void onResume() {
+    initSettings();
+  }
 
   //-------------------------------------------------------------------------
   // placeBet
@@ -391,6 +362,14 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
+  // updateCreditsAtStartOfRound
+  //-------------------------------------------------------------------------
+  @Override
+  public void updateCreditsAtStartOfRound() {
+    m_creditsAtStartOfRound = getCredits();
+  }
+
+  //-------------------------------------------------------------------------
   // writeSettings
   //-------------------------------------------------------------------------
   public void writeSettings() {
@@ -449,6 +428,10 @@ public class BjEngine implements IBjEngine {
 
     templateLayout.getViewTreeObserver().addOnGlobalLayoutListener(
       new ViewTreeObserver.OnGlobalLayoutListener() {
+
+        //-------------------------------------------------------------------------
+        // onGlobalLayout
+        //-------------------------------------------------------------------------
         @Override
         public void onGlobalLayout() {
           templateLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -472,6 +455,9 @@ public class BjEngine implements IBjEngine {
           m_cardsPrepSystem = new BjCardsPrepSystem(engine);
           m_playSystem = new BjPlaySystem(engine);
 
+          //initSettings();
+          initSettingsButton();
+
           setCredits(Integer.parseInt(m_context.getString(R.string.startingCredits)));
           updateBetValue();
           beginRound();
@@ -490,10 +476,35 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
+  // initSettingsButton
+  //-------------------------------------------------------------------------
+  private void initSettingsButton() {
+    m_views.getSettingsButton().setOnClickListener(new View.OnClickListener() {
+
+      //-------------------------------------------------------------------------
+      // onClick
+      //-------------------------------------------------------------------------
+      @Override
+      public void onClick(View v) {
+        startStatsActivity();
+      }
+    });
+  }
+
+  //-------------------------------------------------------------------------
   // readSettings
   //-------------------------------------------------------------------------
   private void readSettings() {
     SettingsStorage storage = new SettingsStorage(m_activity);
     storage.read(m_settings);
+  }
+
+  //-------------------------------------------------------------------------
+  // startStatsActivity
+  //-------------------------------------------------------------------------
+  private void startStatsActivity() {
+    Intent intent = new Intent(m_context, StatsActivity.class);
+    intent.putExtra(Settings.INTENT_KEY, m_settings);
+    m_activity.startActivity(intent);
   }
 }

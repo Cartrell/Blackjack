@@ -4,11 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.support.constraint.Guideline;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -37,7 +35,6 @@ public class BaseHandData {
 
   private float m_xDeck;
   private float m_yDeck;
-  private float m_yCardsUi;
   private float m_xCardsLeft;
   private float m_xCardsRight;
   private float m_yCardsTop;
@@ -98,6 +95,8 @@ public class BaseHandData {
     Point size = Metrics.CalcSize(cardImage, m_yCardsBottom, m_yCardsTop, false);
     ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(size.x, size.y);
     if (!isCardAlreadyInPlay) {
+      cardImage.setVisibility(View.INVISIBLE);
+      cardImage.setAlpha(1.0f);
       m_viewGroup.addView(cardImage, params);
     }
     card.setPosition(xCard, yCard);
@@ -228,26 +227,6 @@ public class BaseHandData {
   }
 
   //=========================================================================
-  // protected
-  //=========================================================================
-
-  //-------------------------------------------------------------------------
-  // getViewFromStringId
-  //-------------------------------------------------------------------------
-  protected View getViewImageFromStringId(String stringId) {
-    Context context = m_viewGroup.getContext();
-    int resourceId = context.getResources().getIdentifier(stringId, "id",
-      context.getPackageName());
-
-    if (resourceId == 0) {
-      Log.w(LOG_TAG, "getViewImageFromStringId. Failed to get id for " + stringId);
-      return(null);
-    }
-
-    return(m_viewGroup.findViewById(resourceId));
-  }
-
-  //=========================================================================
   // private
   //=========================================================================
 
@@ -261,25 +240,8 @@ public class BaseHandData {
     m_xCardsRight = guideCardsRight.getX();
     m_yCardsTop = guideCardsTop.getY();
     m_yCardsBottom = guideCardsBottom.getY();
-    m_yCardsUi = guideCardsUi.getY();
     m_scoreText = scoreText;
     m_resultImage = resultImage;
-  }
-
-  //-------------------------------------------------------------------------
-  // initResultsImage
-  //-------------------------------------------------------------------------
-  private void initResultsImage(ImageView resultImage) {
-    /*m_resultImage = new ImageView(m_viewGroup.getContext());
-    m_resultImage.setImageResource(R.drawable.result_label_blackjack);
-
-    Point size = Metrics.CalcSize(m_resultImage, m_xCardsRight, m_xCardsLeft, true);
-    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(size.x, size.y);
-    m_resultImage.setX(m_xCardsLeft);
-    m_resultImage.setY(m_yCardsTop - size.y);
-    m_viewGroup.addView(m_resultImage, params);*/
-
-    //setResultImageVisible(false);
   }
 
   //-------------------------------------------------------------------------
@@ -299,6 +261,9 @@ public class BaseHandData {
       ObjectAnimator animX = ObjectAnimator.ofFloat(cardImage, "x", position.x);
       animX.setDuration(moveDuration);
       animX.addListener(new AnimatorListenerAdapter() {
+        //---------------------------------------------------------------------
+        // onAnimationStart
+        //---------------------------------------------------------------------
         @Override
         public void onAnimationStart(Animator animation) {
           cardImage.setVisibility(View.VISIBLE);
