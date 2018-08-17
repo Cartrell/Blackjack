@@ -312,6 +312,10 @@ public class BjEngine implements IBjEngine {
     PlayerData playerData = m_players.get(playerId);
     playerData.setBetValueVisible(betValue > 0);
 
+    //hide this in case player won the last round - amount-won text and bet-value occupy the
+    // same space (only one can be visible at a time)
+    playerData.setAmountWonValueVisible(false);
+
     if (isOrigBet) {
       playerData.setOrigBetValue(betValue);
     }
