@@ -19,6 +19,7 @@ import com.example.cartrell.blackjack.players.PlayerData;
 import com.example.cartrell.blackjack.players.PlayerIds;
 import com.example.cartrell.blackjack.settings.Settings;
 import com.example.cartrell.blackjack.settings.SettingsStorage;
+import com.example.cartrell.blackjack.sound.SoundSystem;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -39,6 +40,7 @@ public class BjEngine implements IBjEngine {
   private BjCardsPrepSystem m_cardsPrepSystem;
   private BjPlaySystem m_playSystem;
   private BasePlayerData m_dealer;
+  private SoundSystem m_soundSystem;
 
   private Views m_views;
   private BackgroundViewManager m_bgViewMgr;
@@ -68,6 +70,7 @@ public class BjEngine implements IBjEngine {
     //initSettings();
     initDecks();
     initUi();
+    m_soundSystem = new SoundSystem(m_context);
   }
 
   //-------------------------------------------------------------------------
@@ -264,6 +267,13 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   public void placeBet(PlayerIds playerId) {
     m_betSystem.placeBet(playerId);
+  }
+
+  //-------------------------------------------------------------------------
+  // playSound
+  //-------------------------------------------------------------------------
+  public void playSound(int soundResourceId) {
+    m_soundSystem.play(soundResourceId);
   }
 
   //-------------------------------------------------------------------------
@@ -512,3 +522,4 @@ public class BjEngine implements IBjEngine {
     m_activity.startActivity(intent);
   }
 }
+
