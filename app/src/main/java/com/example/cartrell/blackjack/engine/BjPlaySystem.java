@@ -738,6 +738,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   //-------------------------------------------------------------------------
   private void initPlayers() {
     resetPlayers();
+    resetDealer();
     initPlayersOrder();
   }
 
@@ -828,6 +829,13 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_engine.showView(txtTotalWon, true);
 
     m_totalCreditsWonOnRound = 0;
+  }
+
+  //-------------------------------------------------------------------------
+  // resetDealer
+  //-------------------------------------------------------------------------
+  private void resetDealer() {
+    m_engine.getDealerData().resetStatus();
   }
 
   //-------------------------------------------------------------------------
