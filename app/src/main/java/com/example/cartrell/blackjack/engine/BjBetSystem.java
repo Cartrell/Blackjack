@@ -1,8 +1,6 @@
 package com.example.cartrell.blackjack.engine;
 
-import android.annotation.SuppressLint;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ToggleButton;
@@ -17,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@SuppressLint("ClickableViewAccessibility")
 class BjBetSystem {
   //=========================================================================
   // const
@@ -198,19 +195,6 @@ class BjBetSystem {
         updateDealButtonEnability();
       }
     });
-
-    button.setOnTouchListener(new View.OnTouchListener() {
-      //-------------------------------------------------------------------------
-      // onTouch
-      //-------------------------------------------------------------------------
-      @Override
-      public boolean onTouch(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-          m_engine.playSound(R.raw.snd_button_click);
-        }
-        return(false);
-      }
-    });
   }
 
   //-------------------------------------------------------------------------
@@ -238,19 +222,6 @@ class BjBetSystem {
         m_engine.setCredits(-m_engine.getBetValue(), true);
         m_engine.beginCardsPrep();
         m_engine.setAtLeastOneRoundPlayed();
-      }
-    });
-
-    button.setOnTouchListener(new View.OnTouchListener() {
-      //-------------------------------------------------------------------------
-      // onTouch
-      //-------------------------------------------------------------------------
-      @Override
-      public boolean onTouch(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-          m_engine.playSound(R.raw.snd_button_click);
-        }
-        return(false);
       }
     });
   }
