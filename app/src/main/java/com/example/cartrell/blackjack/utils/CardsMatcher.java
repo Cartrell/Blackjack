@@ -80,10 +80,10 @@ public final class CardsMatcher {
   }
 
   //-------------------------------------------------------------------------
-  // doesPlayerHaveSuitedBlackjack
+  // doesPlayerHaveThunderjack
   //-------------------------------------------------------------------------
-  public boolean doesPlayerHaveSuitedBlackjack(BasePlayerData playerData) {
-    return(doesPlayerHaveBlackjack(playerData) && isFlush(playerData));
+  public boolean doesPlayerHaveThunderjack(BasePlayerData playerData, IBjEngine engine) {
+    return(doesPlayerHaveBlackjack(playerData, engine) && isFlush(playerData));
   }
 
   //-------------------------------------------------------------------------

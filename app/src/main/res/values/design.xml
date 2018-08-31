@@ -31,7 +31,7 @@
     <string name="winRatioCharlie">5:1</string>
 
     <!-- amount ratio paid if player gets suited blackjack -->
-    <string name="winRatioSuitedBlackjack">4:1</string>
+    <string name="winRatioThunderjack">4:1</string>
 
     <!-- amount ratio paid if player surrenders -->
     <string name="winRatioSurrender">1:2</string>
