@@ -29,6 +29,7 @@ class BjBetSystem {
   //=========================================================================
   private IBjEngine m_engine;
   private String m_selectedChipId;
+  private boolean m_restorePlayersOnFirstBet;
 
   //=========================================================================
   // package-private
@@ -55,12 +56,16 @@ class BjBetSystem {
     showBetChipButtons();
     setBetButtonsVisibility(true);
     updateDealButtonEnability();
+
+    m_restorePlayersOnFirstBet = true;
   }
 
   //-------------------------------------------------------------------------
   // placeBet
   //-------------------------------------------------------------------------
   void placeBet(PlayerIds playerId) {
+    restorePlayersOnFirstBet();
+
     PlayerData playerData = m_engine.getPlayer(playerId);
     if (playerData == null) {
       Log.w(LOG_TAG, "placeBet. Invalid player id: " + playerId);
@@ -229,6 +234,7 @@ class BjBetSystem {
         restoreNormalPlayers();
         removeSplitPlayers();
         m_engine.updateCreditsAtStartOfRound();
+        m_engine.updateBetValue();
         m_engine.setCredits(-m_engine.getBetValue(), true);
         m_engine.beginCardsPrep();
         m_engine.setAtLeastOneRoundPlayed();
@@ -289,6 +295,7 @@ class BjBetSystem {
       m_engine.setPlayerBet(playerId, 0, true);
     }
 
+    m_restorePlayersOnFirstBet = false;
     m_engine.updateBetValue();
     showBetChipButtons();
   }
@@ -343,6 +350,21 @@ class BjBetSystem {
     restoreNormalPlayer(PlayerIds.RIGHT_BOTTOM);
     restoreNormalPlayer(PlayerIds.LEFT_BOTTOM);
     restoreNormalPlayer(PlayerIds.MIDDLE_BOTTOM);
+  }
+
+  //-------------------------------------------------------------------------
+  // restorePlayersOnFirstBet
+  //-------------------------------------------------------------------------
+  private void restorePlayersOnFirstBet() {
+    if (!m_restorePlayersOnFirstBet) {
+      return;
+    }
+
+    m_restorePlayersOnFirstBet = false;
+    restoreDealer();
+    restoreNormalPlayers();
+    removeSplitPlayers();
+    m_engine.updateBetValue();
   }
 
   //-------------------------------------------------------------------------
