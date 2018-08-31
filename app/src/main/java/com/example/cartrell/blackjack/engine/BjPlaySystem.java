@@ -146,10 +146,14 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     dealerData.setResultImage(R.drawable.result_label_blackjack);
     dealerData.setResultImageVisible(true);
 
+    revealDealerSecondCard();
+
     for (PlayerIds playerId : m_playerIdsOrder) {
       BasePlayerData playerData = getPlayerData(playerId);
-      if (playerData.getHasBlackjack()) {
-        beginPlayerPush(playerId);
+      if (m_cardsMatcher.doesPlayerHaveThunderjack(playerData, m_engine)) {
+        beginPlayerThunderjack(playerId);
+      } else if (m_cardsMatcher.doesPlayerHaveBlackjack(playerData, m_engine)) {
+        beginPlayerBlackjackPush(playerId);
       } else {
         beginPlayerLost(playerId);
       }
@@ -282,6 +286,15 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   }
 
   //-------------------------------------------------------------------------
+  // beginPlayerBlackjackPush
+  //-------------------------------------------------------------------------
+  private void beginPlayerBlackjackPush(PlayerIds playerId) {
+    PlayerData playerData = (PlayerData)getPlayerData(playerId);
+    playerData.setBlackjack();
+    beginPlayerPush(playerId);
+  }
+
+  //-------------------------------------------------------------------------
   // beginPlayerCharlieWin
   //-------------------------------------------------------------------------
   private void beginPlayerCharlieWin() {
@@ -328,16 +341,24 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   }
 
   //-------------------------------------------------------------------------
-  // beginPlayerSuitedBlackjack
+  // beginPlayerStand
   //-------------------------------------------------------------------------
-  private void beginPlayerSuitedBlackjack(PlayerIds playerId) {
+  private void beginPlayerStand() {
+    beginNextTurnPlayer();
+    m_engine.playSound(R.raw.snd_stand);
+  }
+
+  //-------------------------------------------------------------------------
+  // beginPlayerThunderjack
+  //-------------------------------------------------------------------------
+  private void beginPlayerThunderjack(PlayerIds playerId) {
     PlayerData playerData = (PlayerData)getPlayerData(playerId);
     playerData.setBlackjack();
-    playerData.setResultImage(R.drawable.result_label_suited_blackjack);
+    playerData.setResultImage(R.drawable.result_label_thunderjack);
     playerData.setResultImageVisible(true);
     playerData.setBetValueVisible(false);
 
-    int creditsWon = calcCreditsWon(playerId, m_engine.getStringResource(R.string.winRatioSuitedBlackjack));
+    int creditsWon = calcCreditsWon(playerId, m_engine.getStringResource(R.string.winRatioThunderjack));
     playerData.setAmountWonValue(creditsWon);
     playerData.setAmountWonValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
@@ -365,7 +386,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private void beginRoundStart() {
     updatePlayersPoints();
 
-    if (m_cardsMatcher.doesPlayerHaveBlackjack(getPlayerData(PlayerIds.DEALER))) {
+    if (m_cardsMatcher.doesPlayerHaveBlackjack(getPlayerData(PlayerIds.DEALER), m_engine)) {
       beginDealerBlackjack();
     } else {
       checkPlayersForBlackjack();
@@ -446,11 +467,11 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     while (iterator.hasNext()) {
       PlayerIds playerId = iterator.next();
       BasePlayerData playerData = getPlayerData(playerId);
-      if (m_cardsMatcher.doesPlayerHaveSuitedBlackjack(playerData)) {
+      if (m_cardsMatcher.doesPlayerHaveThunderjack(playerData, m_engine)) {
         numBjs++;
-        beginPlayerSuitedBlackjack(playerId);
+        beginPlayerThunderjack(playerId);
         iterator.remove();
-      } else if (m_cardsMatcher.doesPlayerHaveBlackjack(playerData)) {
+      } else if (m_cardsMatcher.doesPlayerHaveBlackjack(playerData, m_engine)) {
         numBjs++;
         beginPlayerBlackjack(playerId);
         iterator.remove();

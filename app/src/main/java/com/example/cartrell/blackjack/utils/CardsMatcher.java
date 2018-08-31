@@ -2,6 +2,7 @@ package com.example.cartrell.blackjack.utils;
 
 import com.example.cartrell.blackjack.cards.CardSuits;
 import com.example.cartrell.blackjack.cards.CardValues;
+import com.example.cartrell.blackjack.engine.IBjEngine;
 import com.example.cartrell.blackjack.players.BasePlayerData;
 import com.example.cartrell.blackjack.players.PlayerData;
 
@@ -63,11 +64,14 @@ public final class CardsMatcher {
   //-------------------------------------------------------------------------
   // doesPlayerHaveBlackjack
   //-------------------------------------------------------------------------
-  public boolean doesPlayerHaveBlackjack(BasePlayerData playerData) {
-    return(
-      playerData != null &&
-      playerData.getNumCards() == SM_NUM_CARDS_FOR_BLACKJACK &&
-      playerData.getScore() == M_BLACKJACK_POINTS);
+  public boolean doesPlayerHaveBlackjack(BasePlayerData playerData, IBjEngine engine) {
+    if (playerData == null || playerData.getNumCards() != SM_NUM_CARDS_FOR_BLACKJACK) {
+      return(false);
+    }
+
+    ArrayList<String> cardKeys = playerData.getCardKeys();
+    int score = CalculateScore.Run(engine, cardKeys);
+    return(score == M_BLACKJACK_POINTS);
   }
 
   //-------------------------------------------------------------------------
