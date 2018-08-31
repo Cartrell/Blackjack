@@ -78,7 +78,7 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public boolean atLeastOneRoundPlayed() {
-    return(m_atLeastOneRoundPlayed);
+    return (m_atLeastOneRoundPlayed);
   }
 
   //-------------------------------------------------------------------------
@@ -110,7 +110,7 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public BjBetChipData getBetChipData(String betChipId) {
-    return(m_betChips.getData(betChipId));
+    return (m_betChips.getData(betChipId));
   }
 
   //-------------------------------------------------------------------------
@@ -118,7 +118,7 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public List<String> getBetChipIds() {
-    return(m_betChips.getChipIds());
+    return (m_betChips.getChipIds());
   }
 
   //-------------------------------------------------------------------------
@@ -126,7 +126,7 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public int getBetValue() {
-    return(m_betValue);
+    return (m_betValue);
   }
 
   //-------------------------------------------------------------------------
@@ -134,7 +134,7 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public ActivityMainBinding getBinding() {
-    return(m_binding);
+    return (m_binding);
   }
 
   //-------------------------------------------------------------------------
@@ -142,7 +142,7 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public int getColorResource(int resourceId) {
-    return(ContextCompat.getColor(m_context, resourceId));
+    return (ContextCompat.getColor(m_context, resourceId));
   }
 
   //-------------------------------------------------------------------------
@@ -150,7 +150,7 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public Context getContext() {
-    return(m_context);
+    return (m_context);
   }
 
   //-------------------------------------------------------------------------
@@ -158,7 +158,7 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public int getCredits() {
-    return(m_credits);
+    return (m_credits);
   }
 
   //-------------------------------------------------------------------------
@@ -166,7 +166,7 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public int getCreditsAtStartOfRound() {
-    return(m_creditsAtStartOfRound);
+    return (m_creditsAtStartOfRound);
   }
 
   //-------------------------------------------------------------------------
@@ -174,7 +174,7 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public BasePlayerData getDealerData() {
-    return(m_dealer);
+    return (m_dealer);
   }
 
   //-------------------------------------------------------------------------
@@ -182,7 +182,7 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public Deck getDeck() {
-    return(m_deck);
+    return (m_deck);
   }
 
   //-------------------------------------------------------------------------
@@ -190,7 +190,7 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public int getIntegerResource(int resourceId) {
-    return(m_context.getResources().getInteger(resourceId));
+    return (m_context.getResources().getInteger(resourceId));
   }
 
   //-------------------------------------------------------------------------
@@ -198,7 +198,7 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public PlayerData getPlayer(PlayerIds playerId) {
-    return(m_players.get(playerId));
+    return (m_players.get(playerId));
   }
 
   //-------------------------------------------------------------------------
@@ -206,7 +206,7 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public HashMap<PlayerIds, PlayerData> getPlayers() {
-    return(m_players);
+    return (m_players);
   }
 
   //-------------------------------------------------------------------------
@@ -214,7 +214,7 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public String getStringResource(int resourceId) {
-    return(m_context.getResources().getString(resourceId));
+    return (m_context.getResources().getString(resourceId));
   }
 
   //-------------------------------------------------------------------------
@@ -223,10 +223,10 @@ public class BjEngine implements IBjEngine {
   @Override
   public int getIndexOf(View view) {
     if (view == null) {
-      return(-1); //sanity check
+      return (-1); //sanity check
     }
-    ViewGroup group = (ViewGroup)view.getParent();
-    return(group != null ? group.indexOfChild(view) : -1);
+    ViewGroup group = (ViewGroup) view.getParent();
+    return (group != null ? group.indexOfChild(view) : -1);
   }
 
   //-------------------------------------------------------------------------
@@ -234,7 +234,7 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public Settings getSettings() {
-    return(m_settings);
+    return (m_settings);
   }
 
   //-------------------------------------------------------------------------
@@ -242,17 +242,17 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public Views getViews() {
-    return(m_views);
+    return (m_views);
   }
 
   //-------------------------------------------------------------------------
   // isSplitPlayerId
   //-------------------------------------------------------------------------
   public boolean isSplitPlayerId(PlayerIds playerId) {
-    return(
+    return (
       PlayerIds.RIGHT_TOP.equals(playerId) ||
-      PlayerIds.MIDDLE_TOP.equals(playerId) ||
-      PlayerIds.LEFT_TOP.equals(playerId));
+        PlayerIds.MIDDLE_TOP.equals(playerId) ||
+        PlayerIds.LEFT_TOP.equals(playerId));
   }
 
   //-------------------------------------------------------------------------
@@ -366,8 +366,8 @@ public class BjEngine implements IBjEngine {
 
     Iterator iterator = m_players.entrySet().iterator();
     while (iterator.hasNext()) {
-      Map.Entry entry = (Map.Entry)iterator.next();
-      PlayerData playerData = (PlayerData)entry.getValue();
+      Map.Entry entry = (Map.Entry) iterator.next();
+      PlayerData playerData = (PlayerData) entry.getValue();
       betValue += playerData.getBetValue();
     }
 
@@ -410,7 +410,7 @@ public class BjEngine implements IBjEngine {
     for (String chipId : chipIds) {
       betChips.add(new BjBetChip(m_context, chipId));
     }
-    return(betChips);
+    return (betChips);
   }
 
   //-------------------------------------------------------------------------
@@ -433,12 +433,12 @@ public class BjEngine implements IBjEngine {
   // initUi
   //-------------------------------------------------------------------------
   private void initUi() {
-    final ConstraintLayout constraintLayout = (ConstraintLayout)m_binding.getRoot();
+    final ConstraintLayout constraintLayout = (ConstraintLayout) m_binding.getRoot();
     final IBjEngine engine = this;
 
     LayoutInflater inflater = LayoutInflater.from(m_context);
-    final ConstraintLayout templateLayout = (ConstraintLayout)inflater.inflate(R.layout.main_template,
-      (ViewGroup)m_binding.stubLayout, true);
+    final ConstraintLayout templateLayout = (ConstraintLayout) inflater.inflate(R.layout.main_template,
+      (ViewGroup) m_binding.stubLayout, true);
 
     templateLayout.getViewTreeObserver().addOnGlobalLayoutListener(
       new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -486,7 +486,7 @@ public class BjEngine implements IBjEngine {
   private boolean isPlayerHandFull(PlayerIds playerId) {
     int maxCardsPerHand = getIntegerResource(R.integer.maxCardsPerHand);
     PlayerData playerData = m_players.get(playerId);
-    return(playerData != null && playerData.getNumCards() >= maxCardsPerHand);
+    return (playerData != null && playerData.getNumCards() >= maxCardsPerHand);
   }
 
   //-------------------------------------------------------------------------
