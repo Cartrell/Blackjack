@@ -272,8 +272,8 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   // playSound
   //-------------------------------------------------------------------------
-  public void playSound(int soundResourceId) {
-    m_soundSystem.play(soundResourceId);
+  public void playSound(int... soundResourceIds) {
+    m_soundSystem.play(soundResourceIds);
   }
 
   //-------------------------------------------------------------------------

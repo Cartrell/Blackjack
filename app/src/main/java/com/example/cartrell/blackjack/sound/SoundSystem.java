@@ -5,6 +5,8 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.util.Log;
 
+import java.util.Random;
+
 public class SoundSystem {
   //=========================================================================
   // static / const
@@ -46,7 +48,7 @@ public class SoundSystem {
   //-------------------------------------------------------------------------
   // play
   //-------------------------------------------------------------------------
-  public void play(int soundResourceId) {
+  public void play(int... soundResourceIds) {
     if (m_audioManager == null) {
       return;
     }
@@ -54,7 +56,11 @@ public class SoundSystem {
     //stop any currently playing media player first
     releaseMediaPlayer();
 
-    m_mediaPlayer = MediaPlayer.create(m_context, soundResourceId);
+    //if more than one sound resource id is specified, pick a random one
+    Random rnd = new Random();
+    int index = rnd.nextInt(soundResourceIds.length);
+
+    m_mediaPlayer = MediaPlayer.create(m_context, soundResourceIds[index]);
     m_mediaPlayer.setOnCompletionListener(m_mediaPlayerCompletionListener);
 
     int request = m_audioManager.requestAudioFocus(m_audioFocusChangeListener,

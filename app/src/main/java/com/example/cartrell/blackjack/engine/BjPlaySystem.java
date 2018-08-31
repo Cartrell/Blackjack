@@ -105,71 +105,6 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     dealCards();
   }
 
-  //-------------------------------------------------------------------------
-  // beginDouble
-  //-------------------------------------------------------------------------
-  void beginDouble() {
-    PlayerData playerData = (PlayerData)getTurnPlayerData();
-    int playerBetValue = playerData.getBetValue();
-    m_engine.setCredits(-playerBetValue, true);
-    playerData.setDoubleDown();
-    m_engine.setPlayerBet(playerData.getId(), playerBetValue * 2, false);
-
-    m_state = BjPlayStates.DOUBLE;
-    drawCard(m_turnPlayerId, true, 0, true);
-  }
-
-  //-------------------------------------------------------------------------
-  // beginHit
-  //-------------------------------------------------------------------------
-  void beginHit() {
-    m_state = BjPlayStates.HIT;
-    drawCard(m_turnPlayerId, true, 0, true);
-  }
-
-  //-------------------------------------------------------------------------
-  // beginSplit
-  //-------------------------------------------------------------------------
-  void beginSplit() {
-    PlayerData turnPlayerData = (PlayerData)getTurnPlayerData();
-    PlayerData splitPlayerData = getSplitPlayerData(m_turnPlayerId);
-    if (splitPlayerData == null) {
-      return; //sanity check
-    }
-
-    m_state = BjPlayStates.SPLIT;
-    turnPlayerData.setSplit();
-    splitPlayerData.setSplit();
-    m_engine.setCredits(-turnPlayerData.getBetValue(), true);
-
-    m_wereAcesSplit = wereAcesSplit();
-    moveTopCardFromTo(turnPlayerData, splitPlayerData);
-  }
-
-  //-------------------------------------------------------------------------
-  // beginStand
-  //-------------------------------------------------------------------------
-  void beginStand() {
-    beginNextTurnPlayer();
-  }
-
-  //-------------------------------------------------------------------------
-  // beginSurrender
-  //-------------------------------------------------------------------------
-  void beginSurrender() {
-    PlayerData playerData = (PlayerData)getTurnPlayerData();
-    playerData.setSurrendered();
-    playerData.setResultImage(R.drawable.result_label_surrender);
-    playerData.setResultImageVisible(true);
-
-    int creditsWon = calcCreditsWon(m_turnPlayerId, m_engine.getStringResource(R.string.winRatioSurrender));
-    playerData.setBetValue(creditsWon);
-    playerData.setBetValueVisible(true);
-    m_totalCreditsWonOnRound += creditsWon;
-
-    beginNextTurnPlayer();
-  }
-
   //=========================================================================
   // private
   //=========================================================================
@@ -244,6 +179,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
       }
     }
 
+    m_engine.playSound(R.raw.snd_dealer_bust1, R.raw.snd_dealer_bust2);
+
     endRound();
   }
 
@@ -274,6 +211,31 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     } else {
       beginHit();
     }
+  }
+
+  //-------------------------------------------------------------------------
+  // beginDouble
+  //-------------------------------------------------------------------------
+  private void beginDouble() {
+    PlayerData playerData = (PlayerData)getTurnPlayerData();
+    int playerBetValue = playerData.getBetValue();
+    m_engine.setCredits(-playerBetValue, true);
+    playerData.setDoubleDown();
+    m_engine.setPlayerBet(playerData.getId(), playerBetValue * 2, false);
+
+    m_state = BjPlayStates.DOUBLE;
+    drawCard(m_turnPlayerId, true, 0, true);
+
+    m_engine.playSound(R.raw.snd_double_down);
+  }
+
+  //-------------------------------------------------------------------------
+  // beginHit
+  //-------------------------------------------------------------------------
+  private void beginHit() {
+    m_state = BjPlayStates.HIT;
+    drawCard(m_turnPlayerId, true, 0, true);
+    m_engine.playSound(R.raw.snd_hit);
   }
 
   //-------------------------------------------------------------------------
@@ -405,6 +367,54 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   }
 
   //-------------------------------------------------------------------------
+  // beginSplit
+  //-------------------------------------------------------------------------
+  private void beginSplit() {
+    PlayerData turnPlayerData = (PlayerData)getTurnPlayerData();
+    PlayerData splitPlayerData = getSplitPlayerData(m_turnPlayerId);
+    if (splitPlayerData == null) {
+      return; //sanity check
+    }
+
+    m_state = BjPlayStates.SPLIT;
+    turnPlayerData.setSplit();
+    splitPlayerData.setSplit();
+    m_engine.setCredits(-turnPlayerData.getBetValue(), true);
+
+    m_wereAcesSplit = wereAcesSplit();
+    moveTopCardFromTo(turnPlayerData, splitPlayerData);
+
+    m_engine.playSound(R.raw.snd_split1, R.raw.snd_split2);
+  }
+
+  //-------------------------------------------------------------------------
+  // beginStand
+  //-------------------------------------------------------------------------
+  private void beginStand() {
+    beginNextTurnPlayer();
+    m_engine.playSound(R.raw.snd_stand);
+  }
+
+  //-------------------------------------------------------------------------
+  // beginSurrender
+  //-------------------------------------------------------------------------
+  private void beginSurrender() {
+    PlayerData playerData = (PlayerData)getTurnPlayerData();
+    playerData.setSurrendered();
+    playerData.setResultImage(R.drawable.result_label_surrender);
+    playerData.setResultImageVisible(true);
+
+    int creditsWon = calcCreditsWon(m_turnPlayerId, m_engine.getStringResource(R.string.winRatioSurrender));
+    playerData.setBetValue(creditsWon);
+    playerData.setBetValueVisible(true);
+    m_totalCreditsWonOnRound += creditsWon;
+
+    m_engine.playSound(R.raw.snd_surrender1, R.raw.snd_surrender2);
+
+    beginNextTurnPlayer();
+  }
+
+  //-------------------------------------------------------------------------
   // beginTurnPlayerBust
   //-------------------------------------------------------------------------
   private void beginTurnPlayerBust() {
@@ -433,16 +443,24 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   //-------------------------------------------------------------------------
   private void checkPlayersForBlackjack() {
     Iterator<PlayerIds>iterator = m_playerIdsOrder.iterator();
+    int numBjs = 0;
     while (iterator.hasNext()) {
       PlayerIds playerId = iterator.next();
       BasePlayerData playerData = getPlayerData(playerId);
       if (m_cardsMatcher.doesPlayerHaveSuitedBlackjack(playerData)) {
+        numBjs++;
         beginPlayerSuitedBlackjack(playerId);
         iterator.remove();
       } else if (m_cardsMatcher.doesPlayerHaveBlackjack(playerData)) {
+        numBjs++;
         beginPlayerBlackjack(playerId);
         iterator.remove();
       }
+    }
+
+    if (numBjs > 0) {
+      m_engine.playSound(R.raw.snd_auto_win1, R.raw.snd_auto_win2, R.raw.snd_auto_win3,
+        R.raw.snd_auto_win4);
     }
   }
 

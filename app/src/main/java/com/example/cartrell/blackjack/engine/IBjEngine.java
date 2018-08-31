@@ -37,7 +37,7 @@ public interface IBjEngine {
   String getStringResource(int resourceId);
   Views getViews();
   boolean isSplitPlayerId(PlayerIds playerId);
-  void playSound(int soundResourceId);
+  void playSound(int... soundResourceIds);
   void setAtLeastOneRoundPlayed();
   void setBetChipVisibility(String chipId, boolean isVisible);
   void setCredits(int value);
