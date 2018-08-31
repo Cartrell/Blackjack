@@ -185,6 +185,13 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   }
 
   //-------------------------------------------------------------------------
+  // beginDealerStand
+  //-------------------------------------------------------------------------
+  private void beginDealerStand() {
+    beginNextTurnPlayer();
+  }
+
+  //-------------------------------------------------------------------------
   // beginDealerTurn
   //-------------------------------------------------------------------------
   private void beginDealerTurn() {
@@ -196,18 +203,18 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     }
 
     if (!arePlayersLeftVsDealer()) {
-      beginStand();
+      beginDealerStand();
       return;
     }
 
     if (doesTurnPlayerHaveMaxCards()) {
       if (shouldDealerStand()) {
-        beginStand();
+        beginDealerStand();
       } else {
         beginDealerBust();
       }
     } else if (shouldDealerStand()) {
-      beginStand();
+      beginDealerStand();
     } else {
       beginHit();
     }
@@ -385,14 +392,6 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     moveTopCardFromTo(turnPlayerData, splitPlayerData);
 
     m_engine.playSound(R.raw.snd_split1, R.raw.snd_split2);
-  }
-
-  //-------------------------------------------------------------------------
-  // beginStand
-  //-------------------------------------------------------------------------
-  private void beginStand() {
-    beginNextTurnPlayer();
-    m_engine.playSound(R.raw.snd_stand);
   }
 
   //-------------------------------------------------------------------------
@@ -929,8 +928,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
 
     if (m_wereAcesSplit) {
       m_wereAcesSplit = false;
-      beginStand();
-      beginStand();
+      beginPlayerStand();
+      beginPlayerStand();
     }
 
     m_engine.updateBetValue();
