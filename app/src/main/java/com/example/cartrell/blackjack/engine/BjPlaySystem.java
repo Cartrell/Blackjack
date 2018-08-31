@@ -715,7 +715,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_engine.getViews().getStandButton().setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        beginStand();
+        beginPlayerStand();
       }
     });
   }
