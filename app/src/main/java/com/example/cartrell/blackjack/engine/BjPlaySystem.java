@@ -347,8 +347,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   // beginPlayerStand
   //-------------------------------------------------------------------------
   private void beginPlayerStand() {
-    beginNextTurnPlayer();
     m_engine.getSoundSystem().play(R.raw.snd_stand);
+    beginNextTurnPlayer();
   }
 
   //-------------------------------------------------------------------------
