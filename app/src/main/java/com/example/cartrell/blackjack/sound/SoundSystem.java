@@ -96,6 +96,16 @@ public class SoundSystem {
     m_soundSystemCompleteListener = listener;
   }
 
+  //-----------------------------------------------------------------------------------
+  // uninit
+  //-----------------------------------------------------------------------------------
+  public void uninit() {
+    setOnSoundCompleteListener(null);
+    releaseMediaPlayer();
+    m_audioManager = null;
+    m_context = null;
+  }
+
   //=========================================================================
   // private
   //=========================================================================
