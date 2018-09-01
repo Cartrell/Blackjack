@@ -298,12 +298,12 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   }
 
   //-------------------------------------------------------------------------
-  // beginPlayerCharlieWin
+  // beginPlayerBlitzWin
   //-------------------------------------------------------------------------
-  private void beginPlayerCharlieWin() {
+  private void beginPlayerBlitzWin() {
     PlayerData playerData = (PlayerData)getTurnPlayerData();
     playerData.setCharlieWin();
-    playerData.setResultImage(R.drawable.result_label_charlie);
+    playerData.setResultImage(R.drawable.result_label_blitz);
     playerData.setResultImageVisible(true);
     playerData.setBetValueVisible(false);
 
@@ -957,7 +957,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     }
 
     if (doesTurnPlayerHaveMaxCards()) {
-      beginPlayerCharlieWin();
+      beginPlayerBlitzWin();
       return;
     }
 
