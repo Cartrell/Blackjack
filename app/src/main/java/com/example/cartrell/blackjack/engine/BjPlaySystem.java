@@ -441,6 +441,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   // beginTurnPlayerBust
   //-------------------------------------------------------------------------
   private void beginTurnPlayerBust() {
+    m_engine.getSoundSystem().play(R.raw.snd_bust);
     BasePlayerData playerData = getTurnPlayerData();
     playerData.setBust();
     playerData.setResultImage(R.drawable.result_label_bust);
