@@ -312,6 +312,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     playerData.setAmountWonValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
 
+    playBjCharlieSound();
     beginNextTurnPlayer();
   }
 
@@ -463,32 +464,6 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   }
 
   //-------------------------------------------------------------------------
-  // checkPlayersForBlackjack
-  //-------------------------------------------------------------------------
-  private void checkPlayersForBlackjack() {
-    Iterator<PlayerIds>iterator = m_playerIdsOrder.iterator();
-    int numBjs = 0;
-    while (iterator.hasNext()) {
-      PlayerIds playerId = iterator.next();
-      BasePlayerData playerData = getPlayerData(playerId);
-      if (m_cardsMatcher.doesPlayerHaveThunderjack(playerData, m_engine)) {
-        numBjs++;
-        beginPlayerThunderjack(playerId);
-        iterator.remove();
-      } else if (m_cardsMatcher.doesPlayerHaveBlackjack(playerData, m_engine)) {
-        numBjs++;
-        beginPlayerBlackjack(playerId);
-        iterator.remove();
-      }
-    }
-
-    if (numBjs > 0) {
-      m_engine.getSoundSystem().play(R.raw.snd_auto_win1, R.raw.snd_auto_win2, R.raw.snd_auto_win3,
-        R.raw.snd_auto_win4);
-    }
-  }
-
-  //-------------------------------------------------------------------------
   // calcCreditsWon
   //-------------------------------------------------------------------------
   private int calcCreditsWon(PlayerIds playerId, String winRatioFormat) {
@@ -526,6 +501,31 @@ class BjPlaySystem implements ICardsMoverCallbacks {
       amountWon *= 2;
     }
     return(amountWon);
+  }
+
+  //-------------------------------------------------------------------------
+  // checkPlayersForBlackjack
+  //-------------------------------------------------------------------------
+  private void checkPlayersForBlackjack() {
+    Iterator<PlayerIds>iterator = m_playerIdsOrder.iterator();
+    int numBjs = 0;
+    while (iterator.hasNext()) {
+      PlayerIds playerId = iterator.next();
+      BasePlayerData playerData = getPlayerData(playerId);
+      if (m_cardsMatcher.doesPlayerHaveThunderjack(playerData, m_engine)) {
+        numBjs++;
+        beginPlayerThunderjack(playerId);
+        iterator.remove();
+      } else if (m_cardsMatcher.doesPlayerHaveBlackjack(playerData, m_engine)) {
+        numBjs++;
+        beginPlayerBlackjack(playerId);
+        iterator.remove();
+      }
+    }
+
+    if (numBjs > 0) {
+      playBjCharlieSound();
+    }
   }
 
   //-------------------------------------------------------------------------
@@ -856,6 +856,14 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     targetPlayerData.addCard(card, m_cardsMover, 0, MOVE_DURATION, false, -1);
     drawCard(sourcePlayerData.getId(), true, MOVE_DURATION, false);
     drawCard(targetPlayerData.getId(), true, MOVE_DURATION * 2, true);
+  }
+
+  //-------------------------------------------------------------------------
+  // playBjCharlieSound
+  //-------------------------------------------------------------------------
+  private void playBjCharlieSound() {
+    m_engine.getSoundSystem().play(R.raw.snd_auto_win1, R.raw.snd_auto_win2, R.raw.snd_auto_win3,
+      R.raw.snd_auto_win4);
   }
 
   //-------------------------------------------------------------------------

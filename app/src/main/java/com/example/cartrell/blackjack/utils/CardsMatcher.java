@@ -86,8 +86,30 @@ public final class CardsMatcher {
   //-------------------------------------------------------------------------
   // doesPlayerHaveThunderjack
   //-------------------------------------------------------------------------
+  /**
+   * Determines if the player's hand is a Thunderjack. A Thunderjack follows the same rules of
+   * a blackjack, with the following conditions:
+   * 1) The hand is a flush (both cards are of the same suit)
+   * 2) The non-ace card is a jack or higher
+   * @param playerData - The player whos hand is being evaluated
+   * @param engine - Reference to the game engine.
+   * @return - True if the player's hand is a Thunderjack.
+   */
   public boolean doesPlayerHaveThunderjack(BasePlayerData playerData, IBjEngine engine) {
-    return(doesPlayerHaveBlackjack(playerData, engine) && isFlush(playerData));
+    if (!doesPlayerHaveBlackjack(playerData, engine) || !isFlush(playerData)) {
+      return(false);
+    }
+
+    ArrayList<String> cardKeys = playerData.getCardKeys();
+    CardValues cardValue = CardValues.GetValueFromCardKey(cardKeys.get(0));
+    if (cardValue.equals(CardValues.ACE)) {
+      //we're interested in the non-ace card
+      cardValue = CardValues.GetValueFromCardKey(cardKeys.get(1));
+    }
+
+    return(cardValue.equals(CardValues.JACK) ||
+      cardValue.equals(CardValues.QUEEN) ||
+      cardValue.equals(CardValues.KING));
   }
 
   //-------------------------------------------------------------------------
