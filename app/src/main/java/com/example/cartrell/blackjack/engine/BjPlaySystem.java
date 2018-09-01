@@ -145,6 +145,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   //-------------------------------------------------------------------------
   private void beginDealerBlackjack() {
     BasePlayerData dealerData = m_engine.getDealerData();
+    dealerData.setBlackjack();
     dealerData.setResultImage(R.drawable.result_label_blackjack);
     dealerData.setResultImageVisible(true);
 
