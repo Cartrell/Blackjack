@@ -2,6 +2,8 @@ package com.example.cartrell.blackjack.engine;
 
 import android.util.Log;
 
+import com.example.cartrell.blackjack.R;
+import com.example.cartrell.blackjack.sound.SoundSystem;
 import com.example.cartrell.blackjack.utils.CardsMover;
 import com.example.cartrell.blackjack.cards.Deck;
 import com.example.cartrell.blackjack.utils.ICardsMoverCallbacks;
@@ -23,6 +25,7 @@ class BjCardsPrepSystem implements ICardsMoverCallbacks {
   private IBjEngine m_engine;
   private CardsMover m_cardsMover;
   private boolean m_isRemovingAllCards;
+  private SoundSystem.OnSoundCompleteListener m_shuffleSoundCompleteListener;
 
   //=========================================================================
   // public
@@ -33,12 +36,13 @@ class BjCardsPrepSystem implements ICardsMoverCallbacks {
   //-------------------------------------------------------------------------
   @Override
   public void cardsMoverOnComplete(CardsMover cardsMover) {
-    if (m_isRemovingAllCards) {
-      m_isRemovingAllCards = false;
-      if (shouldDeckBeRefreshed()) {
-        refreshDeck();
-      }
+    if (!m_isRemovingAllCards) {
+      return;
+    }
 
+    if (shouldDeckBeRefreshed()) {
+      refreshDeck();
+    } else {
       beginPlay();
     }
   }
@@ -53,6 +57,7 @@ class BjCardsPrepSystem implements ICardsMoverCallbacks {
   BjCardsPrepSystem(IBjEngine engine) {
     m_engine = engine;
     m_cardsMover = new CardsMover(this);
+    initShuffleSoundCompleteListener();
   }
 
   //-------------------------------------------------------------------------
@@ -63,7 +68,6 @@ class BjCardsPrepSystem implements ICardsMoverCallbacks {
       fadeOutAllCards();
     } else {
       refreshDeck();
-      m_engine.beginPlay();
     }
   }
 
@@ -75,7 +79,11 @@ class BjCardsPrepSystem implements ICardsMoverCallbacks {
   // beginPlay
   //-------------------------------------------------------------------------
   private void beginPlay() {
-    removeAllPlayersCards();
+    if (m_isRemovingAllCards) {
+      m_isRemovingAllCards = false;
+      removeAllPlayersCards();
+    }
+
     m_engine.beginPlay();
   }
 
@@ -97,6 +105,22 @@ class BjCardsPrepSystem implements ICardsMoverCallbacks {
   }
 
   //-------------------------------------------------------------------------
+  // initShuffleSoundCompleteListener
+  //-------------------------------------------------------------------------
+  private void initShuffleSoundCompleteListener() {
+    m_shuffleSoundCompleteListener = new SoundSystem.OnSoundCompleteListener() {
+      //-------------------------------------------------------------------------
+      // onComplete
+      //-------------------------------------------------------------------------
+      @Override
+      public void onComplete(SoundSystem soundSystem) {
+        m_engine.getSoundSystem().setOnSoundCompleteListener(null);
+        beginPlay();
+      }
+    };
+  }
+
+  //-------------------------------------------------------------------------
   // refreshDeck
   //-------------------------------------------------------------------------
   private void refreshDeck() {
@@ -104,6 +128,9 @@ class BjCardsPrepSystem implements ICardsMoverCallbacks {
     Deck deck = m_engine.getDeck();
     deck.shuffle();
     deck.setIndex(0);
+
+    m_engine.getSoundSystem().play(m_shuffleSoundCompleteListener,
+      R.raw.snd_card_shuffle0, R.raw.snd_card_shuffle1);
   }
 
   //-------------------------------------------------------------------------
