@@ -250,6 +250,8 @@ class BjBetSystem {
       return;
     }
 
+    m_engine.getSoundSystem().play(R.raw.snd_bet_add);
+
     int betChipValue = betChipData.getValue();
     m_engine.setPlayerBet(playerId, playerData.getOrigBetValue() + betChipValue, true);
     m_engine.updateBetValue();
