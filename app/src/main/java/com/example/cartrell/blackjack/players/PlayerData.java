@@ -21,6 +21,7 @@ public class PlayerData extends BasePlayerData {
   private boolean m_hasSurrendered;
   private boolean m_hasSplit;
   private boolean m_isNormalWin;
+  private boolean m_isPush;
 
   //=========================================================================
   // public
@@ -84,6 +85,13 @@ public class PlayerData extends BasePlayerData {
   }
 
   //-------------------------------------------------------------------------
+  // getIsPush
+  //-------------------------------------------------------------------------
+  public boolean getIsPush() {
+    return(m_isPush);
+  }
+
+  //-------------------------------------------------------------------------
   // getOrigBetValue
   //-------------------------------------------------------------------------
   public int getOrigBetValue() {
@@ -123,7 +131,7 @@ public class PlayerData extends BasePlayerData {
   @Override
   public void resetStatus() {
     super.resetStatus();
-    m_isDoubleDown = m_isCharlieWin = m_hasSurrendered = m_hasSplit = m_isNormalWin = false;
+    m_isDoubleDown = m_isCharlieWin = m_hasSurrendered = m_hasSplit = m_isNormalWin = m_isPush = false;
   }
 
   //-------------------------------------------------------------------------
@@ -191,6 +199,13 @@ public class PlayerData extends BasePlayerData {
   //-------------------------------------------------------------------------
   public void setDoubleDown() {
     m_isDoubleDown = true;
+  }
+
+  //-------------------------------------------------------------------------
+  // setIsPush
+  //-------------------------------------------------------------------------
+  public void setIsPush() {
+    m_isPush = true;
   }
 
   //-------------------------------------------------------------------------

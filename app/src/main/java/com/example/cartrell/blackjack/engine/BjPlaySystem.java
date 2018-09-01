@@ -334,6 +334,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   //-------------------------------------------------------------------------
   private void beginPlayerPush(PlayerIds playerId) {
     PlayerData playerData = (PlayerData)getPlayerData(playerId);
+    playerData.setIsPush();
     playerData.setResultImage(R.drawable.result_label_push);
     playerData.setResultImageVisible(true);
     playerData.setBetValueVisible(false);
@@ -497,7 +498,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     float betValue = (float)playerData.getBetValue();
     float amountWonF = betValue + betValue * winRatio;
     int amountWon = (int)amountWonF;
-    if (playerData.getIsDoubleDown()) {
+    if (playerData.getIsDoubleDown() && !playerData.getIsPush()) {
       amountWon *= 2;
     }
     return(amountWon);
