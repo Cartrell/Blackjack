@@ -627,6 +627,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     compareHands();
     presentWonCredits();
     updatePlaySettings();
+    playEndRoundSound();
     m_engine.beginRound();
   }
 
@@ -852,6 +853,22 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     targetPlayerData.addCard(card, m_cardsMover, 0, MOVE_DURATION, false, -1);
     drawCard(sourcePlayerData.getId(), true, MOVE_DURATION, false);
     drawCard(targetPlayerData.getId(), true, MOVE_DURATION * 2, true);
+  }
+
+  //-------------------------------------------------------------------------
+  // playEndRoundSound
+  //-------------------------------------------------------------------------
+  private void playEndRoundSound() {
+    int endCredits = m_engine.getCredits();
+    int startCredits = m_engine.getCreditsAtStartOfRound();
+
+    if (endCredits > startCredits) {
+      m_engine.getSoundSystem().play(R.raw.snd_win01_12);
+    } else if (endCredits < startCredits) {
+      if (m_engine.getDealerData().getHasBlackjack()) {
+        m_engine.getSoundSystem().play(R.raw.snd_dealer_bj);
+      }
+    }
   }
 
   //-------------------------------------------------------------------------
