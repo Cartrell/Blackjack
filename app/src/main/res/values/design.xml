@@ -34,5 +34,5 @@
     <string name="winRatioThunderjack">4:1</string>
 
     <!-- amount ratio paid if player surrenders -->
-    <string name="winRatioSurrender">1:2</string>
+    <string name="winRatioSurrender">-1:2</string>
 </resources>
