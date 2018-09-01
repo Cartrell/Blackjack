@@ -538,6 +538,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
       return;
     }
 
+    revealDealerSecondCard();
+
     int dealerScore = dealerData.getScore();
 
     for (PlayerIds playerId : PlayerIds.values()) {
