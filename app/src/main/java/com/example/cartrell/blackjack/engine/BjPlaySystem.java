@@ -41,6 +41,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private BjPlaySettingsManager m_playSettingsManager;
   private CardsMover m_cardsMover;
   private CardsMatcher m_cardsMatcher;
+  private SoundSystem.OnSoundCompleteListener m_onDealerBustSoundCompleteListener;
   private PlayerIds m_turnPlayerId;
   private int m_baseCardImageChildIndex;
   private int m_nextCardImageChildIndex;
