@@ -57,31 +57,6 @@ class BjBetSystem {
     m_restorePlayersOnFirstBet = true;
   }
 
-  //-------------------------------------------------------------------------
-  // placeBet
-  //-------------------------------------------------------------------------
-  void placeBet(PlayerIds playerId) {
-    restorePlayersOnFirstBet();
-
-    PlayerData playerData = m_engine.getPlayer(playerId);
-    if (playerData == null) {
-      Log.w(LOG_TAG, "placeBet. Invalid player id: " + playerId);
-      return;
-    }
-
-    BjBetChipData betChipData = m_engine.getBetChipData(m_selectedChipId);
-    if (betChipData == null) {
-      Log.w(LOG_TAG, "placeBet. Invalid chip id: " + m_selectedChipId);
-      return;
-    }
-
-    int betChipValue = betChipData.getValue();
-    m_engine.setPlayerBet(playerId, playerData.getOrigBetValue() + betChipValue, true);
-    m_engine.updateBetValue();
-    showBetChipButtons();
-    updateDealButtonEnability();
-  }
-
   //=========================================================================
   // private
   //=========================================================================
@@ -255,6 +230,31 @@ class BjBetSystem {
     initDealButton();
     initBetChipButtons();
     initBetButtons();
+  }
+
+  //-------------------------------------------------------------------------
+  // placeBet
+  //-------------------------------------------------------------------------
+  private void placeBet(PlayerIds playerId) {
+    restorePlayersOnFirstBet();
+
+    PlayerData playerData = m_engine.getPlayer(playerId);
+    if (playerData == null) {
+      Log.w(LOG_TAG, "placeBet. Invalid player id: " + playerId);
+      return;
+    }
+
+    BjBetChipData betChipData = m_engine.getBetChipData(m_selectedChipId);
+    if (betChipData == null) {
+      Log.w(LOG_TAG, "placeBet. Invalid chip id: " + m_selectedChipId);
+      return;
+    }
+
+    int betChipValue = betChipData.getValue();
+    m_engine.setPlayerBet(playerId, playerData.getOrigBetValue() + betChipValue, true);
+    m_engine.updateBetValue();
+    showBetChipButtons();
+    updateDealButtonEnability();
   }
 
   //-------------------------------------------------------------------------
