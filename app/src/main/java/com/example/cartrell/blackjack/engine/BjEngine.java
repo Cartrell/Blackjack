@@ -14,6 +14,7 @@ import com.example.cartrell.blackjack.R;
 import com.example.cartrell.blackjack.StatsActivity;
 import com.example.cartrell.blackjack.cards.Deck;
 import com.example.cartrell.blackjack.databinding.ActivityMainBinding;
+import com.example.cartrell.blackjack.players.BaseHandData;
 import com.example.cartrell.blackjack.players.BasePlayerData;
 import com.example.cartrell.blackjack.players.PlayerData;
 import com.example.cartrell.blackjack.players.PlayerIds;
@@ -41,6 +42,7 @@ public class BjEngine implements IBjEngine {
   private BjPlaySystem m_playSystem;
   private BasePlayerData m_dealer;
   private SoundSystem m_soundSystem;
+  private BaseHandData.OnCardMoveStartListener m_cardMoveStartListener;
 
   private Views m_views;
   private BackgroundViewManager m_bgViewMgr;
@@ -68,6 +70,7 @@ public class BjEngine implements IBjEngine {
     m_context = m_activity;
     m_binding = binding;
     //initSettings();
+    initCardMoveStartListener();
     initDecks();
     initUi();
     m_soundSystem = new SoundSystem(m_context);
@@ -407,6 +410,22 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
+  // initCardMoveStartListener
+  //-------------------------------------------------------------------------
+  private void initCardMoveStartListener() {
+    m_cardMoveStartListener = new BaseHandData.OnCardMoveStartListener() {
+
+      //-------------------------------------------------------------------------
+      // onComplete
+      //-------------------------------------------------------------------------
+      @Override
+      public void onComplete(BaseHandData baseHandData) {
+        m_soundSystem.play(R.raw.snd_card_deal0, R.raw.snd_card_deal1, R.raw.snd_card_deal2);
+      }
+    };
+  }
+
+  //-------------------------------------------------------------------------
   // initDecks
   //-------------------------------------------------------------------------
   private void initDecks() {
@@ -449,7 +468,7 @@ public class BjEngine implements IBjEngine {
           float yDeck = m_views.getDeckImage().getY();
           final int MAX_CARDS = getIntegerResource(R.integer.maxCardsPerHand);
           PlayersCreator creator = new PlayersCreator(templateLayout, m_binding, xDeck,
-            yDeck, MAX_CARDS, m_views);
+            yDeck, MAX_CARDS, m_views, m_cardMoveStartListener);
 
           constraintLayout.removeView(templateLayout);
 

@@ -33,6 +33,8 @@ public class BaseHandData {
   ViewGroup m_viewGroup;
   float m_yCardsBottom;
 
+  private OnCardMoveStartListener m_onCardMoveStartListener;
+
   private float m_xDeck;
   private float m_yDeck;
   private float m_xCardsLeft;
@@ -47,8 +49,15 @@ public class BaseHandData {
   private ImageView m_resultImage;
 
   //=========================================================================
-  // protected
+  // public
   //=========================================================================
+
+  //-------------------------------------------------------------------------
+  // setCardMoveStartListener
+  //-------------------------------------------------------------------------
+  public void setCardMoveStartListener(OnCardMoveStartListener cardMoveStartListener) {
+    m_onCardMoveStartListener = cardMoveStartListener;
+  }
 
   //=========================================================================
   // package-private
@@ -251,6 +260,7 @@ public class BaseHandData {
   boolean startAnimation) {
     HashMap<View, PointF>positions = m_cardsViewDistributor.getPositions();
     AnimatorSet animSetXY = cardsMover.getAnimatorSet();
+    final BaseHandData thisBaseHandData = this;
 
     Iterator iterator = positions.entrySet().iterator();
     while (iterator.hasNext()) {
@@ -267,6 +277,10 @@ public class BaseHandData {
         @Override
         public void onAnimationStart(Animator animation) {
           cardImage.setVisibility(View.VISIBLE);
+
+          if (m_onCardMoveStartListener != null) {
+            m_onCardMoveStartListener.onComplete(thisBaseHandData);
+          }
         }
       });
 
@@ -282,4 +296,12 @@ public class BaseHandData {
       animSetXY.start();
     }
   }
+
+  //=========================================================================
+  // OnCardMoveStartListener
+  //=========================================================================
+  public interface OnCardMoveStartListener {
+    void onComplete(BaseHandData baseHandData);
+  }
+
 }

@@ -194,6 +194,13 @@ public class BasePlayerData {
   }
 
   //-------------------------------------------------------------------------
+  // setCardMoveStartListener
+  //-------------------------------------------------------------------------
+  public void setCardMoveStartListener(BaseHandData.OnCardMoveStartListener cardMoveStartListener) {
+    m_handData.setCardMoveStartListener(cardMoveStartListener);
+  }
+
+  //-------------------------------------------------------------------------
   // setResultImage
   //-------------------------------------------------------------------------
   public void setResultImage(int drawableResourceId) {
