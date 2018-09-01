@@ -238,6 +238,13 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
+  // getSoundSystem
+  //-------------------------------------------------------------------------
+  public SoundSystem getSoundSystem() {
+    return(m_soundSystem);
+  }
+
+  //-------------------------------------------------------------------------
   // getViews
   //-------------------------------------------------------------------------
   @Override
@@ -267,13 +274,6 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   public void placeBet(PlayerIds playerId) {
     m_betSystem.placeBet(playerId);
-  }
-
-  //-------------------------------------------------------------------------
-  // playSound
-  //-------------------------------------------------------------------------
-  public void playSound(int... soundResourceIds) {
-    m_soundSystem.play(soundResourceIds);
   }
 
   //-------------------------------------------------------------------------

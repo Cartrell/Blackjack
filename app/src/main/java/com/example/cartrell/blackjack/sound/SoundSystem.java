@@ -21,6 +21,7 @@ public class SoundSystem {
   private AudioManager m_audioManager;
   private MediaPlayer.OnCompletionListener m_mediaPlayerCompletionListener;
   private AudioManager.OnAudioFocusChangeListener m_audioFocusChangeListener;
+  private SoundSystem.OnSoundCompleteListener m_soundSystemCompleteListener;
 
   //=========================================================================
   // public
@@ -43,6 +44,13 @@ public class SoundSystem {
 
     initMediaPlayerCompleteListener();
     initAudioFocusChangeListener();
+  }
+
+  //-----------------------------------------------------------------------------------
+  // getOnSoundCompleteListener
+  //-----------------------------------------------------------------------------------
+  public SoundSystem.OnSoundCompleteListener getOnSoundCompleteListener() {
+    return(m_soundSystemCompleteListener);
   }
 
   //-------------------------------------------------------------------------
@@ -71,6 +79,21 @@ public class SoundSystem {
     } else if (request == AudioManager.AUDIOFOCUS_REQUEST_FAILED) {
       releaseMediaPlayer();
     }
+  }
+
+  //-------------------------------------------------------------------------
+  // play
+  //-------------------------------------------------------------------------
+  public void play(OnSoundCompleteListener onSoundCompleteListener, int... soundResourceIds) {
+    setOnSoundCompleteListener(onSoundCompleteListener);
+    play(soundResourceIds);
+  }
+
+  //-----------------------------------------------------------------------------------
+  // setOnSoundCompleteListener
+  //-----------------------------------------------------------------------------------
+  public void setOnSoundCompleteListener(SoundSystem.OnSoundCompleteListener listener) {
+    m_soundSystemCompleteListener = listener;
   }
 
   //=========================================================================
@@ -107,10 +130,13 @@ public class SoundSystem {
       }
     };
   }
+
   //-----------------------------------------------------------------------------------
   // initMediaPlayerCompleteListener
   //-----------------------------------------------------------------------------------
   private void initMediaPlayerCompleteListener() {
+    final SoundSystem thisSoundSystem = this;
+
     m_mediaPlayerCompletionListener = new MediaPlayer.OnCompletionListener() {
 
       //-------------------------------------------------------------------------------
@@ -119,6 +145,10 @@ public class SoundSystem {
       @Override
       public void onCompletion(MediaPlayer mediaPlayer) {
         releaseMediaPlayer();
+
+        if (m_soundSystemCompleteListener != null) {
+          m_soundSystemCompleteListener.onComplete(thisSoundSystem);
+        }
       }
     };
   }
@@ -135,5 +165,12 @@ public class SoundSystem {
     if (m_audioManager != null) {
       m_audioManager.abandonAudioFocus(m_audioFocusChangeListener);
     }
+  }
+
+  //=========================================================================
+  // OnSoundCompleteListener
+  //=========================================================================
+  public interface OnSoundCompleteListener {
+    void onComplete(SoundSystem soundSystem);
   }
 }

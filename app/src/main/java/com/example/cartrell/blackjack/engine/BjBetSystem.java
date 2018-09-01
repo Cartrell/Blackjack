@@ -189,7 +189,7 @@ class BjBetSystem {
       //-------------------------------------------------------------------------
       @Override
       public void onClick(View view) {
-        m_engine.playSound(R.raw.snd_bet_remove);
+        m_engine.getSoundSystem().play(R.raw.snd_bet_remove);
         removePlayersBets();
         showBetChipButtons();
         updateDealButtonEnability();

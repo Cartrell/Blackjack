@@ -12,6 +12,7 @@ import com.example.cartrell.blackjack.cards.Deck;
 import com.example.cartrell.blackjack.players.BasePlayerData;
 import com.example.cartrell.blackjack.players.PlayerData;
 import com.example.cartrell.blackjack.players.PlayerIds;
+import com.example.cartrell.blackjack.sound.SoundSystem;
 import com.example.cartrell.blackjack.utils.CalculateScore;
 import com.example.cartrell.blackjack.utils.CardsMatcher;
 import com.example.cartrell.blackjack.utils.CardsMover;
@@ -86,6 +87,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_baseCardImageChildIndex = m_engine.getIndexOf(m_engine.getViews().getDeckImage());
     m_playSettingsManager = new BjPlaySettingsManager(m_engine);
     initGameButtons();
+    initDealerBustSoundCompleteListener();
   }
 
   //-------------------------------------------------------------------------
@@ -183,9 +185,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
       }
     }
 
-    m_engine.playSound(R.raw.snd_dealer_bust1, R.raw.snd_dealer_bust2);
-
-    endRound();
+    m_engine.getSoundSystem().play(m_onDealerBustSoundCompleteListener,
+      R.raw.snd_dealer_bust1, R.raw.snd_dealer_bust2);
   }
 
   //-------------------------------------------------------------------------
@@ -237,7 +238,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_state = BjPlayStates.DOUBLE;
     drawCard(m_turnPlayerId, true, 0, true);
 
-    m_engine.playSound(R.raw.snd_double_down);
+    m_engine.getSoundSystem().play(R.raw.snd_double_down);
   }
 
   //-------------------------------------------------------------------------
@@ -246,7 +247,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private void beginHit() {
     m_state = BjPlayStates.HIT;
     drawCard(m_turnPlayerId, true, 0, true);
-    m_engine.playSound(R.raw.snd_hit);
+    m_engine.getSoundSystem().play(R.raw.snd_hit);
   }
 
   //-------------------------------------------------------------------------
@@ -345,7 +346,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   //-------------------------------------------------------------------------
   private void beginPlayerStand() {
     beginNextTurnPlayer();
-    m_engine.playSound(R.raw.snd_stand);
+    m_engine.getSoundSystem().play(R.raw.snd_stand);
   }
 
   //-------------------------------------------------------------------------
@@ -412,7 +413,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_wereAcesSplit = wereAcesSplit();
     moveTopCardFromTo(turnPlayerData, splitPlayerData);
 
-    m_engine.playSound(R.raw.snd_split1, R.raw.snd_split2);
+    m_engine.getSoundSystem().play(R.raw.snd_split1, R.raw.snd_split2);
   }
 
   //-------------------------------------------------------------------------
@@ -429,7 +430,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     playerData.setBetValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
 
-    m_engine.playSound(R.raw.snd_surrender1, R.raw.snd_surrender2);
+    m_engine.getSoundSystem().play(R.raw.snd_surrender1, R.raw.snd_surrender2);
 
     beginNextTurnPlayer();
   }
@@ -479,7 +480,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     }
 
     if (numBjs > 0) {
-      m_engine.playSound(R.raw.snd_auto_win1, R.raw.snd_auto_win2, R.raw.snd_auto_win3,
+      m_engine.getSoundSystem().play(R.raw.snd_auto_win1, R.raw.snd_auto_win2, R.raw.snd_auto_win3,
         R.raw.snd_auto_win4);
     }
   }
@@ -680,6 +681,23 @@ class BjPlaySystem implements ICardsMoverCallbacks {
       PlayerData playerData = (PlayerData)getTurnPlayerData();
       playerData.setTurnIndicatorVisible(false);
     }
+  }
+
+  //-------------------------------------------------------------------------
+  // initDealerBustSoundCompleteListener
+  //-------------------------------------------------------------------------
+  private void initDealerBustSoundCompleteListener() {
+    m_onDealerBustSoundCompleteListener = new SoundSystem.OnSoundCompleteListener() {
+
+      //-------------------------------------------------------------------------
+      // onComplete
+      //-------------------------------------------------------------------------
+      @Override
+      public void onComplete(SoundSystem soundSystem) {
+        m_engine.getSoundSystem().setOnSoundCompleteListener(null);
+        endRound();
+      }
+    };
   }
 
   //-------------------------------------------------------------------------
