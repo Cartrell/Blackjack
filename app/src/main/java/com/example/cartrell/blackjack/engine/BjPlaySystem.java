@@ -266,7 +266,6 @@ class BjPlaySystem implements ICardsMoverCallbacks {
       if (isDealersTurn()) {
         endRound();
       } else {
-        //not currently the
         beginDealerTurn();
       }
     }
