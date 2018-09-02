@@ -8,7 +8,6 @@ class BjPlaySettingsManager {
   //=========================================================================
   // members
   //=========================================================================
-  //private EnumSet<BjSettingsFlags> m_settingsFlags;
   private IBjEngine m_engine;
 
   //=========================================================================
@@ -20,22 +19,7 @@ class BjPlaySettingsManager {
   //-------------------------------------------------------------------------
   BjPlaySettingsManager(IBjEngine engine) {
     m_engine = engine;
-    //m_settingsFlags = EnumSet.noneOf(BjSettingsFlags.class);
   }
-
-  //-------------------------------------------------------------------------
-  // add
-  //-------------------------------------------------------------------------
-  /*void add(BjSettingsFlags flags) {
-    m_settingsFlags.add(flags);
-  }*/
-
-  //-------------------------------------------------------------------------
-  // clear
-  //-------------------------------------------------------------------------
-  /*void clear() {
-    m_settingsFlags.clear();
-  }*/
 
   //-------------------------------------------------------------------------
   // update
@@ -45,22 +29,6 @@ class BjPlaySettingsManager {
     updateForPlayers();
     updateGamesWon();
   }
-
-  //=========================================================================
-  // enums
-  //=========================================================================
-
-  //-------------------------------------------------------------------------
-  // BjSettingsFlags
-  //-------------------------------------------------------------------------
-  /*enum BjSettingsFlags {
-    GAMES_PLAYED,
-    NUM_BJS,
-    NUM_SPLITS_WON,
-    NUM_SURRENDERS,
-    NUM_CHARLIES,
-    NUM_DOUBLES_WON
-  }*/
 
   //=========================================================================
   // private
@@ -98,11 +66,11 @@ class BjPlaySettingsManager {
   }
 
   //-------------------------------------------------------------------------
-  // incNumCharlies
+  // incNumBlitzs
   //-------------------------------------------------------------------------
-  private void incNumCharlies() {
+  private void incNumBlitzs() {
     Settings settings = m_engine.getSettings();
-    settings.setNumCharlies(settings.getNumCharlies() + 1);
+    settings.setNumBlitzs(settings.getNumBlitzs() + 1);
   }
 
   //-------------------------------------------------------------------------
@@ -153,8 +121,8 @@ class BjPlaySettingsManager {
         incNumSurrenders();
       }
 
-      if (playerData.getIsCharlieWin()) {
-        incNumCharlies();
+      if (playerData.getIsBlitzWin()) {
+        incNumBlitzs();
       }
 
       if (playerData.getHasBlackjack()) {

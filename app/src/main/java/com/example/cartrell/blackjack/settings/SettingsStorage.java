@@ -36,7 +36,7 @@ public class SettingsStorage {
     targetSettings.setNumBj(sharedPreferences.getInt("numBj", 0));
     targetSettings.setNumSplits(sharedPreferences.getInt("numSplits", 0));
     targetSettings.setNumSurrenders(sharedPreferences.getInt("numSurrenders", 0));
-    targetSettings.setNumCharlies(sharedPreferences.getInt("numCharlies", 0));
+    targetSettings.setNumBlitzs(sharedPreferences.getInt("numBlitzs", 0));
   }
 
   //-------------------------------------------------------------------------
@@ -53,7 +53,7 @@ public class SettingsStorage {
     editor.putInt("numBj", sourceSettings.getNumBj());
     editor.putInt("numSplits", sourceSettings.getNumSplits());
     editor.putInt("numSurrenders", sourceSettings.getNumSurrenders());
-    editor.putInt("numCharlies", sourceSettings.getNumCharlies());
+    editor.putInt("numBlitzs", sourceSettings.getNumBlitzs());
     editor.apply();
   }
 

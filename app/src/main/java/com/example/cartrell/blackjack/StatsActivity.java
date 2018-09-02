@@ -148,7 +148,7 @@ public class StatsActivity extends AppCompatActivity {
     setTextView(m_binding.txtTotalGamesWon, m_settings.getTotalGamesWon());
     setTextView(m_binding.txtNumBj, m_settings.getNumBj());
     setTextView(m_binding.txtNumSplits, m_settings.getNumSplits());
-    setTextView(m_binding.txtNumCharlies, m_settings.getNumCharlies());
+    setTextView(m_binding.txtNumBlitzs, m_settings.getNumBlitzs());
     setTextView(m_binding.txtNumDoubles, m_settings.getNumDoubles());
     setTextView(m_binding.txtNumSurrenders, m_settings.getNumSurrenders());
   }

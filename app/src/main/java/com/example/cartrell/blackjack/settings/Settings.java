@@ -20,7 +20,7 @@ public class Settings implements Parcelable {
   private int m_numBj;
   private int m_numSplits;
   private int m_numSurrenders;
-  private int m_numCharlies;
+  private int m_numBlitzs;
   private int m_numDoubles;
 
   //=========================================================================
@@ -90,10 +90,10 @@ public class Settings implements Parcelable {
   }
 
   //-------------------------------------------------------------------------
-  // getNumCharlies
+  // getNumBlitzs
   //-------------------------------------------------------------------------
-  public int getNumCharlies() {
-    return(m_numCharlies);
+  public int getNumBlitzs() {
+    return(m_numBlitzs);
   }
 
   //-------------------------------------------------------------------------
@@ -136,7 +136,7 @@ public class Settings implements Parcelable {
   //-------------------------------------------------------------------------
   public void reset() {
     m_credits = m_totalGamesPlayed = m_totalGamesWon = m_numBj = m_numSplits = m_numSurrenders =
-      m_numCharlies = m_numDoubles = 0;
+      m_numBlitzs = m_numDoubles = 0;
   }
 
   //-------------------------------------------------------------------------
@@ -168,10 +168,10 @@ public class Settings implements Parcelable {
   }
 
   //-------------------------------------------------------------------------
-  // setNumCharlies
+  // setNumBlitzs
   //-------------------------------------------------------------------------
-  public void setNumCharlies(int value) {
-    m_numCharlies = value;
+  public void setNumBlitzs(int value) {
+    m_numBlitzs = value;
   }
 
   //-------------------------------------------------------------------------
@@ -222,7 +222,7 @@ public class Settings implements Parcelable {
     out.writeInt(m_numBj);
     out.writeInt(m_numSplits);
     out.writeInt(m_numSurrenders);
-    out.writeInt(m_numCharlies);
+    out.writeInt(m_numBlitzs);
     out.writeInt(m_numDoubles);
   }
 
@@ -242,7 +242,7 @@ public class Settings implements Parcelable {
     m_numBj = in.readInt();
     m_numSplits = in.readInt();
     m_numSurrenders = in.readInt();
-    m_numCharlies = in.readInt();
+    m_numBlitzs = in.readInt();
     m_numDoubles = in.readInt();
   }
 }

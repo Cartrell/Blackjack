@@ -27,8 +27,8 @@
     <!-- amount ratio paid if player pushes -->
     <string name="winRatioPush">0:1</string>
 
-    <!-- amount ratio paid if player gets charlie win -->
-    <string name="winRatioCharlie">5:1</string>
+    <!-- amount ratio paid if player gets blitz win -->
+    <string name="winRatioBlitz">5:1</string>
 
     <!-- amount ratio paid if player gets suited blackjack -->
     <string name="winRatioThunderjack">4:1</string>

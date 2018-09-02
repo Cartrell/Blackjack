@@ -17,7 +17,7 @@ public class PlayerData extends BasePlayerData {
   private int m_betValue;
   private int m_origBetValue;
   private boolean m_isDoubleDown;
-  private boolean m_isCharlieWin;
+  private boolean m_isBlitzWin;
   private boolean m_hasSurrendered;
   private boolean m_hasSplit;
   private boolean m_isNormalWin;
@@ -64,10 +64,10 @@ public class PlayerData extends BasePlayerData {
   }
 
   //-------------------------------------------------------------------------
-  // getIsCharlieWin
+  // getIsBlitzWin
   //-------------------------------------------------------------------------
-  public boolean getIsCharlieWin() {
-    return(m_isCharlieWin);
+  public boolean getIsBlitzWin() {
+    return(m_isBlitzWin);
   }
 
   //-------------------------------------------------------------------------
@@ -113,7 +113,7 @@ public class PlayerData extends BasePlayerData {
     return(m_origBetValue > 0 &&
       !getHasBlackjack() &&
       !getIsBust() &&
-      !getIsCharlieWin() &&
+      !getIsBlitzWin() &&
       !getHasSurrendered());
   }
 
@@ -131,7 +131,7 @@ public class PlayerData extends BasePlayerData {
   @Override
   public void resetStatus() {
     super.resetStatus();
-    m_isDoubleDown = m_isCharlieWin = m_hasSurrendered = m_hasSplit = m_isNormalWin = m_isPush = false;
+    m_isDoubleDown = m_isBlitzWin = m_hasSurrendered = m_hasSplit = m_isNormalWin = m_isPush = false;
   }
 
   //-------------------------------------------------------------------------
@@ -179,19 +179,10 @@ public class PlayerData extends BasePlayerData {
   }
 
   //-------------------------------------------------------------------------
-  // setOrigBetValue
+  // setBlitzWin
   //-------------------------------------------------------------------------
-  public void setOrigBetValue(int value) {
-    m_origBetValue = Math.max(0, value);
-    HandData handData = (HandData)getHandData();
-    handData.setBetValue(m_origBetValue);
-  }
-
-  //-------------------------------------------------------------------------
-  // setCharlieWin
-  //-------------------------------------------------------------------------
-  public void setCharlieWin() {
-    m_isCharlieWin = true;
+  public void setBlitzWin() {
+    m_isBlitzWin = true;
   }
 
   //-------------------------------------------------------------------------
@@ -213,6 +204,15 @@ public class PlayerData extends BasePlayerData {
   //-------------------------------------------------------------------------
   public void setNormalWin() {
     m_isNormalWin = true;
+  }
+
+  //-------------------------------------------------------------------------
+  // setOrigBetValue
+  //-------------------------------------------------------------------------
+  public void setOrigBetValue(int value) {
+    m_origBetValue = Math.max(0, value);
+    HandData handData = (HandData)getHandData();
+    handData.setBetValue(m_origBetValue);
   }
 
   //-------------------------------------------------------------------------

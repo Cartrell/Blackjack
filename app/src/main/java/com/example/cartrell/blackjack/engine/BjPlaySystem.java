@@ -302,17 +302,17 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   //-------------------------------------------------------------------------
   private void beginPlayerBlitzWin() {
     PlayerData playerData = (PlayerData)getTurnPlayerData();
-    playerData.setCharlieWin();
+    playerData.setBlitzWin();
     playerData.setResultImage(R.drawable.result_label_blitz);
     playerData.setResultImageVisible(true);
     playerData.setBetValueVisible(false);
 
-    int creditsWon = calcCreditsWon(m_turnPlayerId, m_engine.getStringResource(R.string.winRatioCharlie));
+    int creditsWon = calcCreditsWon(m_turnPlayerId, m_engine.getStringResource(R.string.winRatioBlitz));
     playerData.setAmountWonValue(creditsWon);
     playerData.setAmountWonValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
 
-    playBjCharlieSound();
+    playBjBlitzSound();
     beginNextTurnPlayer();
   }
 
@@ -525,7 +525,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     }
 
     if (numBjs > 0) {
-      playBjCharlieSound();
+      playBjBlitzSound();
     }
   }
 
@@ -860,9 +860,9 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   }
 
   //-------------------------------------------------------------------------
-  // playBjCharlieSound
+  // playBjBlitzSound
   //-------------------------------------------------------------------------
-  private void playBjCharlieSound() {
+  private void playBjBlitzSound() {
     m_engine.getSoundSystem().play(R.raw.snd_auto_win1, R.raw.snd_auto_win2, R.raw.snd_auto_win3,
       R.raw.snd_auto_win4);
   }
