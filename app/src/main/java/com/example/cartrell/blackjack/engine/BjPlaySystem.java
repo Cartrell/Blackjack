@@ -42,6 +42,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private CardsMover m_cardsMover;
   private CardsMatcher m_cardsMatcher;
   private SoundSystem.OnSoundCompleteListener m_onDealerBustSoundCompleteListener;
+  private BjWinSound m_winSound;
   private PlayerIds m_turnPlayerId;
   private int m_baseCardImageChildIndex;
   private int m_nextCardImageChildIndex;
@@ -87,6 +88,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
       m_engine.getIntegerResource(R.integer.maxCardsPerHand));
     m_baseCardImageChildIndex = m_engine.getIndexOf(m_engine.getViews().getDeckImage());
     m_playSettingsManager = new BjPlaySettingsManager(m_engine);
+    m_winSound = new BjWinSound(m_engine);
     initGameButtons();
     initDealerBustSoundCompleteListener();
   }
@@ -877,8 +879,9 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     int startCredits = m_engine.getCreditsAtStartOfRound();
 
     if (endCredits > startCredits) {
-      m_engine.getSoundSystem().play(R.raw.snd_win01_12);
+      m_winSound.play();
     } else if (endCredits < startCredits) {
+      m_winSound.retract();
       if (m_engine.getDealerData().getHasBlackjack()) {
         m_engine.getSoundSystem().play(R.raw.snd_dealer_bj);
       }
