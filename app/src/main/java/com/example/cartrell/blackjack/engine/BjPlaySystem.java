@@ -510,11 +510,12 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private void checkPlayersForBlackjack() {
     Iterator<PlayerIds>iterator = m_playerIdsOrder.iterator();
     int numBjs = 0;
+    int numTjs = 0;
     while (iterator.hasNext()) {
       PlayerIds playerId = iterator.next();
       BasePlayerData playerData = getPlayerData(playerId);
       if (m_cardsMatcher.doesPlayerHaveThunderjack(playerData, m_engine)) {
-        numBjs++;
+        numTjs++;
         beginPlayerThunderjack(playerId);
         iterator.remove();
       } else if (m_cardsMatcher.doesPlayerHaveBlackjack(playerData, m_engine)) {
@@ -524,7 +525,9 @@ class BjPlaySystem implements ICardsMoverCallbacks {
       }
     }
 
-    if (numBjs > 0) {
+    if (numTjs > 0) {
+      m_engine.getSoundSystem().play(R.raw.snd_thunderjack);
+    } else if (numBjs > 0) {
       playBjBlitzSound();
     }
   }
