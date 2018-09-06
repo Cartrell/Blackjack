@@ -9,6 +9,7 @@ import com.example.cartrell.blackjack.R;
 import com.example.cartrell.blackjack.players.BasePlayerData;
 import com.example.cartrell.blackjack.players.PlayerData;
 import com.example.cartrell.blackjack.players.PlayerIds;
+import com.example.cartrell.blackjack.sound.SoundChannel;
 
 import java.util.Iterator;
 import java.util.List;
@@ -27,6 +28,7 @@ class BjBetSystem {
   private IBjEngine m_engine;
   private String m_selectedChipId;
   private boolean m_restorePlayersOnFirstBet;
+  private SoundChannel m_sndChBetAdd;
 
   //=========================================================================
   // package-private
@@ -164,7 +166,7 @@ class BjBetSystem {
       //-------------------------------------------------------------------------
       @Override
       public void onClick(View view) {
-        m_engine.getSoundSystem().play(R.raw.snd_bet_remove);
+        m_engine.getSoundSystem().playMedia(R.raw.snd_bet_remove);
         removePlayersBets();
         showBetChipButtons();
         updateDealButtonEnability();
@@ -250,7 +252,8 @@ class BjBetSystem {
       return;
     }
 
-    m_engine.getSoundSystem().play(R.raw.snd_bet_add);
+    m_sndChBetAdd = m_engine.getSoundSystem().playSound(m_sndChBetAdd, R.raw.snd_bet_add, 1,
+      true);
 
     int betChipValue = betChipData.getValue();
     m_engine.setPlayerBet(playerId, playerData.getOrigBetValue() + betChipValue, true);

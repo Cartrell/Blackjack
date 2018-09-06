@@ -12,6 +12,7 @@ import com.example.cartrell.blackjack.cards.Deck;
 import com.example.cartrell.blackjack.players.BasePlayerData;
 import com.example.cartrell.blackjack.players.PlayerData;
 import com.example.cartrell.blackjack.players.PlayerIds;
+import com.example.cartrell.blackjack.sound.SoundChannel;
 import com.example.cartrell.blackjack.sound.SoundSystem;
 import com.example.cartrell.blackjack.utils.CalculateScore;
 import com.example.cartrell.blackjack.utils.CardsMatcher;
@@ -48,6 +49,19 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private int m_nextCardImageChildIndex;
   private int m_totalCreditsWonOnRound;
   private boolean m_wereAcesSplit;
+  private SoundChannel m_sndChHit;
+  private SoundChannel m_sndChStand;
+  private SoundChannel m_sndChSplit1;
+  private SoundChannel m_sndChSplit2;
+  private SoundChannel m_sndChSurrender1;
+  private SoundChannel m_sndChSurrender2;
+  private SoundChannel m_sndChBust;
+  private SoundChannel m_sndChThunderjack;
+  private SoundChannel m_sndChDealerBj;
+  private SoundChannel m_sndChAutoWin1;
+  private SoundChannel m_sndChAutoWin2;
+  private SoundChannel m_sndChAutoWin3;
+  private SoundChannel m_sndChAutoWin4;
 
   //=========================================================================
   // public
@@ -189,7 +203,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
       }
     }
 
-    m_engine.getSoundSystem().play(m_onDealerBustSoundCompleteListener,
+    m_engine.getSoundSystem().playMedia(m_onDealerBustSoundCompleteListener,
       R.raw.snd_dealer_bust1, R.raw.snd_dealer_bust2);
   }
 
@@ -242,7 +256,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_state = BjPlayStates.DOUBLE;
     drawCard(m_turnPlayerId, true, 0, true);
 
-    m_engine.getSoundSystem().play(R.raw.snd_double_down);
+    SoundChannel m_sndChDouble = m_engine.getSoundSystem().playSound(null,
+      R.raw.snd_double_down, 1, true);
   }
 
   //-------------------------------------------------------------------------
@@ -251,7 +266,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private void beginHit() {
     m_state = BjPlayStates.HIT;
     drawCard(m_turnPlayerId, true, 0, true);
-    m_engine.getSoundSystem().play(R.raw.snd_hit);
+    m_sndChHit = m_engine.getSoundSystem().playSound(m_sndChHit, R.raw.snd_hit, 1, true);
   }
 
   //-------------------------------------------------------------------------
@@ -350,7 +365,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   // beginPlayerStand
   //-------------------------------------------------------------------------
   private void beginPlayerStand() {
-    m_engine.getSoundSystem().play(R.raw.snd_stand);
+    m_sndChStand = m_engine.getSoundSystem().playSound(m_sndChStand, R.raw.snd_stand, 1, true);
     beginNextTurnPlayer();
   }
 
@@ -418,7 +433,13 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_wereAcesSplit = wereAcesSplit();
     moveTopCardFromTo(turnPlayerData, splitPlayerData);
 
-    m_engine.getSoundSystem().play(R.raw.snd_split1, R.raw.snd_split2);
+    if (Math.random() > 0.5) {
+      m_sndChSplit1 = m_engine.getSoundSystem().playSound(m_sndChSplit1, R.raw.snd_split1,
+        1, true);
+    } else {
+      m_sndChSplit2 = m_engine.getSoundSystem().playSound(m_sndChSplit2, R.raw.snd_split1,
+        1, true);
+    }
   }
 
   //-------------------------------------------------------------------------
@@ -435,7 +456,13 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     playerData.setBetValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
 
-    m_engine.getSoundSystem().play(R.raw.snd_surrender1, R.raw.snd_surrender2);
+    if (Math.random() > 0.5) {
+      m_sndChSurrender1 = m_engine.getSoundSystem().playSound(m_sndChSurrender1, R.raw.snd_surrender1,
+        1, true);
+    } else {
+      m_sndChSurrender2 = m_engine.getSoundSystem().playSound(m_sndChSurrender2, R.raw.snd_surrender2,
+        1, true);
+    }
 
     beginNextTurnPlayer();
   }
@@ -444,7 +471,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   // beginTurnPlayerBust
   //-------------------------------------------------------------------------
   private void beginTurnPlayerBust() {
-    m_engine.getSoundSystem().play(R.raw.snd_bust);
+    m_sndChBust = m_engine.getSoundSystem().playSound(m_sndChBust, R.raw.snd_bust, 1, true);
     BasePlayerData playerData = getTurnPlayerData();
     playerData.setBust();
     playerData.setResultImage(R.drawable.result_label_bust);
@@ -527,7 +554,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     }
 
     if (numTjs > 0) {
-      m_engine.getSoundSystem().play(R.raw.snd_thunderjack);
+      m_sndChThunderjack = m_engine.getSoundSystem().playSound(m_sndChThunderjack,
+        R.raw.snd_thunderjack,1, true);
     } else if (numBjs > 0) {
       playBjBlitzSound();
     }
@@ -705,7 +733,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
       //-------------------------------------------------------------------------
       @Override
       public void onComplete(SoundSystem soundSystem) {
-        m_engine.getSoundSystem().setOnSoundCompleteListener(null);
+        m_engine.getSoundSystem().setSoundCompleteListener(null);
         endRound();
       }
     };
@@ -867,8 +895,20 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   // playBjBlitzSound
   //-------------------------------------------------------------------------
   private void playBjBlitzSound() {
-    m_engine.getSoundSystem().play(R.raw.snd_auto_win1, R.raw.snd_auto_win2, R.raw.snd_auto_win3,
-      R.raw.snd_auto_win4);
+    int index = (int)(Math.random() * 4);
+    if (index == 0) {
+      m_sndChAutoWin1 = m_engine.getSoundSystem().playSound(m_sndChAutoWin1, R.raw.snd_auto_win1,
+        1, true);
+    } else if (index == 1) {
+      m_sndChAutoWin2 = m_engine.getSoundSystem().playSound(m_sndChAutoWin2, R.raw.snd_auto_win1,
+        1, true);
+    } else if (index == 2) {
+      m_sndChAutoWin3 = m_engine.getSoundSystem().playSound(m_sndChAutoWin3, R.raw.snd_auto_win1,
+        1, true);
+    } else if (index == 3) {
+      m_sndChAutoWin4 = m_engine.getSoundSystem().playSound(m_sndChAutoWin4, R.raw.snd_auto_win1,
+        1, true);
+    }
   }
 
   //-------------------------------------------------------------------------
@@ -883,7 +923,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     } else if (endCredits < startCredits) {
       m_winSound.retract();
       if (m_engine.getDealerData().getHasBlackjack()) {
-        m_engine.getSoundSystem().play(R.raw.snd_dealer_bj);
+        m_sndChDealerBj = m_engine.getSoundSystem().playSound(m_sndChDealerBj,
+          R.raw.snd_dealer_bj, 1, true);
       }
     }
   }

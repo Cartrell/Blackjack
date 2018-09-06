@@ -28,7 +28,7 @@ final class BjWinSound {
       return;
     }
 
-    m_soundSystem.play(m_soundResourceIds[m_soundIndex]);
+    m_soundSystem.load(m_soundResourceIds[m_soundIndex], 1, true);
     m_soundIndex = (m_soundIndex + 1) % m_soundResourceIds.length;
   }
 

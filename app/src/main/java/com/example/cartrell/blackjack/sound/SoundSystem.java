@@ -1,11 +1,7 @@
 package com.example.cartrell.blackjack.sound;
 
 import android.content.Context;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.util.Log;
-
-import java.util.Random;
 
 public class SoundSystem {
   //=========================================================================
@@ -16,12 +12,8 @@ public class SoundSystem {
   //=========================================================================
   // members
   //=========================================================================
-  private Context m_context;
-  private MediaPlayer m_mediaPlayer;
-  private AudioManager m_audioManager;
-  private MediaPlayer.OnCompletionListener m_mediaPlayerCompletionListener;
-  private AudioManager.OnAudioFocusChangeListener m_audioFocusChangeListener;
-  private SoundSystem.OnSoundCompleteListener m_soundSystemCompleteListener;
+  private SoundPoolManager m_soundPoolManager;
+  private MediaPlayerManager m_mediaPlayerManager;
 
   //=========================================================================
   // public
@@ -30,150 +22,85 @@ public class SoundSystem {
   //-------------------------------------------------------------------------
   // ctor
   //-------------------------------------------------------------------------
-  public SoundSystem(Context context) {
-    m_context = context;
-    if (m_context == null) {
+  public SoundSystem(Context context, int maxSoundPoolStreams) {
+    if (context == null) {
       Log.i(LOG_NAME, "ctor. Context parameter is required");
       return;
     }
 
-    m_audioManager = (AudioManager)m_context.getSystemService(Context.AUDIO_SERVICE);
-    if (m_audioManager == null) {
-      Log.i(LOG_NAME, "ctor. Unable to obtain audio manager");
-    }
-
-    initMediaPlayerCompleteListener();
-    initAudioFocusChangeListener();
+    m_soundPoolManager = new SoundPoolManager(context, maxSoundPoolStreams);
+    m_mediaPlayerManager = new MediaPlayerManager(this, context);
   }
 
   //-----------------------------------------------------------------------------------
-  // getOnSoundCompleteListener
+  // getSoundCompleteListener
   //-----------------------------------------------------------------------------------
-  public SoundSystem.OnSoundCompleteListener getOnSoundCompleteListener() {
-    return(m_soundSystemCompleteListener);
+  public SoundSystem.OnSoundCompleteListener getSoundCompleteListener() {
+    return(m_mediaPlayerManager.getSoundCompleteListener());
   }
 
   //-------------------------------------------------------------------------
-  // play
+  // load
   //-------------------------------------------------------------------------
-  public void play(int... soundResourceIds) {
-    if (m_audioManager == null) {
-      return;
-    }
-
-    //stop any currently playing media player first
-    releaseMediaPlayer();
-
-    //if more than one sound resource id is specified, pick a random one
-    Random rnd = new Random();
-    int index = rnd.nextInt(soundResourceIds.length);
-
-    m_mediaPlayer = MediaPlayer.create(m_context, soundResourceIds[index]);
-    m_mediaPlayer.setOnCompletionListener(m_mediaPlayerCompletionListener);
-
-    int request = m_audioManager.requestAudioFocus(m_audioFocusChangeListener,
-      AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
-
-    if (request == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-      m_mediaPlayer.start();
-    } else if (request == AudioManager.AUDIOFOCUS_REQUEST_FAILED) {
-      releaseMediaPlayer();
-    }
+  public SoundChannel load(int soundResourceId, int priority, boolean autoPlay) {
+    return(m_soundPoolManager.load(soundResourceId, priority, autoPlay));
   }
 
   //-------------------------------------------------------------------------
-  // play
+  // playSound
   //-------------------------------------------------------------------------
-  public void play(OnSoundCompleteListener onSoundCompleteListener, int... soundResourceIds) {
-    setOnSoundCompleteListener(onSoundCompleteListener);
-    play(soundResourceIds);
+  public SoundChannel playSound(SoundChannel channel,
+  int soundResourceId, int priority, boolean autoPlay) {
+    return(m_soundPoolManager.play(channel, soundResourceId, priority, autoPlay));
+  }
+
+  //-------------------------------------------------------------------------
+  // playMedia
+  //-------------------------------------------------------------------------
+  public void playMedia(int... soundResourceIds) {
+    m_mediaPlayerManager.play(soundResourceIds);
+  }
+
+  //-------------------------------------------------------------------------
+  // playMedia
+  //-------------------------------------------------------------------------
+  public void playMedia(OnSoundCompleteListener onSoundCompleteListener, int... soundResourceIds) {
+    setSoundCompleteListener(onSoundCompleteListener);
+    m_mediaPlayerManager.play(soundResourceIds);
   }
 
   //-----------------------------------------------------------------------------------
-  // setOnSoundCompleteListener
+  // setSoundCompleteListener
   //-----------------------------------------------------------------------------------
-  public void setOnSoundCompleteListener(SoundSystem.OnSoundCompleteListener listener) {
-    m_soundSystemCompleteListener = listener;
+  public void setSoundCompleteListener(SoundSystem.OnSoundCompleteListener listener) {
+    m_mediaPlayerManager.setSoundCompleteListener(listener);
   }
 
   //-----------------------------------------------------------------------------------
   // uninit
   //-----------------------------------------------------------------------------------
   public void uninit() {
-    setOnSoundCompleteListener(null);
-    releaseMediaPlayer();
-    m_audioManager = null;
-    m_context = null;
-  }
-
-  //=========================================================================
-  // private
-  //=========================================================================
-
-  //-----------------------------------------------------------------------------------
-  // initAudioFocusChangeListener
-  //-----------------------------------------------------------------------------------
-  private void initAudioFocusChangeListener() {
-    m_audioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
-
-      //-------------------------------------------------------------------------------
-      // onAudioFocusChange
-      //-------------------------------------------------------------------------------
-      @Override
-      public void onAudioFocusChange(int focusChange) {
-        switch (focusChange) {
-          case AudioManager.AUDIOFOCUS_GAIN:
-          case AudioManager.AUDIOFOCUS_GAIN_TRANSIENT:
-            m_mediaPlayer.start();
-            break;
-
-          case AudioManager.AUDIOFOCUS_LOSS:
-            releaseMediaPlayer();
-            break;
-
-          case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-          case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-            m_mediaPlayer.pause();
-            m_mediaPlayer.seekTo(0);
-            break;
-        }
-      }
-    };
+    uninitMediaPlayerManager();
+    uninitSoundPoolManager();
   }
 
   //-----------------------------------------------------------------------------------
-  // initMediaPlayerCompleteListener
+  // uninitMediaPlayerManager
   //-----------------------------------------------------------------------------------
-  private void initMediaPlayerCompleteListener() {
-    final SoundSystem thisSoundSystem = this;
-
-    m_mediaPlayerCompletionListener = new MediaPlayer.OnCompletionListener() {
-
-      //-------------------------------------------------------------------------------
-      // onCompletion
-      //-------------------------------------------------------------------------------
-      @Override
-      public void onCompletion(MediaPlayer mediaPlayer) {
-        releaseMediaPlayer();
-
-        if (m_soundSystemCompleteListener != null) {
-          m_soundSystemCompleteListener.onComplete(thisSoundSystem);
-        }
-      }
-    };
-  }
-
-  //-----------------------------------------------------------------------------------
-  // releaseMediaPlayer
-  //-----------------------------------------------------------------------------------
-  private void releaseMediaPlayer() {
-    if (m_mediaPlayer != null) {
-      m_mediaPlayer.release();
-      m_mediaPlayer = null;
+  private void uninitMediaPlayerManager() {
+    if (m_mediaPlayerManager != null) {
+      m_mediaPlayerManager.uninit();
+      m_mediaPlayerManager = null;
     }
+  }
 
-    if (m_audioManager != null) {
-      m_audioManager.abandonAudioFocus(m_audioFocusChangeListener);
+  //-----------------------------------------------------------------------------------
+  // uninitSoundPoolManager
+  //-----------------------------------------------------------------------------------
+  private void uninitSoundPoolManager() {
+    if (m_soundPoolManager != null) {
+      m_soundPoolManager.uninit();
+      m_soundPoolManager = null;
     }
   }
 
@@ -183,4 +110,8 @@ public class SoundSystem {
   public interface OnSoundCompleteListener {
     void onComplete(SoundSystem soundSystem);
   }
+
+  //=========================================================================
+  // private
+  //=========================================================================
 }

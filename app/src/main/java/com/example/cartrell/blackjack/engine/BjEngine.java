@@ -20,6 +20,7 @@ import com.example.cartrell.blackjack.players.PlayerData;
 import com.example.cartrell.blackjack.players.PlayerIds;
 import com.example.cartrell.blackjack.settings.Settings;
 import com.example.cartrell.blackjack.settings.SettingsStorage;
+import com.example.cartrell.blackjack.sound.SoundChannel;
 import com.example.cartrell.blackjack.sound.SoundSystem;
 
 import java.util.ArrayList;
@@ -57,6 +58,9 @@ public class BjEngine implements IBjEngine {
   private int m_betValue;
   private int m_creditsAtStartOfRound;
   private boolean m_atLeastOneRoundPlayed;
+  private SoundChannel m_sndChCardDeal1;
+  private SoundChannel m_sndChCardDeal2;
+  private SoundChannel m_sndChCardDeal3;
 
   //=========================================================================
   // public
@@ -73,7 +77,7 @@ public class BjEngine implements IBjEngine {
     initCardMoveStartListener();
     initDecks();
     initUi();
-    m_soundSystem = new SoundSystem(m_context);
+    m_soundSystem = new SoundSystem(m_context, getIntegerResource(R.integer.maxSoundPoolStreams));
   }
 
   //-------------------------------------------------------------------------
@@ -420,7 +424,17 @@ public class BjEngine implements IBjEngine {
       //-------------------------------------------------------------------------
       @Override
       public void onComplete(BaseHandData baseHandData) {
-        m_soundSystem.play(R.raw.snd_card_deal0, R.raw.snd_card_deal1, R.raw.snd_card_deal2);
+        int index = (int)(Math.random() * 3);
+        if (index == 0) {
+          m_sndChCardDeal1 = m_soundSystem.playSound(m_sndChCardDeal1, R.raw.snd_card_deal0,
+            1, true);
+        } else if (index == 1) {
+          m_sndChCardDeal2 = m_soundSystem.playSound(m_sndChCardDeal2, R.raw.snd_card_deal1,
+            1, true);
+        } else if (index == 2) {
+          m_sndChCardDeal3 = m_soundSystem.playSound(m_sndChCardDeal3, R.raw.snd_card_deal2,
+            1, true);
+        }
       }
     };
   }

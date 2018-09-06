@@ -44,6 +44,7 @@ public class BaseHandData {
   private int m_cardImageWidth;
 
   private ArrayList<Card> m_cards;
+  private ArrayList<View> m_cardImagesBeingAdded;
   private ViewDistributor m_cardsViewDistributor;
   private TextView m_scoreText;
   private ImageView m_resultImage;
@@ -71,6 +72,7 @@ public class BaseHandData {
   Guideline guideCardsBottom, Guideline guideCardsUi, int cardImageWidth, TextView scoreText,
   ImageView resultImage, HashMap<String, Object> extraParams) {
     m_cards = new ArrayList<>();
+    m_cardImagesBeingAdded = new ArrayList<>();
     m_viewGroup = viewGroup;
     m_xDeck = xDeck;
     m_yDeck = yDeck;
@@ -116,6 +118,7 @@ public class BaseHandData {
     }
 
     m_cardsViewDistributor.add(cardImage);
+    m_cardImagesBeingAdded.add(cardImage);
     updateCardPositions(cardsMover, moveStartDelay, moveDuration, startAnimation);
   }
 
@@ -166,6 +169,7 @@ public class BaseHandData {
     }
 
     m_cards.clear();
+    m_cardImagesBeingAdded.clear();
 
     if (m_cardsViewDistributor != null) {
       m_cardsViewDistributor.removeAll();
@@ -254,6 +258,19 @@ public class BaseHandData {
   }
 
   //-------------------------------------------------------------------------
+  // processCardBeingAdded
+  //-------------------------------------------------------------------------
+  private boolean processCardBeingAdded(View cardImage) {
+    int index = m_cardImagesBeingAdded.indexOf(cardImage);
+    if (index == -1) {
+      return(false);
+    }
+
+    m_cardImagesBeingAdded.remove(index);
+    return(true);
+  }
+
+  //-------------------------------------------------------------------------
   // updateCardPositions
   //-------------------------------------------------------------------------
   private void updateCardPositions(CardsMover cardsMover, long moveStartDelay, long moveDuration,
@@ -278,8 +295,10 @@ public class BaseHandData {
         public void onAnimationStart(Animator animation) {
           cardImage.setVisibility(View.VISIBLE);
 
-          if (m_onCardMoveStartListener != null) {
-            m_onCardMoveStartListener.onComplete(thisBaseHandData);
+          if (processCardBeingAdded(cardImage)) {
+            if (m_onCardMoveStartListener != null) {
+              m_onCardMoveStartListener.onComplete(thisBaseHandData);
+            }
           }
         }
       });

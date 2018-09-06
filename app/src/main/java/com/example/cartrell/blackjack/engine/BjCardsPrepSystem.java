@@ -114,7 +114,7 @@ class BjCardsPrepSystem implements ICardsMoverCallbacks {
       //-------------------------------------------------------------------------
       @Override
       public void onComplete(SoundSystem soundSystem) {
-        m_engine.getSoundSystem().setOnSoundCompleteListener(null);
+        m_engine.getSoundSystem().setSoundCompleteListener(null);
         beginPlay();
       }
     };
@@ -129,7 +129,7 @@ class BjCardsPrepSystem implements ICardsMoverCallbacks {
     deck.shuffle();
     deck.setIndex(0);
 
-    m_engine.getSoundSystem().play(m_shuffleSoundCompleteListener,
+    m_engine.getSoundSystem().playMedia(m_shuffleSoundCompleteListener,
       R.raw.snd_card_shuffle0, R.raw.snd_card_shuffle1);
   }
 

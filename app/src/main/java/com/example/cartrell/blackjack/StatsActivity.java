@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.cartrell.blackjack.databinding.ActivityStatsBinding;
 import com.example.cartrell.blackjack.settings.Settings;
 import com.example.cartrell.blackjack.settings.SettingsStorage;
+import com.example.cartrell.blackjack.sound.SoundChannel;
 import com.example.cartrell.blackjack.sound.SoundSystem;
 
 public class StatsActivity extends AppCompatActivity {
@@ -21,6 +22,7 @@ public class StatsActivity extends AppCompatActivity {
   private Settings m_settings;
   private ActivityStatsBinding m_binding;
   private SoundSystem m_soundSystem;
+  private SoundChannel m_sndChReset;
 
   //=========================================================================
   // public
@@ -38,7 +40,8 @@ public class StatsActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
 
     m_binding = DataBindingUtil.setContentView(this,  R.layout.activity_stats);
-    m_soundSystem = new SoundSystem(this);
+    m_soundSystem = new SoundSystem(this,
+      getApplicationContext().getResources().getInteger(R.integer.maxSoundPoolStreams));
 
     Intent intent = getIntent();
     m_settings = intent.getParcelableExtra(Settings.INTENT_KEY);
@@ -120,7 +123,7 @@ public class StatsActivity extends AppCompatActivity {
       //--------------------------------------------------------------------------
       public void onClick(DialogInterface dialog, int id) {
         resetSettings();
-        m_soundSystem.play(R.raw.snd_reset_settings);
+        m_sndChReset = m_soundSystem.playSound(m_sndChReset, R.raw.snd_reset_settings, 1, true);
       }
     });
 
