@@ -8,12 +8,18 @@
         android:orientation="vertical"
         tools:context=".StatsActivity">
 
+        <!-- =========================================== -->
+        <!-- background image -->
+        <!-- =========================================== -->
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:src="@drawable/background" />
 
+        <!-- =========================================== -->
+        <!-- header text -->
+        <!-- =========================================== -->
         <TextView
             android:id="@+id/txtHeader"
             android:layout_width="match_parent"
@@ -27,6 +33,9 @@
             android:textSize="32sp"
             android:textStyle="bold" />
 
+        <!-- =========================================== -->
+        <!-- main content outer container layout -->
+        <!-- =========================================== -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,6 +44,9 @@
             android:orientation="horizontal"
             android:padding="8dp">
 
+            <!-- =========================================== -->
+            <!-- stats headers column layout  -->
+            <!-- =========================================== -->
             <LinearLayout
                 android:id="@+id/linTotalGamesPlayed"
                 android:layout_width="wrap_content"
@@ -111,8 +123,21 @@
                     android:textColor="#ffffff"
                     android:textSize="24sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/number_of_thunderjacks"
+                    android:textAllCaps="true"
+                    android:textColor="#ffffff"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
+            <!-- =========================================== -->
+            <!-- stats values column layout  -->
+            <!-- =========================================== -->
             <LinearLayout
                 android:id="@+id/linTotalGamesWon"
                 android:layout_width="wrap_content"
@@ -125,73 +150,86 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="9999"
                     android:textColor="#ffffff"
                     android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="9999"/>
 
                 <TextView
                     android:id="@+id/txtTotalGamesWon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="9999"
                     android:textColor="#ffffff"
                     android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="9999"/>
 
                 <TextView
                     android:id="@+id/txtNumBj"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="9999"
                     android:textColor="#ffffff"
                     android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="9999"/>
 
                 <TextView
                     android:id="@+id/txtNumSplits"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="9999"
                     android:textColor="#ffffff"
                     android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="9999"/>
 
                 <TextView
                     android:id="@+id/txtNumBlitzs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="9999"
                     android:textColor="#ffffff"
                     android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="9999"/>
 
                 <TextView
                     android:id="@+id/txtNumDoubles"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="9999"
                     android:textColor="#ffffff"
                     android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="9999"/>
 
                 <TextView
                     android:id="@+id/txtNumSurrenders"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="9999"
                     android:textColor="#ffffff"
                     android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="9999"/>
+
+                <TextView
+                    android:id="@+id/txtNumThunderjacks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textColor="#ffffff"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    tools:text="9999"/>
             </LinearLayout>
         </LinearLayout>
 
+        <!-- =========================================== -->
+        <!-- buttons container layout -->
+        <!-- =========================================== -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

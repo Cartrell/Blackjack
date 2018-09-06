@@ -98,6 +98,14 @@ class BjPlaySettingsManager {
   }
 
   //-------------------------------------------------------------------------
+  // incNumThunderjacks
+  //-------------------------------------------------------------------------
+  private void incNumThunderjacks() {
+    Settings settings = m_engine.getSettings();
+    settings.setNumThunderjacks(settings.getNumThunderjacks() + 1);
+  }
+
+  //-------------------------------------------------------------------------
   // updateForPlayers
   //-------------------------------------------------------------------------
   private void updateForPlayers() {
@@ -127,6 +135,10 @@ class BjPlaySettingsManager {
 
       if (playerData.getHasBlackjack()) {
         incNumBjs();
+      }
+
+      if (playerData.getHasThunderjack()) {
+        incNumThunderjacks();
       }
     }
   }

@@ -154,13 +154,14 @@ public class StatsActivity extends AppCompatActivity {
     setTextView(m_binding.txtNumBlitzs, m_settings.getNumBlitzs());
     setTextView(m_binding.txtNumDoubles, m_settings.getNumDoubles());
     setTextView(m_binding.txtNumSurrenders, m_settings.getNumSurrenders());
+    setTextView(m_binding.txtNumThunderjacks, m_settings.getNumThunderjacks());
   }
 
   //-------------------------------------------------------------------------
   // writeSettings
   //-------------------------------------------------------------------------
   public void writeSettings() {
-    SettingsStorage storage = new SettingsStorage(this);
+    SettingsStorage storage = new SettingsStorage();
     storage.write(m_settings);
   }
 }

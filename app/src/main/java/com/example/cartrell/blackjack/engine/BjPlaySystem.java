@@ -375,6 +375,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private void beginPlayerThunderjack(PlayerIds playerId) {
     PlayerData playerData = (PlayerData)getPlayerData(playerId);
     playerData.setBlackjack();
+    playerData.setThunderjack();
     playerData.setResultImage(R.drawable.result_label_thunderjack);
     playerData.setResultImageVisible(true);
     playerData.setBetValueVisible(false);

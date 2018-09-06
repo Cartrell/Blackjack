@@ -22,6 +22,7 @@ public class PlayerData extends BasePlayerData {
   private boolean m_hasSplit;
   private boolean m_isNormalWin;
   private boolean m_isPush;
+  private boolean m_hasThunderjack;
 
   //=========================================================================
   // public
@@ -61,6 +62,13 @@ public class PlayerData extends BasePlayerData {
   //-------------------------------------------------------------------------
   public boolean getHasSurrendered() {
     return(m_hasSurrendered);
+  }
+
+  //-------------------------------------------------------------------------
+  // getHasThunderjack
+  //-------------------------------------------------------------------------
+  public boolean getHasThunderjack() {
+    return(m_hasThunderjack);
   }
 
   //-------------------------------------------------------------------------
@@ -112,6 +120,7 @@ public class PlayerData extends BasePlayerData {
   public boolean isVsDealer() {
     return(m_origBetValue > 0 &&
       !getHasBlackjack() &&
+      !getHasThunderjack() &&
       !getIsBust() &&
       !getIsBlitzWin() &&
       !getHasSurrendered());
@@ -131,7 +140,8 @@ public class PlayerData extends BasePlayerData {
   @Override
   public void resetStatus() {
     super.resetStatus();
-    m_isDoubleDown = m_isBlitzWin = m_hasSurrendered = m_hasSplit = m_isNormalWin = m_isPush = false;
+    m_isDoubleDown = m_isBlitzWin = m_hasSurrendered = m_hasSplit = m_isNormalWin = m_isPush =
+      m_hasThunderjack = false;
   }
 
   //-------------------------------------------------------------------------
@@ -227,6 +237,13 @@ public class PlayerData extends BasePlayerData {
   //-------------------------------------------------------------------------
   public void setSurrendered() {
     m_hasSurrendered = true;
+  }
+
+  //-------------------------------------------------------------------------
+  // setThunderjack
+  //-------------------------------------------------------------------------
+  public void setThunderjack() {
+    m_hasThunderjack = true;
   }
 
   //-------------------------------------------------------------------------

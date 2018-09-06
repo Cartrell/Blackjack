@@ -22,6 +22,7 @@ public class Settings implements Parcelable {
   private int m_numSurrenders;
   private int m_numBlitzs;
   private int m_numDoubles;
+  private int m_numThunderjacks;
 
   //=========================================================================
   // public
@@ -118,6 +119,13 @@ public class Settings implements Parcelable {
   }
 
   //-------------------------------------------------------------------------
+  // getNumThunderjacks
+  //-------------------------------------------------------------------------
+  public int getNumThunderjacks() {
+    return(m_numThunderjacks);
+  }
+
+  //-------------------------------------------------------------------------
   // getTotalGamesPlayed
   //-------------------------------------------------------------------------
   public int getTotalGamesPlayed() {
@@ -136,7 +144,7 @@ public class Settings implements Parcelable {
   //-------------------------------------------------------------------------
   public void reset() {
     m_credits = m_totalGamesPlayed = m_totalGamesWon = m_numBj = m_numSplits = m_numSurrenders =
-      m_numBlitzs = m_numDoubles = 0;
+      m_numBlitzs = m_numDoubles = m_numThunderjacks = 0;
   }
 
   //-------------------------------------------------------------------------
@@ -196,6 +204,13 @@ public class Settings implements Parcelable {
   }
 
   //-------------------------------------------------------------------------
+  // setNumThunderjacks
+  //-------------------------------------------------------------------------
+  public void setNumThunderjacks(int value) {
+    m_numThunderjacks = value;
+  }
+
+  //-------------------------------------------------------------------------
   // setTotalGamesPlayed
   //-------------------------------------------------------------------------
   public void setTotalGamesPlayed(int value) {
@@ -224,6 +239,7 @@ public class Settings implements Parcelable {
     out.writeInt(m_numSurrenders);
     out.writeInt(m_numBlitzs);
     out.writeInt(m_numDoubles);
+    out.writeInt(m_numThunderjacks);
   }
 
   //=========================================================================
@@ -244,5 +260,6 @@ public class Settings implements Parcelable {
     m_numSurrenders = in.readInt();
     m_numBlitzs = in.readInt();
     m_numDoubles = in.readInt();
+    m_numThunderjacks = in.readInt();
   }
 }

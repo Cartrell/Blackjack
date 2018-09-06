@@ -1,6 +1,5 @@
 package com.example.cartrell.blackjack.settings;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -8,19 +7,13 @@ import com.example.cartrell.blackjack.MainActivity;
 
 public class SettingsStorage {
   //=========================================================================
-  // members
-  //=========================================================================
-  private Activity m_activity;
-
-  //=========================================================================
   // public
   //=========================================================================
 
   //-------------------------------------------------------------------------
   // ctor
   //-------------------------------------------------------------------------
-  public SettingsStorage(Activity activity) {
-    //m_activity = activity;
+  public SettingsStorage() {
   }
 
   //-------------------------------------------------------------------------
@@ -28,15 +21,15 @@ public class SettingsStorage {
   //-------------------------------------------------------------------------
   public void read(Settings targetSettings) {
     SharedPreferences sharedPreferences = MainActivity.sm_mainActivity.getPreferences(Context.MODE_PRIVATE);
-    targetSettings.setCredits(sharedPreferences.getInt("credits", 0));
-    targetSettings.setIsSoundOn(sharedPreferences.getBoolean("isSoundOn", true));
-    targetSettings.setIsMusicOn(sharedPreferences.getBoolean("isMusicOn", true));
-    targetSettings.setTotalGamesPlayed(sharedPreferences.getInt("totalGamesPlayed", 0));
-    targetSettings.setTotalGamesWon(sharedPreferences.getInt("totalGamesWon", 0));
-    targetSettings.setNumBj(sharedPreferences.getInt("numBj", 0));
-    targetSettings.setNumSplits(sharedPreferences.getInt("numSplits", 0));
-    targetSettings.setNumSurrenders(sharedPreferences.getInt("numSurrenders", 0));
-    targetSettings.setNumBlitzs(sharedPreferences.getInt("numBlitzs", 0));
+    targetSettings.setCredits(sharedPreferences.getInt(SettingsKeys.CREDITS, 0));
+    targetSettings.setIsSoundOn(sharedPreferences.getBoolean(SettingsKeys.IS_SOUND_ON, true));
+    targetSettings.setTotalGamesPlayed(sharedPreferences.getInt(SettingsKeys.TOTAL_GAMES_PLAYED, 0));
+    targetSettings.setTotalGamesWon(sharedPreferences.getInt(SettingsKeys.TOTAL_GAMES_WON, 0));
+    targetSettings.setNumBj(sharedPreferences.getInt(SettingsKeys.NUM_BJS, 0));
+    targetSettings.setNumSplits(sharedPreferences.getInt(SettingsKeys.NUM_SPLITS, 0));
+    targetSettings.setNumSurrenders(sharedPreferences.getInt(SettingsKeys.NUM_SURRENDERS, 0));
+    targetSettings.setNumBlitzs(sharedPreferences.getInt(SettingsKeys.NUM_BLITZS, 0));
+    targetSettings.setNumThunderjacks(sharedPreferences.getInt(SettingsKeys.NUM_THUNDERJACKS, 0));
   }
 
   //-------------------------------------------------------------------------
@@ -45,19 +38,14 @@ public class SettingsStorage {
   public void write(Settings sourceSettings) {
     SharedPreferences sharedPreferences = MainActivity.sm_mainActivity.getPreferences(Context.MODE_PRIVATE);
     SharedPreferences.Editor editor = sharedPreferences.edit();
-    editor.putInt("credits", sourceSettings.getCredits());
-    editor.putBoolean("isSoundOn", sourceSettings.getIsSoundOn());
-    editor.putBoolean("isMusicOn", sourceSettings.getIsMusicOn());
-    editor.putInt("totalGamesPlayed", sourceSettings.getTotalGamesPlayed());
-    editor.putInt("totalGamesWon", sourceSettings.getTotalGamesWon());
-    editor.putInt("numBj", sourceSettings.getNumBj());
-    editor.putInt("numSplits", sourceSettings.getNumSplits());
-    editor.putInt("numSurrenders", sourceSettings.getNumSurrenders());
-    editor.putInt("numBlitzs", sourceSettings.getNumBlitzs());
+    editor.putInt(SettingsKeys.CREDITS, sourceSettings.getCredits());
+    editor.putBoolean(SettingsKeys.IS_SOUND_ON, sourceSettings.getIsSoundOn());
+    editor.putInt(SettingsKeys.TOTAL_GAMES_PLAYED, sourceSettings.getTotalGamesPlayed());
+    editor.putInt(SettingsKeys.TOTAL_GAMES_WON, sourceSettings.getTotalGamesWon());
+    editor.putInt(SettingsKeys.NUM_BJS, sourceSettings.getNumBj());
+    editor.putInt(SettingsKeys.NUM_SPLITS, sourceSettings.getNumSplits());
+    editor.putInt(SettingsKeys.NUM_SURRENDERS, sourceSettings.getNumSurrenders());
+    editor.putInt(SettingsKeys.NUM_BLITZS, sourceSettings.getNumBlitzs());
     editor.apply();
   }
-
-  //=========================================================================
-  // private
-  //=========================================================================
 }

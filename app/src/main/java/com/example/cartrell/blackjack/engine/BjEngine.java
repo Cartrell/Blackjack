@@ -387,7 +387,7 @@ public class BjEngine implements IBjEngine {
   // writeSettings
   //-------------------------------------------------------------------------
   public void writeSettings() {
-    SettingsStorage storage = new SettingsStorage(m_activity);
+    SettingsStorage storage = new SettingsStorage();
     storage.write(m_settings);
   }
 
@@ -535,7 +535,7 @@ public class BjEngine implements IBjEngine {
   // readSettings
   //-------------------------------------------------------------------------
   private void readSettings() {
-    SettingsStorage storage = new SettingsStorage(m_activity);
+    SettingsStorage storage = new SettingsStorage();
     storage.read(m_settings);
   }
 
