@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- max streams for soundpool -->
+    <integer name="maxSoundPoolStreams">8</integer>
+
     <!-- number of decks used -->
     <integer name="numDecks">1</integer>
 
