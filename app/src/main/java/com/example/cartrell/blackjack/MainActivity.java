@@ -44,13 +44,4 @@ public class MainActivity extends AppCompatActivity {
     sm_mainActivity = this;
     initEngine();
   }
-
-  //-------------------------------------------------------------------------
-  // onResume
-  //-------------------------------------------------------------------------
-  @Override
-  protected void onResume() {
-    super.onResume();
-    m_engine.onResume();
-  }
 }

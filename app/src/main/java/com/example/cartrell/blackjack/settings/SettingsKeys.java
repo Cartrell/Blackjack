@@ -5,6 +5,7 @@ final class SettingsKeys {
   // static / const
   //=========================================================================
   static final String CREDITS = "credits";
+  static final String HAS_APP_RUN_AT_LEAST_ONCE = "hasAppRunAtLeastOnce";
   static final String IS_SOUND_ON = "isSoundOn";
   static final String NUM_BJS = "numBjs";
   static final String NUM_BLITZS = "numBlitzs";

@@ -30,6 +30,7 @@ public class SettingsStorage {
     targetSettings.setNumSurrenders(sharedPreferences.getInt(SettingsKeys.NUM_SURRENDERS, 0));
     targetSettings.setNumBlitzs(sharedPreferences.getInt(SettingsKeys.NUM_BLITZS, 0));
     targetSettings.setNumThunderjacks(sharedPreferences.getInt(SettingsKeys.NUM_THUNDERJACKS, 0));
+    targetSettings.appRanAtLeastOnce(sharedPreferences.getBoolean(SettingsKeys.HAS_APP_RUN_AT_LEAST_ONCE, false));
   }
 
   //-------------------------------------------------------------------------
@@ -46,6 +47,8 @@ public class SettingsStorage {
     editor.putInt(SettingsKeys.NUM_SPLITS, sourceSettings.getNumSplits());
     editor.putInt(SettingsKeys.NUM_SURRENDERS, sourceSettings.getNumSurrenders());
     editor.putInt(SettingsKeys.NUM_BLITZS, sourceSettings.getNumBlitzs());
+    editor.putInt(SettingsKeys.NUM_THUNDERJACKS, sourceSettings.getNumThunderjacks());
+    editor.putBoolean(SettingsKeys.HAS_APP_RUN_AT_LEAST_ONCE, sourceSettings.hasAppRanAtLeastOnce());
     editor.apply();
   }
 }

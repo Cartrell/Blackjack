@@ -23,6 +23,7 @@ public class Settings implements Parcelable {
   private int m_numBlitzs;
   private int m_numDoubles;
   private int m_numThunderjacks;
+  private boolean m_hasAppRanAtLeastOnce;
 
   //=========================================================================
   // public
@@ -32,6 +33,13 @@ public class Settings implements Parcelable {
   // ctor
   //-------------------------------------------------------------------------
   public Settings() {
+  }
+
+  //-------------------------------------------------------------------------
+  // appRanAtLeastOnce
+  //-------------------------------------------------------------------------
+  public void appRanAtLeastOnce(boolean value) {
+    m_hasAppRanAtLeastOnce = value;
   }
 
   //-------------------------------------------------------------------------
@@ -140,10 +148,17 @@ public class Settings implements Parcelable {
   }
 
   //-------------------------------------------------------------------------
+  // hasAppRanAtLeastOnce
+  //-------------------------------------------------------------------------
+  public boolean hasAppRanAtLeastOnce() {
+    return(m_hasAppRanAtLeastOnce);
+  }
+
+  //-------------------------------------------------------------------------
   // reset
   //-------------------------------------------------------------------------
   public void reset() {
-    m_credits = m_totalGamesPlayed = m_totalGamesWon = m_numBj = m_numSplits = m_numSurrenders =
+    m_totalGamesPlayed = m_totalGamesWon = m_numBj = m_numSplits = m_numSurrenders =
       m_numBlitzs = m_numDoubles = m_numThunderjacks = 0;
   }
 
@@ -240,6 +255,7 @@ public class Settings implements Parcelable {
     out.writeInt(m_numBlitzs);
     out.writeInt(m_numDoubles);
     out.writeInt(m_numThunderjacks);
+    out.writeInt(m_hasAppRanAtLeastOnce ? 1 : 0);
   }
 
   //=========================================================================
@@ -261,5 +277,6 @@ public class Settings implements Parcelable {
     m_numBlitzs = in.readInt();
     m_numDoubles = in.readInt();
     m_numThunderjacks = in.readInt();
+    m_hasAppRanAtLeastOnce = in.readInt() == 1;
   }
 }

@@ -73,7 +73,7 @@ public class BjEngine implements IBjEngine {
     m_activity = activity;
     m_context = m_activity;
     m_binding = binding;
-    //initSettings();
+    initSettings();
     initCardMoveStartListener();
     initDecks();
     initUi();
@@ -270,13 +270,6 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
-  // onResume
-  //-------------------------------------------------------------------------
-  public void onResume() {
-    initSettings();
-  }
-
-  //-------------------------------------------------------------------------
   // setAtLeastOneRoundPlayed
   //-------------------------------------------------------------------------
   @Override
@@ -300,6 +293,7 @@ public class BjEngine implements IBjEngine {
   public void setCredits(int value) {
     m_credits = value;
     m_views.setCredits(value);
+    writeCreditsToSettings();
   }
 
   //-------------------------------------------------------------------------
@@ -495,10 +489,16 @@ public class BjEngine implements IBjEngine {
           m_cardsPrepSystem = new BjCardsPrepSystem(engine);
           m_playSystem = new BjPlaySystem(engine);
 
-          //initSettings();
           initSettingsButton();
 
-          setCredits(Integer.parseInt(m_context.getString(R.string.startingCredits)));
+          if (m_settings.hasAppRanAtLeastOnce()) {
+            setCredits(m_settings.getCredits(), false);
+          } else {
+            setCredits(Integer.parseInt(m_context.getString(R.string.startingCredits)));
+          }
+
+          m_settings.appRanAtLeastOnce(true);
+
           updateBetValue();
           beginRound();
         }
@@ -547,5 +547,12 @@ public class BjEngine implements IBjEngine {
     intent.putExtra(Settings.INTENT_KEY, m_settings);
     m_activity.startActivity(intent);
   }
-}
 
+  //-------------------------------------------------------------------------
+  // writeCreditsToSettings
+  //-------------------------------------------------------------------------
+  private void writeCreditsToSettings() {
+    m_settings.setCredits(m_credits);
+    writeSettings();
+  }
+}
