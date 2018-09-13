@@ -9,26 +9,27 @@
     </style>
 
     <style name="StatsHeaderText">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentTop">true</item>
         <item name="android:layout_margin">8dp</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">#ffff00</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">40sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="StatsLabelAttributeText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">0dp</item>
-        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:gravity">center</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">#ffffff</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">32sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -36,10 +37,11 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:gravity">center</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">#ffffff</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">32sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 </resources>

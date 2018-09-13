@@ -17,28 +17,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.15"/>
+            app:layout_constraintGuide_percent="0.13"/>
 
         <android.support.constraint.Guideline
             android:id="@+id/stats_guide_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.85"/>
+            app:layout_constraintGuide_percent="0.87"/>
 
         <android.support.constraint.Guideline
             android:id="@+id/stats_guide_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.2"/>
+            app:layout_constraintGuide_percent="0.15"/>
 
         <android.support.constraint.Guideline
             android:id="@+id/stats_guide_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.8"/>
+            app:layout_constraintGuide_percent="0.85"/>
 
         <!-- =========================================== -->
         <!-- background image -->
@@ -55,8 +55,6 @@
         <!-- =========================================== -->
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/stats_txt_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             style="@style/StatsHeaderText"
             android:text="STATS"
             app:autoSizeTextType="uniform"
@@ -105,6 +103,7 @@
             android:id="@+id/txt_stats_num_of_bjs_label"
             app:autoSizeTextType="uniform"
             android:text="Number of blackjacks"
+
             app:layout_constraintLeft_toRightOf="@+id/stats_guide_left"
             app:layout_constraintTop_toBottomOf="@+id/txt_stats_total_games_won_label"
             app:layout_constraintBottom_toTopOf="@+id/txt_stats_num_of_splits_label"
@@ -262,4 +261,4 @@
             app:layout_constraintTop_toBottomOf="@+id/stats_guide_bottom" />
 
     </android.support.constraint.ConstraintLayout>
-</layout>   
+</layout>

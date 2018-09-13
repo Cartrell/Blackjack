@@ -84,7 +84,11 @@
         <!-- =========================================== -->
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txt_stats_total_games_played_label"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             app:autoSizeTextType="uniform"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             android:text="Total games played"
             app:layout_constraintLeft_toRightOf="@+id/stats_guide_left"
             app:layout_constraintTop_toBottomOf="@+id/stats_guide_top"
@@ -94,7 +98,11 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txt_stats_total_games_won_label"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             app:autoSizeTextType="uniform"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             android:text="Total games won"
             app:layout_constraintLeft_toRightOf="@+id/stats_guide_left"
             app:layout_constraintTop_toBottomOf="@+id/txt_stats_total_games_played_label"
@@ -103,7 +111,11 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txt_stats_num_of_bjs_label"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             app:autoSizeTextType="uniform"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             android:text="Number of blackjacks"
             app:layout_constraintLeft_toRightOf="@+id/stats_guide_left"
             app:layout_constraintTop_toBottomOf="@+id/txt_stats_total_games_won_label"
@@ -112,7 +124,11 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txt_stats_num_of_splits_label"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             app:autoSizeTextType="uniform"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             android:text="Number of split wins"
             app:layout_constraintLeft_toRightOf="@+id/stats_guide_left"
             app:layout_constraintTop_toBottomOf="@+id/txt_stats_num_of_bjs_label"
@@ -121,7 +137,11 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txt_stats_num_of_blitzs_label"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             app:autoSizeTextType="uniform"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             android:text="Number of Blitz wins"
             app:layout_constraintLeft_toRightOf="@+id/stats_guide_left"
             app:layout_constraintTop_toBottomOf="@+id/txt_stats_num_of_splits_label"
@@ -130,7 +150,11 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txt_stats_num_of_doubles_label"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             app:autoSizeTextType="uniform"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             android:text="Number of double wins"
             app:layout_constraintLeft_toRightOf="@+id/stats_guide_left"
             app:layout_constraintTop_toBottomOf="@+id/txt_stats_num_of_blitzs_label"
@@ -139,7 +163,11 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txt_stats_num_of_surrenders_label"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             app:autoSizeTextType="uniform"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             android:text="Number of surrenders"
             app:layout_constraintLeft_toRightOf="@+id/stats_guide_left"
             app:layout_constraintTop_toBottomOf="@+id/txt_stats_num_of_doubles_label"
@@ -148,7 +176,11 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txt_stats_num_of_tjs_label"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             app:autoSizeTextType="uniform"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="Number of thunderjacks"
             app:layout_constraintLeft_toRightOf="@+id/stats_guide_left"
@@ -161,7 +193,14 @@
         <!-- =========================================== -->
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txt_stats_total_games_played_value"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:paddingRight="0dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+
             app:autoSizeTextType="uniform"
+
             tools:text="9999"
             app:layout_constraintRight_toLeftOf="@+id/stats_guide_right"
             app:layout_constraintTop_toBottomOf="@+id/stats_guide_top"
@@ -171,67 +210,95 @@
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txt_stats_total_games_won_value"
+            style="@style/StatsLabelAttributeText"
+
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
             app:autoSizeTextType="uniform"
-            tools:text="9999"
             app:layout_constraintBottom_toTopOf="@+id/txt_stats_num_of_bjs_value"
             app:layout_constraintRight_toLeftOf="@+id/stats_guide_right"
             app:layout_constraintTop_toBottomOf="@+id/txt_stats_total_games_played_value"
-            style="@style/StatsValueAttributeText" />
+            tools:text="9999" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txt_stats_num_of_bjs_value"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             app:autoSizeTextType="uniform"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             tools:text="9999"
             app:layout_constraintRight_toLeftOf="@+id/stats_guide_right"
             app:layout_constraintTop_toBottomOf="@+id/txt_stats_total_games_won_value"
             app:layout_constraintBottom_toTopOf="@+id/txt_stats_num_of_splits_value"
-            style="@style/StatsValueAttributeText" />
+            style="@style/StatsLabelAttributeText" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txt_stats_num_of_splits_value"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             app:autoSizeTextType="uniform"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             tools:text="9999"
             app:layout_constraintRight_toLeftOf="@+id/stats_guide_right"
             app:layout_constraintTop_toBottomOf="@+id/txt_stats_num_of_bjs_value"
             app:layout_constraintBottom_toTopOf="@+id/txt_stats_num_of_blitzs_value"
-            style="@style/StatsValueAttributeText" />
+            style="@style/StatsLabelAttributeText" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txt_stats_num_of_blitzs_value"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             app:autoSizeTextType="uniform"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             tools:text="9999"
             app:layout_constraintRight_toLeftOf="@+id/stats_guide_right"
             app:layout_constraintTop_toBottomOf="@+id/txt_stats_num_of_splits_value"
             app:layout_constraintBottom_toTopOf="@+id/txt_stats_num_of_doubles_value"
-            style="@style/StatsValueAttributeText" />
+            style="@style/StatsLabelAttributeText" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txt_stats_num_of_doubles_value"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             app:autoSizeTextType="uniform"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             tools:text="9999"
             app:layout_constraintRight_toLeftOf="@+id/stats_guide_right"
             app:layout_constraintTop_toBottomOf="@+id/txt_stats_num_of_blitzs_value"
             app:layout_constraintBottom_toTopOf="@+id/txt_stats_num_of_surrenders_value"
-            style="@style/StatsValueAttributeText" />
+            style="@style/StatsLabelAttributeText" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txt_stats_num_of_surrenders_value"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             app:autoSizeTextType="uniform"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             tools:text="9999"
             app:layout_constraintRight_toLeftOf="@+id/stats_guide_right"
             app:layout_constraintTop_toBottomOf="@+id/txt_stats_num_of_doubles_value"
             app:layout_constraintBottom_toTopOf="@+id/txt_stats_num_of_tjs_value"
-            style="@style/StatsValueAttributeText" />
+            style="@style/StatsLabelAttributeText" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txt_stats_num_of_tjs_value"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             app:autoSizeTextType="uniform"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             tools:text="9999"
             app:layout_constraintRight_toLeftOf="@+id/stats_guide_right"
             app:layout_constraintTop_toBottomOf="@+id/txt_stats_num_of_surrenders_value"
             app:layout_constraintBottom_toTopOf="@+id/stats_guide_bottom"
-            style="@style/StatsValueAttributeText" />
+            style="@style/StatsLabelAttributeText" />
 
         <!-- =========================================== -->
         <!-- buttons -->
@@ -262,4 +329,4 @@
             app:layout_constraintTop_toBottomOf="@+id/stats_guide_bottom" />
 
     </android.support.constraint.ConstraintLayout>
-</layout>   
+</layout>
