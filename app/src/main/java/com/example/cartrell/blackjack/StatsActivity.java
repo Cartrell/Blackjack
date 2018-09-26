@@ -147,14 +147,14 @@ public class StatsActivity extends AppCompatActivity {
   // updateUi
   //-------------------------------------------------------------------------
   private void updateUi() {
-    setTextView(m_binding.txtTotalGamesPlayed, m_settings.getTotalGamesPlayed());
-    setTextView(m_binding.txtTotalGamesWon, m_settings.getTotalGamesWon());
-    setTextView(m_binding.txtNumBj, m_settings.getNumBj());
-    setTextView(m_binding.txtNumSplits, m_settings.getNumSplits());
-    setTextView(m_binding.txtNumBlitzs, m_settings.getNumBlitzs());
-    setTextView(m_binding.txtNumDoubles, m_settings.getNumDoubles());
-    setTextView(m_binding.txtNumSurrenders, m_settings.getNumSurrenders());
-    setTextView(m_binding.txtNumThunderjacks, m_settings.getNumThunderjacks());
+    setTextView(m_binding.txtStatsTotalGamesPlayedValue, m_settings.getTotalGamesPlayed());
+    setTextView(m_binding.txtStatsTotalGamesWonValue, m_settings.getTotalGamesWon());
+    setTextView(m_binding.txtStatsNumOfBjsValue, m_settings.getNumBj());
+    setTextView(m_binding.txtStatsNumOfSplitsValue, m_settings.getNumSplits());
+    setTextView(m_binding.txtStatsNumOfBlitzsValue, m_settings.getNumBlitzs());
+    setTextView(m_binding.txtStatsNumOfDoublesValue, m_settings.getNumDoubles());
+    setTextView(m_binding.txtStatsNumOfSurrendersValue, m_settings.getNumSurrenders());
+    setTextView(m_binding.txtStatsNumOfTjsValue, m_settings.getNumThunderjacks());
   }
 
   //-------------------------------------------------------------------------
