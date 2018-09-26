@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#808080"
-        tools:context="com.example.cartrell.blackjack.MainActivity" >
+        tools:context="com.gameplaycoder.thunderjack.MainActivity" >
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/stubLayout"
