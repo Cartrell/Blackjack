@@ -12,6 +12,15 @@
     <!-- starting credits -->
     <string name="startingCredits">1200</string>
 
+    <!-- renewal credits -->
+    <string name="renewalCredits">500</string>
+
+    <!-- low-credits threshold - creduts must be at or below this value to be eligible for renewal-->
+    <string name="lowCreditsThreshold">50</string>
+
+    <!-- when credits are low enough, this much time, in ms, must pass since close of last game to be eligible for renewal -->
+    <string name="renewalTime">60000</string>
+
     <!-- durating, in ms, at which the cards move -->
     <integer name="cardMoveDuration">250</integer>
 

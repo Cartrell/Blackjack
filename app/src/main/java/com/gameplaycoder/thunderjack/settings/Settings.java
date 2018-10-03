@@ -12,9 +12,8 @@ public class Settings implements Parcelable {
   //=========================================================================
   // members
   //=========================================================================
+  private long m_lastGameClosedTimeWithLowCredits;
   private int m_credits;
-  private boolean m_isSoundOn;
-  private boolean m_isMusicOn;
   private int m_totalGamesPlayed;
   private int m_totalGamesWon;
   private int m_numBj;
@@ -23,6 +22,8 @@ public class Settings implements Parcelable {
   private int m_numBlitzs;
   private int m_numDoubles;
   private int m_numThunderjacks;
+  private boolean m_isSoundOn;
+  private boolean m_isMusicOn;
   private boolean m_hasAppRanAtLeastOnce;
 
   //=========================================================================
@@ -89,6 +90,13 @@ public class Settings implements Parcelable {
   //-------------------------------------------------------------------------
   public boolean getIsSoundOn() {
     return(m_isSoundOn);
+  }
+
+  //-------------------------------------------------------------------------
+  // getLastGameClosedTimeWithLowCredits
+  //-------------------------------------------------------------------------
+  public long getLastGameClosedTimeWithLowCredits() {
+    return(m_lastGameClosedTimeWithLowCredits);
   }
 
   //-------------------------------------------------------------------------
@@ -184,6 +192,13 @@ public class Settings implements Parcelable {
   }
 
   //-------------------------------------------------------------------------
+  // setLastGameClosedTimeWithLowCredits
+  //-------------------------------------------------------------------------
+  public void setLastGameClosedTimeWithLowCredits(long value) {
+    m_lastGameClosedTimeWithLowCredits = value;
+  }
+
+  //-------------------------------------------------------------------------
   // setNumBj
   //-------------------------------------------------------------------------
   public void setNumBj(int value) {
@@ -256,6 +271,7 @@ public class Settings implements Parcelable {
     out.writeInt(m_numDoubles);
     out.writeInt(m_numThunderjacks);
     out.writeInt(m_hasAppRanAtLeastOnce ? 1 : 0);
+    out.writeLong(m_lastGameClosedTimeWithLowCredits);
   }
 
   //=========================================================================
@@ -278,5 +294,6 @@ public class Settings implements Parcelable {
     m_numDoubles = in.readInt();
     m_numThunderjacks = in.readInt();
     m_hasAppRanAtLeastOnce = in.readInt() == 1;
+    m_lastGameClosedTimeWithLowCredits = in.readLong();
   }
 }

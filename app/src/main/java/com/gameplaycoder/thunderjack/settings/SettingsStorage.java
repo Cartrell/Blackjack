@@ -31,6 +31,8 @@ public class SettingsStorage {
     targetSettings.setNumBlitzs(sharedPreferences.getInt(SettingsKeys.NUM_BLITZS, 0));
     targetSettings.setNumThunderjacks(sharedPreferences.getInt(SettingsKeys.NUM_THUNDERJACKS, 0));
     targetSettings.appRanAtLeastOnce(sharedPreferences.getBoolean(SettingsKeys.HAS_APP_RUN_AT_LEAST_ONCE, false));
+    targetSettings.setLastGameClosedTimeWithLowCredits(
+      sharedPreferences.getLong(SettingsKeys.LAST_GAME_CLOSED_TIME_WITH_LOW_CREDITS, 0));
   }
 
   //-------------------------------------------------------------------------
@@ -49,6 +51,8 @@ public class SettingsStorage {
     editor.putInt(SettingsKeys.NUM_BLITZS, sourceSettings.getNumBlitzs());
     editor.putInt(SettingsKeys.NUM_THUNDERJACKS, sourceSettings.getNumThunderjacks());
     editor.putBoolean(SettingsKeys.HAS_APP_RUN_AT_LEAST_ONCE, sourceSettings.hasAppRanAtLeastOnce());
+    editor.putLong(SettingsKeys.LAST_GAME_CLOSED_TIME_WITH_LOW_CREDITS,
+      sourceSettings.getLastGameClosedTimeWithLowCredits());
     editor.apply();
   }
 }

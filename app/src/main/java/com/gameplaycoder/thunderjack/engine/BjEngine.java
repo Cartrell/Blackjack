@@ -22,8 +22,10 @@ import com.gameplaycoder.thunderjack.settings.Settings;
 import com.gameplaycoder.thunderjack.settings.SettingsStorage;
 import com.gameplaycoder.thunderjack.sound.SoundChannel;
 import com.gameplaycoder.thunderjack.sound.SoundSystem;
+import com.gameplaycoder.thunderjack.utils.CreditsRenewalChecker;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -378,6 +380,15 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
+  // updateLastGameClosedTimeWithLowCredits
+  //-------------------------------------------------------------------------
+  public void updateLastGameClosedTimeWithLowCredits() {
+    long time = new Date().getTime();
+    m_settings.setLastGameClosedTimeWithLowCredits(time);
+    writeSettings();
+  }
+
+  //-------------------------------------------------------------------------
   // writeSettings
   //-------------------------------------------------------------------------
   public void writeSettings() {
@@ -464,6 +475,15 @@ public class BjEngine implements IBjEngine {
       new ViewTreeObserver.OnGlobalLayoutListener() {
 
         //-------------------------------------------------------------------------
+        // isEligibleForCreditsRenewal
+        //-------------------------------------------------------------------------
+        private boolean isEligibleForCreditsRenewal() {
+          CreditsRenewalChecker creditsRenewalChecker = new CreditsRenewalChecker(engine);
+          int credits = m_settings.getCredits();
+          return(creditsRenewalChecker.isEligibleForCreditsRenewal(credits));
+        }
+
+        //-------------------------------------------------------------------------
         // onGlobalLayout
         //-------------------------------------------------------------------------
         @Override
@@ -492,7 +512,11 @@ public class BjEngine implements IBjEngine {
           initSettingsButton();
 
           if (m_settings.hasAppRanAtLeastOnce()) {
-            setCredits(m_settings.getCredits(), false);
+            if (isEligibleForCreditsRenewal()) {
+              renewCredits();
+            } else {
+              setCredits(m_settings.getCredits(), false);
+            }
           } else {
             setCredits(Integer.parseInt(m_context.getString(R.string.startingCredits)));
           }
@@ -501,6 +525,17 @@ public class BjEngine implements IBjEngine {
 
           updateBetValue();
           beginRound();
+        }
+
+        //-------------------------------------------------------------------------
+        // renewCredits
+        //-------------------------------------------------------------------------
+        private void renewCredits() {
+          setCredits(Integer.parseInt(m_context.getString(R.string.startingCredits)));
+
+          //clear last time closed
+          m_settings.setLastGameClosedTimeWithLowCredits(0);
+          writeSettings();
         }
       });
 
