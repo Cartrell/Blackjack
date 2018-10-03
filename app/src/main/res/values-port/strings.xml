@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">Thunderjack</string>
-    <string name="ask_reset_stats">Are you sure you want to reset all stats?</string>
-    <string name="no_way_man">No way man!</string>
-    <string name="yeah_do_it">Yeah, do it!</string>
-    <string name="number_of_thunderjacks">Number of Thunderjacks</string>
-</resources>
