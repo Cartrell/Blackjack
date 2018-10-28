@@ -1,6 +1,5 @@
 package com.gameplaycoder.thunderjack.engine;
 
-import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -23,7 +22,6 @@ import com.gameplaycoder.thunderjack.utils.ICardsMoverCallbacks;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 class BjPlaySystem implements ICardsMoverCallbacks {
@@ -169,15 +167,35 @@ class BjPlaySystem implements ICardsMoverCallbacks {
 
     revealDealerSecondCard();
 
-    for (PlayerIds playerId : m_playerIdsOrder) {
-      BasePlayerData playerData = getPlayerData(playerId);
-      if (m_cardsMatcher.doesPlayerHaveThunderjack(playerData, m_engine)) {
-        beginPlayerThunderjack(playerId);
-      } else if (m_cardsMatcher.doesPlayerHaveBlackjack(playerData, m_engine)) {
-        beginPlayerBlackjackPush(playerId);
-      } else {
-        beginPlayerLost(playerId);
+    //determine any players who got tj or bj
+    ArrayList<PlayerIds>bjPlayerIds = new ArrayList<>();
+    ArrayList<PlayerIds>tjPlayerIds = new ArrayList<>();
+    getBlackjackPlayers(bjPlayerIds, tjPlayerIds);
+
+    if (tjPlayerIds.size() == 1) {
+      //this player has tj and beats the dealer's bj
+      PlayerIds playerId = tjPlayerIds.get(0);
+      beginPlayerThunderjack(playerId);
+      playThunderjackSound();
+      m_playerIdsOrder.remove(playerId);
+    } else if (tjPlayerIds.size() > 1) {
+      //more than one player got tj, so they all cancel each other out, resulting in pushes
+      for (PlayerIds playerId : bjPlayerIds) {
+        //these players have bj, and result in a push vs the dealer's bj
+        beginPlayerPush(playerId);
+        m_playerIdsOrder.remove(playerId);
       }
+    }
+
+    for (PlayerIds playerId : bjPlayerIds) {
+      //these players have bj, and result in a push vs the dealer's bj
+      beginPlayerBlackjackPush(playerId);
+      m_playerIdsOrder.remove(playerId);
+    }
+
+    //any remaining players vs dealer have neither bj nor tj, and lost
+    for (PlayerIds playerId : m_playerIdsOrder) {
+      beginPlayerLost(playerId);
     }
 
     endRound();
@@ -257,8 +275,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_state = BjPlayStates.DOUBLE;
     drawCard(m_turnPlayerId, true, 0, true);
 
-    SoundChannel m_sndChDouble = m_engine.getSoundSystem().playSound(null,
-      R.raw.snd_double_down, 1, true);
+    m_engine.getSoundSystem().playSound(null, R.raw.snd_double_down, 1, true);
   }
 
   //-------------------------------------------------------------------------
@@ -388,6 +405,16 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   }
 
   //-------------------------------------------------------------------------
+  // beginPlayerThunderjackPush
+  //-------------------------------------------------------------------------
+  private void beginPlayerThunderjackPush(PlayerIds playerId) {
+    PlayerData playerData = (PlayerData)getPlayerData(playerId);
+    playerData.setBlackjack();
+    playerData.setThunderjack();
+    beginPlayerPush(playerId);
+  }
+
+  //-------------------------------------------------------------------------
   // beginPlayerWon
   //-------------------------------------------------------------------------
   private void beginPlayerWon(PlayerIds playerId) {
@@ -412,8 +439,12 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     if (m_cardsMatcher.doesPlayerHaveBlackjack(getPlayerData(PlayerIds.DEALER), m_engine)) {
       beginDealerBlackjack();
     } else {
-      checkPlayersForBlackjack();
-      beginNextTurnPlayer();
+      boolean isEndOfRoundEffect = checkPlayersForBlackjack();
+      if (isEndOfRoundEffect) {
+        endRound();
+      } else {
+        beginNextTurnPlayer();
+      }
     }
   }
 
@@ -535,32 +566,54 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   }
 
   //-------------------------------------------------------------------------
-  // checkPlayersForBlackjack
+  // getBlackjackPlayers
   //-------------------------------------------------------------------------
-  private void checkPlayersForBlackjack() {
-    Iterator<PlayerIds>iterator = m_playerIdsOrder.iterator();
-    int numBjs = 0;
-    int numTjs = 0;
-    while (iterator.hasNext()) {
-      PlayerIds playerId = iterator.next();
+  private void getBlackjackPlayers(ArrayList<PlayerIds>bjPlayerIds_out,
+  ArrayList<PlayerIds>tjPlayerIds_out) {
+    for (PlayerIds playerId : m_playerIdsOrder) {
       BasePlayerData playerData = getPlayerData(playerId);
       if (m_cardsMatcher.doesPlayerHaveThunderjack(playerData, m_engine)) {
-        numTjs++;
-        beginPlayerThunderjack(playerId);
-        iterator.remove();
+        if (tjPlayerIds_out != null) {
+          tjPlayerIds_out.add(playerId);
+        }
       } else if (m_cardsMatcher.doesPlayerHaveBlackjack(playerData, m_engine)) {
-        numBjs++;
+        if (bjPlayerIds_out != null) {
+          bjPlayerIds_out.add(playerId);
+        }
+      }
+    }
+  }
+
+  //-------------------------------------------------------------------------
+  // checkPlayersForBlackjack
+  //-------------------------------------------------------------------------
+  private boolean checkPlayersForBlackjack() {
+    ArrayList<PlayerIds>bjPlayerIds = new ArrayList<>();
+    ArrayList<PlayerIds>tjPlayerIds = new ArrayList<>();
+    getBlackjackPlayers(bjPlayerIds, tjPlayerIds);
+    boolean isEndOfRoundEffect = false;
+
+    if (tjPlayerIds.size() > 1) {
+      //more than one player got tj, so all tjs result in a push
+      for (PlayerIds playerId : tjPlayerIds) {
+        beginPlayerThunderjackPush(playerId);
+        m_playerIdsOrder.remove(playerId);
+      }
+    } else if (tjPlayerIds.size() == 1) {
+      //only one player has tj - won the whole thing
+      isEndOfRoundEffect = true;
+      beginPlayerThunderjack(tjPlayerIds.get(0));
+      playThunderjackSound();
+    } else if (bjPlayerIds.size() > 0) {
+      //handle any players that got bj
+      playBjBlitzSound();
+      for (PlayerIds playerId : bjPlayerIds) {
         beginPlayerBlackjack(playerId);
-        iterator.remove();
+        m_playerIdsOrder.remove(playerId);
       }
     }
 
-    if (numTjs > 0) {
-      m_sndChThunderjack = m_engine.getSoundSystem().playSound(m_sndChThunderjack,
-        R.raw.snd_thunderjack,1, true);
-    } else if (numBjs > 0) {
-      playBjBlitzSound();
-    }
+    return(isEndOfRoundEffect);
   }
 
   //-------------------------------------------------------------------------
@@ -932,6 +985,14 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   }
 
   //-------------------------------------------------------------------------
+  // playThunderjackSound
+  //-------------------------------------------------------------------------
+  private void playThunderjackSound() {
+    m_sndChThunderjack = m_engine.getSoundSystem().playSound(m_sndChThunderjack,
+      R.raw.snd_thunderjack,1, true);
+  }
+
+  //-------------------------------------------------------------------------
   // presentWonCredits
   //-------------------------------------------------------------------------
   private void presentWonCredits() {
@@ -960,9 +1021,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   //-------------------------------------------------------------------------
   private void resetPlayers() {
     HashMap<PlayerIds, PlayerData> players = m_engine.getPlayers();
-    Iterator iterator = players.entrySet().iterator();
-    while (iterator.hasNext()) {
-      Map.Entry entry = (Map.Entry)iterator.next();
+    for (Map.Entry entry : players.entrySet()) {
       PlayerData playerData = (PlayerData)entry.getValue();
       playerData.resetStatus();
 
