@@ -3,15 +3,10 @@ package com.gameplaycoder.thunderjack.engine;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.Guideline;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.AsyncLayoutInflater;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -20,23 +15,6 @@ import com.gameplaycoder.thunderjack.R;
 import com.gameplaycoder.thunderjack.StatsActivity;
 import com.gameplaycoder.thunderjack.cards.Deck;
 import com.gameplaycoder.thunderjack.databinding.ActivityMainBinding;
-import com.gameplaycoder.thunderjack.layouts.BetAndChipButtons;
-import com.gameplaycoder.thunderjack.layouts.BetAndCreditsTexts;
-import com.gameplaycoder.thunderjack.layouts.GameButtons;
-import com.gameplaycoder.thunderjack.layouts.LowerResultsImages;
-import com.gameplaycoder.thunderjack.layouts.LowerScoreAmountWonTexts;
-import com.gameplaycoder.thunderjack.layouts.LowerScoreBetValueTexts;
-import com.gameplaycoder.thunderjack.layouts.LowerScoreTexts;
-import com.gameplaycoder.thunderjack.layouts.LowerTurnPlayerIndicators;
-import com.gameplaycoder.thunderjack.layouts.MidResultsImages;
-import com.gameplaycoder.thunderjack.layouts.MidScoreAmountWonTexts;
-import com.gameplaycoder.thunderjack.layouts.MidScoreBetValueTexts;
-import com.gameplaycoder.thunderjack.layouts.MidScoreTexts;
-import com.gameplaycoder.thunderjack.layouts.MidTurnPlayerIndicators;
-import com.gameplaycoder.thunderjack.layouts.PlayerBetButtons;
-import com.gameplaycoder.thunderjack.layouts.SettingsButtonAndDeck;
-import com.gameplaycoder.thunderjack.layouts.UpperResultsImages;
-import com.gameplaycoder.thunderjack.layouts.UpperScoreTexts;
 import com.gameplaycoder.thunderjack.players.BaseHandData;
 import com.gameplaycoder.thunderjack.players.BasePlayerData;
 import com.gameplaycoder.thunderjack.players.PlayerData;
@@ -52,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -386,9 +363,7 @@ public class BjEngine implements IBjEngine {
   public void updateBetValue() {
     int betValue = 0;
 
-    Iterator iterator = m_players.entrySet().iterator();
-    while (iterator.hasNext()) {
-      Map.Entry entry = (Map.Entry) iterator.next();
+    for (Map.Entry entry : m_players.entrySet()) {
       PlayerData playerData = (PlayerData) entry.getValue();
       betValue += playerData.getBetValue();
     }
@@ -479,15 +454,9 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
-  // initSettings
+  // initInflateFinishedListener
   //-------------------------------------------------------------------------
-  private void initSettings() {
-    m_settings = new Settings();
-    readSettings();
-  }
-
   private void initInflateFinishedListener() {
-    final ConstraintLayout constraintLayout = (ConstraintLayout) m_binding.getRoot();
     final IBjEngine engine = this;
 
     m_onInflateFinished = new AsyncLayoutInflater.OnInflateFinishedListener() {
@@ -577,21 +546,20 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
+  // initSettings
+  //-------------------------------------------------------------------------
+  private void initSettings() {
+    m_settings = new Settings();
+    readSettings();
+  }
+
+  //-------------------------------------------------------------------------
   // initUi
   //-------------------------------------------------------------------------
   private void initUi() {
     initInflateFinishedListener();
     AsyncLayoutInflater inflater = new AsyncLayoutInflater(m_context);
     inflater.inflate(R.layout.main_template, null, m_onInflateFinished);
-  }
-
-  //-------------------------------------------------------------------------
-  // isPlayerHandFull
-  //-------------------------------------------------------------------------
-  private boolean isPlayerHandFull(PlayerIds playerId) {
-    int maxCardsPerHand = getIntegerResource(R.integer.maxCardsPerHand);
-    PlayerData playerData = m_players.get(playerId);
-    return (playerData != null && playerData.getNumCards() >= maxCardsPerHand);
   }
 
   //-------------------------------------------------------------------------
