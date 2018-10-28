@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideLowerCardsUi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.70" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideLowerCardsTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideLeftChipsLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.0" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideLeftCardsLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/txtLowerLeftScore"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="99"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:background="@drawable/score_text_shape"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/guideLowerCardsUi"
+        app:layout_constraintBottom_toTopOf="@+id/guideLowerCardsTop"
+        app:layout_constraintLeft_toLeftOf="@+id/guideLeftChipsLeft"
+        app:layout_constraintRight_toRightOf="@+id/guideLeftCardsLeft"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="1sp"
+        app:autoSizeMaxTextSize="14sp"
+        app:autoSizeStepGranularity="1sp"
+        android:gravity="center"
+        />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideMidChipsLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.33" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideMidCardsLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.38" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/txtLowerMidScore"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="99"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:background="@drawable/score_text_shape"
+        app:layout_constraintTop_toBottomOf="@+id/guideLowerCardsUi"
+        app:layout_constraintBottom_toTopOf="@+id/guideLowerCardsTop"
+        app:layout_constraintLeft_toLeftOf="@+id/guideMidChipsLeft"
+        app:layout_constraintRight_toRightOf="@+id/guideMidCardsLeft"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="1sp"
+        app:autoSizeMaxTextSize="14sp"
+        app:autoSizeStepGranularity="1sp"
+        android:gravity="center"
+        />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideRightChipsLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.66" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideRightCardsLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.71" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/txtLowerRightScore"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="99"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:background="@drawable/score_text_shape"
+        app:layout_constraintTop_toBottomOf="@+id/guideLowerCardsUi"
+        app:layout_constraintBottom_toTopOf="@+id/guideLowerCardsTop"
+        app:layout_constraintLeft_toLeftOf="@+id/guideRightChipsLeft"
+        app:layout_constraintRight_toRightOf="@+id/guideRightCardsLeft"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="1sp"
+        app:autoSizeMaxTextSize="14sp"
+        app:autoSizeStepGranularity="1sp"
+        android:gravity="center"
+        />
+
+</android.support.constraint.ConstraintLayout>

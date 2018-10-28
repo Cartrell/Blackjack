@@ -6,6 +6,8 @@ import android.widget.ImageButton;
 import android.widget.ToggleButton;
 
 import com.gameplaycoder.thunderjack.R;
+import com.gameplaycoder.thunderjack.layouts.BetAndChipButtons;
+import com.gameplaycoder.thunderjack.layouts.PlayerBetButtons;
 import com.gameplaycoder.thunderjack.players.BasePlayerData;
 import com.gameplaycoder.thunderjack.players.PlayerData;
 import com.gameplaycoder.thunderjack.players.PlayerIds;
@@ -77,17 +79,17 @@ class BjBetSystem {
   // hidePlaceBetButtons
   //-------------------------------------------------------------------------
   private void hidePlaceBetButtons() {
-    Views views = m_engine.getViews();
-    m_engine.showView(views.getBetButtonLeft(), false);
-    m_engine.showView(views.getBetButtonMid(), false);
-    m_engine.showView(views.getBetButtonRight(), false);
+    PlayerBetButtons playerBetButtons = m_engine.getLayoutComps().playerBetButtons;
+    m_engine.showView(playerBetButtons.btnLeftPlayerBet, false);
+    m_engine.showView(playerBetButtons.btnMidPlayerBet, false);
+    m_engine.showView(playerBetButtons.btnRightPlayerBet, false);
   }
 
   //-------------------------------------------------------------------------
   // hideTotalWon
   //-------------------------------------------------------------------------
   private void hideTotalWon() {
-    m_engine.showView(m_engine.getViews().getTextTotalWon(), false);
+    m_engine.showView(m_engine.getLayoutComps().betAndCreditsTexts.txtTotalWon, false);
   }
 
   //-------------------------------------------------------------------------
@@ -118,10 +120,10 @@ class BjBetSystem {
       }
     };
 
-    Views views = m_engine.getViews();
-    views.getBetButtonLeft().setOnClickListener(listener);
-    views.getBetButtonMid().setOnClickListener(listener);
-    views.getBetButtonRight().setOnClickListener(listener);
+    PlayerBetButtons playerBetButtons = m_engine.getLayoutComps().playerBetButtons;
+    playerBetButtons.btnLeftPlayerBet.setOnClickListener(listener);
+    playerBetButtons.btnMidPlayerBet.setOnClickListener(listener);
+    playerBetButtons.btnRightPlayerBet.setOnClickListener(listener);
   }
 
   //-------------------------------------------------------------------------
@@ -147,18 +149,18 @@ class BjBetSystem {
       }
     };
 
-    Views views = m_engine.getViews();
-    views.getBetChipBlue().setOnClickListener(listener);
-    views.getBetChipGreen().setOnClickListener(listener);
-    views.getBetChipPurple().setOnClickListener(listener);
-    views.getBetChipRed().setOnClickListener(listener);
+    BetAndChipButtons betAndChipButtons = m_engine.getLayoutComps().betAndChipButtons;
+    betAndChipButtons.blueChipButton.setOnClickListener(listener);
+    betAndChipButtons.greenChipButton.setOnClickListener(listener);
+    betAndChipButtons.purpleChipButton.setOnClickListener(listener);
+    betAndChipButtons.redChipButton.setOnClickListener(listener);
   }
 
   //-------------------------------------------------------------------------
   // initClearButton
   //-------------------------------------------------------------------------
   private void initClearButton() {
-    ImageButton button = m_engine.getViews().getClearButton();
+    ImageButton button = m_engine.getLayoutComps().betAndChipButtons.clearButton;
 
     button.setOnClickListener(new View.OnClickListener() {
       //-------------------------------------------------------------------------
@@ -178,7 +180,7 @@ class BjBetSystem {
   // initDealButton
   //-------------------------------------------------------------------------
   private void initDealButton() {
-    ImageButton button = m_engine.getViews().getDealButton();
+    ImageButton button = m_engine.getLayoutComps().betAndChipButtons.dealButton;
 
     button.setOnClickListener(new View.OnClickListener() {
 
@@ -359,9 +361,9 @@ class BjBetSystem {
   // setBetButtonsVisibility
   //-------------------------------------------------------------------------
   private void setBetButtonsVisibility(boolean isVisible) {
-    Views views = m_engine.getViews();
-    m_engine.showView(views.getClearButton(), isVisible);
-    m_engine.showView(views.getDealButton(), isVisible);
+    BetAndChipButtons betAndChipButtons = m_engine.getLayoutComps().betAndChipButtons;
+    m_engine.showView(betAndChipButtons.clearButton, isVisible);
+    m_engine.showView(betAndChipButtons.dealButton, isVisible);
   }
 
   //-------------------------------------------------------------------------
@@ -389,28 +391,28 @@ class BjBetSystem {
   // showPlaceBetButtons
   //-------------------------------------------------------------------------
   private void showPlaceBetButtons() {
-    Views views = m_engine.getViews();
-    showPlaceBetButton(views.getBetButtonLeft());
-    showPlaceBetButton(views.getBetButtonMid());
-    showPlaceBetButton(views.getBetButtonRight());
+    PlayerBetButtons playerBetButtons = m_engine.getLayoutComps().playerBetButtons;
+    showPlaceBetButton(playerBetButtons.btnLeftPlayerBet);
+    showPlaceBetButton(playerBetButtons.btnMidPlayerBet);
+    showPlaceBetButton(playerBetButtons.btnRightPlayerBet);
   }
 
   //-------------------------------------------------------------------------
   // updateDealButtonEnability
   //-------------------------------------------------------------------------
   private void updateDealButtonEnability() {
-    m_engine.getViews().getDealButton().setEnabled(m_engine.getBetValue() > 0);
+    m_engine.getLayoutComps().betAndChipButtons.dealButton.setEnabled(m_engine.getBetValue() > 0);
   }
 
   //-------------------------------------------------------------------------
   // unselectAllBetChips
   //-------------------------------------------------------------------------
   private void unselectAllBetChips() {
-    Views views = m_engine.getViews();
-    unselectBetChip(views.getBetChipBlue());
-    unselectBetChip(views.getBetChipGreen());
-    unselectBetChip(views.getBetChipPurple());
-    unselectBetChip(views.getBetChipRed());
+    BetAndChipButtons betAndChipButtons = m_engine.getLayoutComps().betAndChipButtons;
+    unselectBetChip(betAndChipButtons.blueChipButton);
+    unselectBetChip(betAndChipButtons.greenChipButton);
+    unselectBetChip(betAndChipButtons.purpleChipButton);
+    unselectBetChip(betAndChipButtons.redChipButton);
     m_selectedChipId = null;
   }
 

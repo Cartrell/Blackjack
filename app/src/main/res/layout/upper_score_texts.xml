@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideUpperCardsUi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideUpperCardsTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideMidChipsLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.33" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideMidCardsLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.38" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/txtUpperMidScore"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="99"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:background="@drawable/score_text_shape"
+        app:layout_constraintTop_toBottomOf="@+id/guideUpperCardsUi"
+        app:layout_constraintBottom_toTopOf="@+id/guideUpperCardsTop"
+        app:layout_constraintLeft_toLeftOf="@+id/guideMidChipsLeft"
+        app:layout_constraintRight_toRightOf="@+id/guideMidCardsLeft"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="1sp"
+        app:autoSizeMaxTextSize="14sp"
+        app:autoSizeStepGranularity="1sp"
+        android:gravity="center"
+        />
+
+</android.support.constraint.ConstraintLayout>

@@ -34,10 +34,10 @@ public interface IBjEngine {
   PlayerData getPlayer(PlayerIds playerId);
   HashMap<PlayerIds, PlayerData> getPlayers();
   int getIntegerResource(int resourceId);
+  BjLayoutComps getLayoutComps();
   Settings getSettings();
   public SoundSystem getSoundSystem();
   String getStringResource(int resourceId);
-  Views getViews();
   boolean isSplitPlayerId(PlayerIds playerId);
   void setAtLeastOneRoundPlayed();
   void setBetChipVisibility(String chipId, boolean isVisible);

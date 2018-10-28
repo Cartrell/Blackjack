@@ -9,6 +9,7 @@ import com.gameplaycoder.thunderjack.R;
 import com.gameplaycoder.thunderjack.cards.Card;
 import com.gameplaycoder.thunderjack.cards.CardValues;
 import com.gameplaycoder.thunderjack.cards.Deck;
+import com.gameplaycoder.thunderjack.layouts.BetAndCreditsTexts;
 import com.gameplaycoder.thunderjack.players.BasePlayerData;
 import com.gameplaycoder.thunderjack.players.PlayerData;
 import com.gameplaycoder.thunderjack.players.PlayerIds;
@@ -32,8 +33,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private final String LOG_TAG = BjPlaySystem.class.getName();
 
   private final String[] DEBUG_CARD_KEYS = {
-    "j_h_0", "10_c_0",
-    "a_h_0", "5_d_0",
+    /*"j_h_0", "10_c_0",
+    "a_h_0", "5_d_0",*/
   };
 
   private ArrayList<PlayerIds> m_playerIdsOrder;
@@ -100,7 +101,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_cardsMover = new CardsMover(this);
     m_cardsMatcher = new CardsMatcher(m_engine.getIntegerResource(R.integer.blackjackPoints),
       m_engine.getIntegerResource(R.integer.maxCardsPerHand));
-    m_baseCardImageChildIndex = m_engine.getIndexOf(m_engine.getViews().getDeckImage());
+    m_baseCardImageChildIndex = m_engine.getIndexOf(m_engine.getLayoutComps().settingsButtonAndDeck.getLayout());
     m_playSettingsManager = new BjPlaySettingsManager(m_engine);
     m_winSound = new BjWinSound(m_engine);
     initGameButtons();
@@ -115,7 +116,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_nextCardImageChildIndex = m_baseCardImageChildIndex + 1;
     m_totalCreditsWonOnRound = 0;
 
-    TextView txtTotalWon = m_engine.getViews().getTextTotalWon();
+    TextView txtTotalWon = m_engine.getLayoutComps().betAndCreditsTexts.txtTotalWon;
     if (txtTotalWon != null) {
       m_engine.showView(txtTotalWon, false);
     }
@@ -744,7 +745,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   // initGameButtonDouble
   //-------------------------------------------------------------------------
   private void initGameButtonDouble() {
-    m_engine.getViews().getDoubleButton().setOnClickListener(new View.OnClickListener() {
+    m_engine.getLayoutComps().gameButtons.doubleButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         beginDouble();
@@ -756,7 +757,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   // initGameButtonHit
   //-------------------------------------------------------------------------
   private void initGameButtonHit() {
-    m_engine.getViews().getHitButton().setOnClickListener(new View.OnClickListener() {
+    m_engine.getLayoutComps().gameButtons.hitButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         beginHit();
@@ -779,7 +780,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   // initGameButtonSplit
   //-------------------------------------------------------------------------
   private void initGameButtonSplit() {
-    m_engine.getViews().getSplitButton().setOnClickListener(new View.OnClickListener() {
+    m_engine.getLayoutComps().gameButtons.splitButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         beginSplit();
@@ -791,7 +792,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   // initGameButtonStand
   //-------------------------------------------------------------------------
   private void initGameButtonStand() {
-    m_engine.getViews().getStandButton().setOnClickListener(new View.OnClickListener() {
+    m_engine.getLayoutComps().gameButtons.standButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         beginPlayerStand();
@@ -803,7 +804,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   // initGameButtonSurrender
   //-------------------------------------------------------------------------
   private void initGameButtonSurrender() {
-    m_engine.getViews().getSurrenderButton().setOnClickListener(new View.OnClickListener() {
+    m_engine.getLayoutComps().gameButtons.surrenderButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         beginSurrender();
@@ -940,9 +941,9 @@ class BjPlaySystem implements ICardsMoverCallbacks {
 
     m_engine.setCredits(m_totalCreditsWonOnRound, true);
 
-    AppCompatTextView txtTotalWon = m_engine.getViews().getTextTotalWon();
-    txtTotalWon.setText("TOTAL WON: " + String.valueOf(m_totalCreditsWonOnRound));
-    m_engine.showView(txtTotalWon, true);
+    BetAndCreditsTexts betAndCreditsTexts = m_engine.getLayoutComps().betAndCreditsTexts;
+    betAndCreditsTexts.setTotalWon(m_totalCreditsWonOnRound);
+    m_engine.showView(betAndCreditsTexts.txtTotalWon, true);
 
     m_totalCreditsWonOnRound = 0;
   }

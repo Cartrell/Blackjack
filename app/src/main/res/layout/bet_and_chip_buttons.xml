@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/parentBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1.0" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/parentRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1.0" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideBottomPanelBtm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.92" />
+
+    <ImageButton
+        android:id="@+id/btnClear"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/button_selector_clear"
+        app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
+        app:layout_constraintDimensionRatio="W,212:59"
+        app:layout_constraintRight_toRightOf="@+id/parentRight"
+        app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm" />
+
+    <ImageButton
+        android:id="@+id/btnDeal"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/button_selector_deal"
+        app:layout_constraintRight_toLeftOf="@+id/btnClear"
+        app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
+        app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
+        app:layout_constraintDimensionRatio="W,212:59"/>
+
+    <ToggleButton
+        android:id="@+id/chipButtonGreen"
+        android:tag="green"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/chip_selector_green"
+        android:textOn="@null"
+        android:textOff="@null"
+        app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
+        app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
+        app:layout_constraintRight_toLeftOf="@+id/btnDeal"
+        app:layout_constraintDimensionRatio="W,1:1"/>
+
+    <ToggleButton
+        android:id="@+id/chipButtonPurple"
+        android:tag="purple"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/chip_selector_purple"
+        android:textOn="@null"
+        android:textOff="@null"
+        app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
+        app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
+        app:layout_constraintRight_toLeftOf="@+id/chipButtonGreen"
+        app:layout_constraintDimensionRatio="W,1:1"/>
+
+    <ToggleButton
+        android:id="@+id/chipButtonRed"
+        android:tag="red"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/chip_selector_red"
+        android:textOn="@null"
+        android:textOff="@null"
+        app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
+        app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
+        app:layout_constraintRight_toLeftOf="@+id/chipButtonPurple"
+        app:layout_constraintDimensionRatio="W,1:1"/>
+
+    <ToggleButton
+        android:id="@+id/chipButtonBlue"
+        android:tag="blue"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/chip_selector_blue"
+        android:textOn="@null"
+        android:textOff="@null"
+        app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
+        app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
+        app:layout_constraintRight_toLeftOf="@+id/chipButtonRed"
+        app:layout_constraintDimensionRatio="W,1:1"/>
+
+</android.support.constraint.ConstraintLayout>

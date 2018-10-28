@@ -13,15 +13,19 @@
         <!-- ///////////////////////////////////////////////////// -->
         <!-- background -->
         <!-- ///////////////////////////////////////////////////// -->
+        <!--
         <ImageView
             android:id="@+id/backgroundImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:src="@drawable/background"
             app:layout_constraintLeft_toLeftOf="@+id/parentLeft"
             app:layout_constraintRight_toRightOf="@+id/parentRight"
+            app:layout_constraintTop_toTopOf="@+id/parentTop"
+            app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
             android:scaleType="centerCrop"
-            />
+         />
+         -->
 
         <!-- ///////////////////////////////////////////////////// -->
         <!-- view guides -->
@@ -217,6 +221,7 @@
         <!-- ///////////////////////////////////////////////////// -->
         <!-- lower score texts -->
         <!-- ///////////////////////////////////////////////////// -->
+        <!--
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txtLowerLeftScore"
             android:layout_width="0dp"
@@ -274,10 +279,12 @@
             app:autoSizeStepGranularity="1sp"
             android:gravity="center"
             />
+-->
 
         <!-- ///////////////////////////////////////////////////// -->
         <!-- mid score texts -->
         <!-- ///////////////////////////////////////////////////// -->
+        <!--
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txtMidLeftScore"
             android:layout_width="0dp"
@@ -335,10 +342,12 @@
             app:autoSizeStepGranularity="1sp"
             android:gravity="center"
             />
+-->
 
         <!-- ///////////////////////////////////////////////////// -->
         <!-- upper score texts -->
         <!-- ///////////////////////////////////////////////////// -->
+<!--
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txtUpperMidScore"
             android:layout_width="0dp"
@@ -357,10 +366,12 @@
             app:autoSizeStepGranularity="1sp"
             android:gravity="center"
             />
+-->
 
         <!-- ///////////////////////////////////////////////////// -->
         <!-- lower score bet value texts -->
         <!-- ///////////////////////////////////////////////////// -->
+<!--
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txtLowerLeftBetValue"
             android:layout_width="0dp"
@@ -421,10 +432,11 @@
             app:autoSizeStepGranularity="1sp"
             android:gravity="center"
             />
-
+-->
         <!-- ///////////////////////////////////////////////////// -->
         <!-- lower score amount won texts -->
         <!-- ///////////////////////////////////////////////////// -->
+<!--
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txtLowerLeftAmountWon"
             android:layout_width="0dp"
@@ -485,10 +497,11 @@
             app:autoSizeStepGranularity="1sp"
             android:gravity="center"
             />
-
+-->
         <!-- ///////////////////////////////////////////////////// -->
         <!-- mid score bet value texts -->
         <!-- ///////////////////////////////////////////////////// -->
+<!--
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txtMidLeftBetValue"
             android:layout_width="0dp"
@@ -552,10 +565,11 @@
             app:autoSizeStepGranularity="1sp"
             android:gravity="center"
             />
-
+-->
         <!-- ///////////////////////////////////////////////////// -->
         <!-- mid score amount won texts -->
         <!-- ///////////////////////////////////////////////////// -->
+<!--
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txtMidLeftAmountWon"
             android:layout_width="0dp"
@@ -619,10 +633,11 @@
             app:autoSizeStepGranularity="1sp"
             android:gravity="center"
             />
-
+-->
         <!-- ///////////////////////////////////////////////////// -->
         <!-- lower results images -->
         <!-- ///////////////////////////////////////////////////// -->
+<!--
         <ImageView
             android:id="@+id/resultsLowerLeft"
             android:layout_width="0dp"
@@ -658,10 +673,11 @@
             app:layout_constraintTop_toBottomOf="@+id/guideMidCardsBottom"
             app:layout_constraintBottom_toTopOf="@+id/guideLowerCardsTop"
             />
-
+-->
         <!-- ///////////////////////////////////////////////////// -->
         <!-- mid results images -->
         <!-- ///////////////////////////////////////////////////// -->
+<!--
         <ImageView
             android:id="@+id/resultsMidLeft"
             android:layout_width="0dp"
@@ -697,10 +713,11 @@
             app:layout_constraintTop_toBottomOf="@+id/guideUpperCardsBottom"
             app:layout_constraintBottom_toTopOf="@+id/guideMidCardsTop"
             />
-
+-->
         <!-- ///////////////////////////////////////////////////// -->
         <!-- upper results images -->
         <!-- ///////////////////////////////////////////////////// -->
+<!--
         <ImageView
             android:id="@+id/resultsUpperMid"
             android:layout_width="0dp"
@@ -712,10 +729,11 @@
             app:layout_constraintTop_toBottomOf="@+id/guideDeckBottom"
             app:layout_constraintBottom_toTopOf="@+id/guideUpperCardsTop"
             />
-
+-->
         <!-- ///////////////////////////////////////////////////// -->
         <!-- lower turn player indicators -->
         <!-- ///////////////////////////////////////////////////// -->
+<!--
         <ImageView
             android:id="@+id/turnPlayerLowerLeft"
             android:layout_width="wrap_content"
@@ -751,10 +769,11 @@
             app:layout_constraintTop_toBottomOf="@+id/guideMidCardsBottom"
             app:layout_constraintBottom_toTopOf="@+id/guideLowerCardsTop"
             />
-
+-->
         <!-- ///////////////////////////////////////////////////// -->
         <!-- mid turn player indicators -->
         <!-- ///////////////////////////////////////////////////// -->
+<!--
         <ImageView
             android:id="@+id/turnPlayerMidLeft"
             android:layout_width="wrap_content"
@@ -790,7 +809,7 @@
             app:layout_constraintTop_toBottomOf="@+id/guideUpperCardsBottom"
             app:layout_constraintBottom_toTopOf="@+id/guideMidCardsTop"
             />
-
+-->
         <!-- ///////////////////////////////////////////////////// -->
         <!-- bet buttons -->
         <!-- ///////////////////////////////////////////////////// -->
@@ -815,39 +834,35 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.20" />
+        <!--
+                <ImageButton
+                    android:id="@+id/btnClear"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/button_selector_clear"
+                    app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
+                    app:layout_constraintDimensionRatio="W,212:59"
+                    app:layout_constraintRight_toRightOf="@+id/parentRight"
+                    app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm" />
 
-        <android.support.constraint.Group
-            android:visibility="visible"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="btnClear,btnDeal"
-            />
-
-        <ImageButton
-            android:id="@+id/btnClear"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/button_selector_clear"
-            app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
-            app:layout_constraintDimensionRatio="W,212:59"
-            app:layout_constraintRight_toRightOf="@+id/parentRight"
-            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm" />
-
-        <ImageButton
-            android:id="@+id/btnDeal"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/button_selector_deal"
-            app:layout_constraintRight_toLeftOf="@+id/btnClear"
-            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
-            app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
-            app:layout_constraintDimensionRatio="W,212:59"/>
+                <ImageButton
+                    android:id="@+id/btnDeal"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/button_selector_deal"
+                    app:layout_constraintRight_toLeftOf="@+id/btnClear"
+                    app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
+                    app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
+                    app:layout_constraintDimensionRatio="W,212:59"/>
+        -->
 
         <!-- ///////////////////////////////////////////////////// -->
         <!-- bet chip buttons -->
         <!-- ///////////////////////////////////////////////////// -->
+
+        <!--
         <ToggleButton
             android:id="@+id/chipButtonGreen"
             android:tag="green"
@@ -900,17 +915,12 @@
             app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
             app:layout_constraintRight_toLeftOf="@+id/chipButtonRed"
             app:layout_constraintDimensionRatio="W,1:1"/>
-
+-->
         <!-- ///////////////////////////////////////////////////// -->
         <!-- game buttons -->
         <!-- ///////////////////////////////////////////////////// -->
-        <android.support.constraint.Group
-            android:visibility="visible"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="btnSurrender,btnStand,btnDouble,btnHit,btnSplit"
-            />
 
+<!--
         <ImageButton
             android:id="@+id/btnSurrender"
             android:layout_width="0dp"
@@ -965,7 +975,20 @@
             app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
             app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
             app:layout_constraintDimensionRatio="W,212:59" />
-
+-->
+<!--
+        <ViewStub
+            android:id="@+id/stub_game_buttons"
+            android:inflatedId="@+id/stub_game_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout="@layout/game_buttons"
+            app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
+            app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
+            app:layout_constraintLeft_toLeftOf="@+id/parentLeft"
+            app:layout_constraintRight_toRightOf="@+id/parentRight"
+            />
+-->
         <!-- ///////////////////////////////////////////////////// -->
         <!-- bet & credits text -->
         <!-- ///////////////////////////////////////////////////// -->
@@ -977,7 +1000,7 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.25"
             />
-
+<!--
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txtCredits"
             android:layout_width="0dp"
@@ -1043,17 +1066,18 @@
             app:autoSizeMinTextSize="1sp"
             app:autoSizeStepGranularity="1sp"
             />
-
+-->
         <!-- ///////////////////////////////////////////////////// -->
         <!-- settings button -->
         <!-- ///////////////////////////////////////////////////// -->
+
         <android.support.constraint.Guideline
             android:id="@+id/guideSettingsButtonBottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.08" />
-
+<!--
         <ImageButton
             android:id="@+id/btnSettings"
             android:layout_width="0dp"
@@ -1066,17 +1090,18 @@
             app:layout_constraintTop_toBottomOf="@+id/parentTop"
             app:layout_constraintDimensionRatio="W,1:1"
             />
-
+-->
         <!-- ///////////////////////////////////////////////////// -->
         <!-- deck -->
         <!-- ///////////////////////////////////////////////////// -->
+
         <android.support.constraint.Guideline
             android:id="@+id/guideDeckBottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.15" />
-
+<!--
         <ImageView
             android:id="@+id/deckImage"
             android:layout_width="wrap_content"
@@ -1089,10 +1114,11 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/guideDeckBottom"
             />
-
+-->
         <!-- ///////////////////////////////////////////////////// -->
         <!-- player bet buttons -->
         <!-- ///////////////////////////////////////////////////// -->
+<!--
         <ImageButton
             android:id="@+id/btnRightPlayerBet"
             android:layout_width="0dp"
@@ -1125,6 +1151,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/guideBottomPanel"
             app:layout_constraintDimensionRatio="H,212:59"
             />
-
+-->
     </android.support.constraint.ConstraintLayout>
 </layout>

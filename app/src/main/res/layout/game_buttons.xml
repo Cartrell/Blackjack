@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/parentLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.0" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/parentRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1.0" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/parentBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1.0" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideBottomPanelBtm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.92" />
+
+    <ImageButton
+        android:id="@+id/btnSurrender"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/button_selector_surrender"
+        app:layout_constraintLeft_toLeftOf="@+id/parentLeft"
+        app:layout_constraintRight_toLeftOf="@+id/btnDouble"
+        app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
+        app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
+        app:layout_constraintDimensionRatio="W,212:59" />
+
+    <ImageButton
+        android:id="@+id/btnDouble"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/button_selector_double"
+        app:layout_constraintLeft_toRightOf="@+id/btnSurrender"
+        app:layout_constraintRight_toLeftOf="@+id/btnHit"
+        app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
+        app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
+        app:layout_constraintDimensionRatio="W,212:59" />
+
+    <ImageButton
+        android:id="@+id/btnHit"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/button_selector_hit"
+        app:layout_constraintLeft_toRightOf="@+id/btnDouble"
+        app:layout_constraintRight_toLeftOf="@+id/btnStand"
+        app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
+        app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
+        app:layout_constraintDimensionRatio="W,212:59" />
+
+    <ImageButton
+        android:id="@+id/btnStand"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/button_selector_stand"
+        app:layout_constraintLeft_toRightOf="@+id/btnHit"
+        app:layout_constraintRight_toLeftOf="@+id/btnSplit"
+        app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
+        app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
+        app:layout_constraintDimensionRatio="W,212:59" />
+
+    <ImageButton
+        android:id="@+id/btnSplit"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/button_selector_split"
+        app:layout_constraintLeft_toRightOf="@+id/btnStand"
+        app:layout_constraintRight_toRightOf="@+id/parentRight"
+        app:layout_constraintTop_toBottomOf="@+id/guideBottomPanelBtm"
+        app:layout_constraintBottom_toBottomOf="@+id/parentBottom"
+        app:layout_constraintDimensionRatio="W,212:59" />
+
+</android.support.constraint.ConstraintLayout>

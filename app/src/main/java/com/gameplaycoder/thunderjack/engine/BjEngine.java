@@ -3,8 +3,14 @@ package com.gameplaycoder.thunderjack.engine;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Guideline;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.AsyncLayoutInflater;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +20,23 @@ import com.gameplaycoder.thunderjack.R;
 import com.gameplaycoder.thunderjack.StatsActivity;
 import com.gameplaycoder.thunderjack.cards.Deck;
 import com.gameplaycoder.thunderjack.databinding.ActivityMainBinding;
+import com.gameplaycoder.thunderjack.layouts.BetAndChipButtons;
+import com.gameplaycoder.thunderjack.layouts.BetAndCreditsTexts;
+import com.gameplaycoder.thunderjack.layouts.GameButtons;
+import com.gameplaycoder.thunderjack.layouts.LowerResultsImages;
+import com.gameplaycoder.thunderjack.layouts.LowerScoreAmountWonTexts;
+import com.gameplaycoder.thunderjack.layouts.LowerScoreBetValueTexts;
+import com.gameplaycoder.thunderjack.layouts.LowerScoreTexts;
+import com.gameplaycoder.thunderjack.layouts.LowerTurnPlayerIndicators;
+import com.gameplaycoder.thunderjack.layouts.MidResultsImages;
+import com.gameplaycoder.thunderjack.layouts.MidScoreAmountWonTexts;
+import com.gameplaycoder.thunderjack.layouts.MidScoreBetValueTexts;
+import com.gameplaycoder.thunderjack.layouts.MidScoreTexts;
+import com.gameplaycoder.thunderjack.layouts.MidTurnPlayerIndicators;
+import com.gameplaycoder.thunderjack.layouts.PlayerBetButtons;
+import com.gameplaycoder.thunderjack.layouts.SettingsButtonAndDeck;
+import com.gameplaycoder.thunderjack.layouts.UpperResultsImages;
+import com.gameplaycoder.thunderjack.layouts.UpperScoreTexts;
 import com.gameplaycoder.thunderjack.players.BaseHandData;
 import com.gameplaycoder.thunderjack.players.BasePlayerData;
 import com.gameplaycoder.thunderjack.players.PlayerData;
@@ -23,6 +46,7 @@ import com.gameplaycoder.thunderjack.settings.SettingsStorage;
 import com.gameplaycoder.thunderjack.sound.SoundChannel;
 import com.gameplaycoder.thunderjack.sound.SoundSystem;
 import com.gameplaycoder.thunderjack.utils.CreditsRenewalChecker;
+import com.gameplaycoder.thunderjack.utils.Metrics;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,7 +71,7 @@ public class BjEngine implements IBjEngine {
   private SoundSystem m_soundSystem;
   private BaseHandData.OnCardMoveStartListener m_cardMoveStartListener;
 
-  private Views m_views;
+  private BjLayoutComps m_layoutComps;
   private BackgroundViewManager m_bgViewMgr;
 
   private Settings m_settings;
@@ -63,6 +87,8 @@ public class BjEngine implements IBjEngine {
   private SoundChannel m_sndChCardDeal1;
   private SoundChannel m_sndChCardDeal2;
   private SoundChannel m_sndChCardDeal3;
+
+  private AsyncLayoutInflater.OnInflateFinishedListener m_onInflateFinished;
 
   //=========================================================================
   // public
@@ -239,6 +265,14 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
+  // getLayoutComps
+  //-------------------------------------------------------------------------
+  @Override
+  public BjLayoutComps getLayoutComps() {
+    return (m_layoutComps);
+  }
+
+  //-------------------------------------------------------------------------
   // getSettings
   //-------------------------------------------------------------------------
   @Override
@@ -254,21 +288,13 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
-  // getViews
-  //-------------------------------------------------------------------------
-  @Override
-  public Views getViews() {
-    return (m_views);
-  }
-
-  //-------------------------------------------------------------------------
   // isSplitPlayerId
   //-------------------------------------------------------------------------
   public boolean isSplitPlayerId(PlayerIds playerId) {
     return (
       PlayerIds.RIGHT_TOP.equals(playerId) ||
-        PlayerIds.MIDDLE_TOP.equals(playerId) ||
-        PlayerIds.LEFT_TOP.equals(playerId));
+      PlayerIds.MIDDLE_TOP.equals(playerId) ||
+      PlayerIds.LEFT_TOP.equals(playerId));
   }
 
   //-------------------------------------------------------------------------
@@ -294,7 +320,7 @@ public class BjEngine implements IBjEngine {
   @Override
   public void setCredits(int value) {
     m_credits = value;
-    m_views.setCredits(value);
+    m_layoutComps.betAndCreditsTexts.setCredits(value);
     writeCreditsToSettings();
   }
 
@@ -336,11 +362,11 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   @Override
   public void showGameButtons(EnumSet<BjGameButtonFlags> flags) {
-    showView(m_views.getDoubleButton(), flags.contains(BjGameButtonFlags.DOUBLE));
-    showView(m_views.getHitButton(), flags.contains(BjGameButtonFlags.HIT));
-    showView(m_views.getSplitButton(), flags.contains(BjGameButtonFlags.SPLIT));
-    showView(m_views.getStandButton(), flags.contains(BjGameButtonFlags.STAND));
-    showView(m_views.getSurrenderButton(), flags.contains(BjGameButtonFlags.SURRENDER));
+    showView(m_layoutComps.gameButtons.doubleButton, flags.contains(BjGameButtonFlags.DOUBLE));
+    showView(m_layoutComps.gameButtons.hitButton, flags.contains(BjGameButtonFlags.HIT));
+    showView(m_layoutComps.gameButtons.splitButton, flags.contains(BjGameButtonFlags.SPLIT));
+    showView(m_layoutComps.gameButtons.standButton, flags.contains(BjGameButtonFlags.STAND));
+    showView(m_layoutComps.gameButtons.surrenderButton, flags.contains(BjGameButtonFlags.SURRENDER));
   }
 
   //-------------------------------------------------------------------------
@@ -368,7 +394,7 @@ public class BjEngine implements IBjEngine {
     }
 
     m_betValue = betValue;
-    m_views.setBetValue(m_betValue);
+    m_layoutComps.betAndCreditsTexts.setBetValue(m_betValue);
   }
 
   //-------------------------------------------------------------------------
@@ -404,7 +430,7 @@ public class BjEngine implements IBjEngine {
   // changeBackgroundColor
   //-------------------------------------------------------------------------
   private void changeBackgroundColor() {
-    m_bgViewMgr = new BackgroundViewManager(m_views.getBackgroundImage());
+    m_bgViewMgr = new BackgroundViewManager(m_layoutComps.gameBackground.image);
   }
 
   //-------------------------------------------------------------------------
@@ -460,85 +486,103 @@ public class BjEngine implements IBjEngine {
     readSettings();
   }
 
+  private void initInflateFinishedListener() {
+    final ConstraintLayout constraintLayout = (ConstraintLayout) m_binding.getRoot();
+    final IBjEngine engine = this;
+
+    m_onInflateFinished = new AsyncLayoutInflater.OnInflateFinishedListener() {
+      //-------------------------------------------------------------------------
+      // isEligibleForCreditsRenewal
+      //-------------------------------------------------------------------------
+      private boolean isEligibleForCreditsRenewal() {
+        CreditsRenewalChecker creditsRenewalChecker = new CreditsRenewalChecker(engine);
+        int credits = m_settings.getCredits();
+        return(creditsRenewalChecker.isEligibleForCreditsRenewal(credits));
+      }
+
+      //-------------------------------------------------------------------------
+      // onInflateFinished
+      //-------------------------------------------------------------------------
+      @Override
+      public void onInflateFinished(@NonNull View view, int resid, @Nullable ViewGroup parent) {
+        m_binding.progressBar.setVisibility(View.GONE);
+
+        m_binding.activityMain.addView(view);
+
+        final View _view = view;
+        _view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+          @Override
+          public void onGlobalLayout() {
+            _view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+            Metrics.SetLayoutSize(
+              m_binding.activityMain.getWidth(),
+              m_binding.activityMain.getHeight());
+
+            m_layoutComps = new BjLayoutComps(m_context, m_binding.activityMain);
+
+            m_binding.activityMain.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+              @Override
+              public void onGlobalLayout() {
+                m_binding.activityMain.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                float xDeck = m_layoutComps.settingsButtonAndDeck.deckImage.getX();
+                float yDeck = m_layoutComps.settingsButtonAndDeck.deckImage.getY();
+                final int MAX_CARDS = getIntegerResource(R.integer.maxCardsPerHand);
+
+                PlayersCreator creator = new PlayersCreator(m_layoutComps, m_binding.activityMain, xDeck,
+                  yDeck, MAX_CARDS, m_cardMoveStartListener);
+
+                changeBackgroundColor();
+
+                m_dealer = creator.getDealer();
+                m_players = creator.getPlayers();
+                m_betChips = new BjBetChips(engine);
+                m_betSystem = new BjBetSystem(engine);
+                m_cardsPrepSystem = new BjCardsPrepSystem(engine);
+                m_playSystem = new BjPlaySystem(engine);
+
+                initSettingsButton();
+
+                if (m_settings.hasAppRanAtLeastOnce()) {
+                  if (isEligibleForCreditsRenewal()) {
+                    renewCredits();
+                  } else {
+                    setCredits(m_settings.getCredits(), false);
+                  }
+                } else {
+                  setCredits(Integer.parseInt(m_context.getString(R.string.startingCredits)));
+                }
+
+                m_settings.appRanAtLeastOnce(true);
+
+                updateBetValue();
+                beginRound();
+              }
+            });
+          }
+        });
+      }
+
+      //-------------------------------------------------------------------------
+      // renewCredits
+      //-------------------------------------------------------------------------
+      private void renewCredits() {
+        setCredits(Integer.parseInt(m_context.getString(R.string.startingCredits)));
+
+        //clear last time closed
+        m_settings.setLastGameClosedTimeWithLowCredits(0);
+        writeSettings();
+      }
+    };
+  }
+
   //-------------------------------------------------------------------------
   // initUi
   //-------------------------------------------------------------------------
   private void initUi() {
-    final ConstraintLayout constraintLayout = (ConstraintLayout) m_binding.getRoot();
-    final IBjEngine engine = this;
-
-    LayoutInflater inflater = LayoutInflater.from(m_context);
-    final ConstraintLayout templateLayout = (ConstraintLayout) inflater.inflate(R.layout.main_template,
-      (ViewGroup) m_binding.stubLayout, true);
-
-    templateLayout.getViewTreeObserver().addOnGlobalLayoutListener(
-      new ViewTreeObserver.OnGlobalLayoutListener() {
-
-        //-------------------------------------------------------------------------
-        // isEligibleForCreditsRenewal
-        //-------------------------------------------------------------------------
-        private boolean isEligibleForCreditsRenewal() {
-          CreditsRenewalChecker creditsRenewalChecker = new CreditsRenewalChecker(engine);
-          int credits = m_settings.getCredits();
-          return(creditsRenewalChecker.isEligibleForCreditsRenewal(credits));
-        }
-
-        //-------------------------------------------------------------------------
-        // onGlobalLayout
-        //-------------------------------------------------------------------------
-        @Override
-        public void onGlobalLayout() {
-          templateLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-          m_views = new Views(constraintLayout, templateLayout);
-
-          float xDeck = m_views.getDeckImage().getX();
-          float yDeck = m_views.getDeckImage().getY();
-          final int MAX_CARDS = getIntegerResource(R.integer.maxCardsPerHand);
-          PlayersCreator creator = new PlayersCreator(templateLayout, m_binding, xDeck,
-            yDeck, MAX_CARDS, m_views, m_cardMoveStartListener);
-
-          constraintLayout.removeView(templateLayout);
-
-          changeBackgroundColor();
-
-          m_dealer = creator.getDealer();
-          m_players = creator.getPlayers();
-          m_betChips = new BjBetChips(engine);
-          m_betSystem = new BjBetSystem(engine);
-          m_cardsPrepSystem = new BjCardsPrepSystem(engine);
-          m_playSystem = new BjPlaySystem(engine);
-
-          initSettingsButton();
-
-          if (m_settings.hasAppRanAtLeastOnce()) {
-            if (isEligibleForCreditsRenewal()) {
-              renewCredits();
-            } else {
-              setCredits(m_settings.getCredits(), false);
-            }
-          } else {
-            setCredits(Integer.parseInt(m_context.getString(R.string.startingCredits)));
-          }
-
-          m_settings.appRanAtLeastOnce(true);
-
-          updateBetValue();
-          beginRound();
-        }
-
-        //-------------------------------------------------------------------------
-        // renewCredits
-        //-------------------------------------------------------------------------
-        private void renewCredits() {
-          setCredits(Integer.parseInt(m_context.getString(R.string.startingCredits)));
-
-          //clear last time closed
-          m_settings.setLastGameClosedTimeWithLowCredits(0);
-          writeSettings();
-        }
-      });
-
+    initInflateFinishedListener();
+    AsyncLayoutInflater inflater = new AsyncLayoutInflater(m_context);
+    inflater.inflate(R.layout.main_template, null, m_onInflateFinished);
   }
 
   //-------------------------------------------------------------------------
@@ -554,7 +598,7 @@ public class BjEngine implements IBjEngine {
   // initSettingsButton
   //-------------------------------------------------------------------------
   private void initSettingsButton() {
-    m_views.getSettingsButton().setOnClickListener(new View.OnClickListener() {
+    m_layoutComps.settingsButtonAndDeck.settingsButton.setOnClickListener(new View.OnClickListener() {
 
       //-------------------------------------------------------------------------
       // onClick

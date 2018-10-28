@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideBottomPanel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideLowerChipsTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.82" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideLeftCardsRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideMidChipsLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.33" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideMidCardsRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.59" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideRightChipsLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.66" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideRightCardsRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.91" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/txtLowerLeftBetValue"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="9999"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:background="@drawable/bet_text_shape"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideBottomPanel"
+        app:layout_constraintTop_toBottomOf="@+id/guideLowerChipsTop"
+        app:layout_constraintLeft_toRightOf="@+id/guideLeftCardsRight"
+        app:layout_constraintRight_toLeftOf="@+id/guideMidChipsLeft"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="1sp"
+        app:autoSizeMaxTextSize="14sp"
+        app:autoSizeStepGranularity="1sp"
+        android:gravity="center"
+        />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/txtLowerMidBetValue"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="9999"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:background="@drawable/bet_text_shape"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideBottomPanel"
+        app:layout_constraintTop_toBottomOf="@+id/guideLowerChipsTop"
+        app:layout_constraintLeft_toRightOf="@+id/guideMidCardsRight"
+        app:layout_constraintRight_toLeftOf="@+id/guideRightChipsLeft"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="1sp"
+        app:autoSizeMaxTextSize="14sp"
+        app:autoSizeStepGranularity="1sp"
+        android:gravity="center"
+        />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/txtLowerRightBetValue"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="9999"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:background="@drawable/bet_text_shape"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideBottomPanel"
+        app:layout_constraintTop_toBottomOf="@+id/guideLowerChipsTop"
+        app:layout_constraintLeft_toRightOf="@+id/guideRightCardsRight"
+        app:layout_constraintRight_toRightOf="parent"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="1sp"
+        app:autoSizeMaxTextSize="14sp"
+        app:autoSizeStepGranularity="1sp"
+        android:gravity="center"
+        />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideBottomPanel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideRightChipsRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.76" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideRightCardsRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.91" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideMidChipsRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.43" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideMidCardsRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.59" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideLeftChipsRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideLeftCardsRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <ImageButton
+        android:id="@+id/btnRightPlayerBet"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/button_selector_bet"
+        app:layout_constraintBottom_toTopOf="@+id/guideBottomPanel"
+        app:layout_constraintLeft_toLeftOf="@+id/guideRightChipsRight"
+        app:layout_constraintRight_toRightOf="@+id/guideRightCardsRight"
+        app:layout_constraintDimensionRatio="H,212:59"
+        />
+
+    <ImageButton
+        android:id="@+id/btnMidPlayerBet"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/button_selector_bet"
+        app:layout_constraintBottom_toTopOf="@+id/guideBottomPanel"
+        app:layout_constraintLeft_toLeftOf="@+id/guideMidChipsRight"
+        app:layout_constraintRight_toRightOf="@+id/guideMidCardsRight"
+        app:layout_constraintDimensionRatio="H,212:59"
+        />
+
+    <ImageButton
+        android:id="@+id/btnLeftPlayerBet"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/button_selector_bet"
+        app:layout_constraintLeft_toLeftOf="@+id/guideLeftChipsRight"
+        app:layout_constraintRight_toRightOf="@+id/guideLeftCardsRight"
+        app:layout_constraintBottom_toBottomOf="@+id/guideBottomPanel"
+        app:layout_constraintDimensionRatio="H,212:59"
+        />
+
+</android.support.constraint.ConstraintLayout>

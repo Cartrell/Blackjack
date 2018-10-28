@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideCreditTextsEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25"
+        />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/parentLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.0" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/parentTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.0" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideUpperCardsUi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/txtCredits"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:lines="1"
+        android:text="credits: 999,999"
+        android:textColor="#ffffff"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
+        app:layout_constraintLeft_toLeftOf="@+id/parentLeft"
+        app:layout_constraintRight_toLeftOf="@+id/guideCreditTextsEnd"
+        app:layout_constraintTop_toTopOf="@+id/parentTop"
+        app:layout_constraintBottom_toTopOf="@+id/txtBet"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="1sp"
+        app:autoSizeStepGranularity="1sp"
+        />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/txtBet"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:lines="1"
+        android:text="bet: 9,999"
+        android:textColor="#ffffff"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
+        app:layout_constraintLeft_toLeftOf="@+id/parentLeft"
+        app:layout_constraintRight_toLeftOf="@+id/guideCreditTextsEnd"
+        app:layout_constraintTop_toBottomOf="@+id/txtCredits"
+        app:layout_constraintBottom_toTopOf="@+id/txtTotalWon"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="1sp"
+        app:autoSizeStepGranularity="1sp"
+        />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/txtTotalWon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:lines="1"
+        android:text="total won: 999,999"
+        android:textColor="#ffffff"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
+        app:layout_constraintLeft_toLeftOf="@+id/parentLeft"
+        app:layout_constraintRight_toLeftOf="@+id/guideCreditTextsEnd"
+        app:layout_constraintTop_toBottomOf="@+id/txtBet"
+        app:layout_constraintBottom_toTopOf="@+id/guideUpperCardsUi"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="1sp"
+        app:autoSizeStepGranularity="1sp"
+        />
+
+</android.support.constraint.ConstraintLayout>

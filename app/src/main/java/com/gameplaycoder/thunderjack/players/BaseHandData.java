@@ -108,7 +108,7 @@ public class BaseHandData {
     if (!isCardAlreadyInPlay) {
       cardImage.setVisibility(View.INVISIBLE);
       cardImage.setAlpha(1.0f);
-      m_viewGroup.addView(cardImage, params);
+      m_viewGroup.addView(cardImage, cardImageIndex, params);
     }
     card.setPosition(xCard, yCard);
 
@@ -249,10 +249,10 @@ public class BaseHandData {
   private void initComponents(Guideline guideCardsLeft, Guideline guideCardsRight,
   Guideline guideCardsTop, Guideline guideCardsBottom, Guideline guideCardsUi, TextView scoreText,
   ImageView resultImage) {
-    m_xCardsLeft = guideCardsLeft.getX();
-    m_xCardsRight = guideCardsRight.getX();
-    m_yCardsTop = guideCardsTop.getY();
-    m_yCardsBottom = guideCardsBottom.getY();
+    m_xCardsLeft = Metrics.CalcGuidelinePosition(guideCardsLeft);
+    m_xCardsRight = Metrics.CalcGuidelinePosition(guideCardsRight);
+    m_yCardsTop = Metrics.CalcGuidelinePosition(guideCardsTop);
+    m_yCardsBottom = Metrics.CalcGuidelinePosition(guideCardsBottom);
     m_scoreText = scoreText;
     m_resultImage = resultImage;
   }
@@ -322,5 +322,4 @@ public class BaseHandData {
   public interface OnCardMoveStartListener {
     void onComplete(BaseHandData baseHandData);
   }
-
 }

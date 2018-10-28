@@ -4,12 +4,14 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.constraint.Guideline;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gameplaycoder.thunderjack.engine.BjBetChip;
+import com.gameplaycoder.thunderjack.utils.Metrics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -168,9 +170,9 @@ class HandData extends BaseHandData {
   private void initHdComponents(HashMap<String, Object> extraParams) {
     m_amountWonValueText = (TextView)extraParams.get("amountWonValueText");
     m_betValueText = (TextView)extraParams.get("betValueText");
-    m_xChipsLeft = ((Guideline)extraParams.get("guideChipsLeft")).getX();
-    m_xChipsRight = ((Guideline)extraParams.get("guideChipsRight")).getX();
-    m_yChipsTop = ((Guideline)extraParams.get("guideChipsTop")).getY();
+    m_xChipsLeft = Metrics.CalcGuidelinePosition((Guideline)extraParams.get("guideChipsLeft"));
+    m_xChipsRight = Metrics.CalcGuidelinePosition((Guideline)extraParams.get("guideChipsRight"));
+    m_yChipsTop = Metrics.CalcGuidelinePosition((Guideline)extraParams.get("guideChipsTop"));
     m_chipSize = (Point)extraParams.get("chipSize");
     m_turnIndicatorImage = (ImageView)extraParams.get("turnIndicatorImage");
 
