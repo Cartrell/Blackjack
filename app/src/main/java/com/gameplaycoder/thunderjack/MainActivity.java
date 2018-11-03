@@ -47,30 +47,35 @@ public class MainActivity extends AppCompatActivity {
   }
 
   //-------------------------------------------------------------------------
+  // onPause
+  //-------------------------------------------------------------------------
+  @Override
+  protected void onPause() {
+    super.onPause();
+    if (m_engine != null) {
+      m_engine.pause();
+    }
+  }
+
+  //-------------------------------------------------------------------------
+  // onResume
+  //-------------------------------------------------------------------------
+  @Override
+  protected void onResume() {
+    super.onResume();
+    if (m_engine != null) {
+      m_engine.resume();
+    }
+  }
+
+  //-------------------------------------------------------------------------
   // onStop
   //-------------------------------------------------------------------------
   @Override
   protected void onStop() {
     super.onStop();
-    updateLastGameClosedTimeWithLowCredits();
-  }
-
-  //=========================================================================
-  // private
-  //=========================================================================
-
-  //-------------------------------------------------------------------------
-  // updateLastGameClosedTimeWithLowCredits
-  //-------------------------------------------------------------------------
-  private void updateLastGameClosedTimeWithLowCredits() {
-    if (m_engine == null) {
-      return;
-    }
-
-    CreditsRenewalChecker creditsRenewalChecker = new CreditsRenewalChecker(m_engine);
-    int credits = m_engine.getCredits();
-    if (creditsRenewalChecker.shouldTimeBeUpdated(credits)) {
-      m_engine.updateLastGameClosedTimeWithLowCredits();
+    if (m_engine != null) {
+      m_engine.stop();
     }
   }
 }

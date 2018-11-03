@@ -39,18 +39,17 @@ public class BjEngine implements IBjEngine {
   //=========================================================================
   private HashMap<PlayerIds, PlayerData> m_players;
 
-  private Deck m_deck;
   private BjBetChips m_betChips;
   private BjBetSystem m_betSystem;
   private BjCardsPrepSystem m_cardsPrepSystem;
   private BjPlaySystem m_playSystem;
+  private BjLayoutComps m_layoutComps;
+
+  private Deck m_deck;
   private BasePlayerData m_dealer;
   private SoundSystem m_soundSystem;
   private BaseHandData.OnCardMoveStartListener m_cardMoveStartListener;
-
-  private BjLayoutComps m_layoutComps;
   private BackgroundViewManager m_bgViewMgr;
-
   private Settings m_settings;
 
   private Activity m_activity;
@@ -275,6 +274,24 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
+  // pause
+  //-------------------------------------------------------------------------
+  public void pause() {
+    if (m_bgViewMgr != null) {
+      m_bgViewMgr.stopAnimation();
+    }
+  }
+
+  //-------------------------------------------------------------------------
+  // resume
+  //-------------------------------------------------------------------------
+  public void resume() {
+    if (m_bgViewMgr != null) {
+      m_bgViewMgr.startAnimation();
+    }
+  }
+
+  //-------------------------------------------------------------------------
   // setAtLeastOneRoundPlayed
   //-------------------------------------------------------------------------
   @Override
@@ -357,6 +374,17 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
+  // stop
+  //-------------------------------------------------------------------------
+  public void stop() {
+    CreditsRenewalChecker creditsRenewalChecker = new CreditsRenewalChecker(this);
+    int credits = getCredits();
+    if (creditsRenewalChecker.shouldTimeBeUpdated(credits)) {
+      updateLastGameClosedTimeWithLowCredits();
+    }
+  }
+
+  //-------------------------------------------------------------------------
   // updateBetValue
   //-------------------------------------------------------------------------
   @Override
@@ -381,15 +409,6 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
-  // updateLastGameClosedTimeWithLowCredits
-  //-------------------------------------------------------------------------
-  public void updateLastGameClosedTimeWithLowCredits() {
-    long time = new Date().getTime();
-    m_settings.setLastGameClosedTimeWithLowCredits(time);
-    writeSettings();
-  }
-
-  //-------------------------------------------------------------------------
   // writeSettings
   //-------------------------------------------------------------------------
   public void writeSettings() {
@@ -402,13 +421,6 @@ public class BjEngine implements IBjEngine {
   //=========================================================================
 
   //-------------------------------------------------------------------------
-  // changeBackgroundColor
-  //-------------------------------------------------------------------------
-  private void changeBackgroundColor() {
-    m_bgViewMgr = new BackgroundViewManager(m_layoutComps.gameBackground.image);
-  }
-
-  //-------------------------------------------------------------------------
   // createBetChips
   //-------------------------------------------------------------------------
   private ArrayList<BjBetChip> createBetChips(ArrayList<String> chipIds) {
@@ -417,6 +429,14 @@ public class BjEngine implements IBjEngine {
       betChips.add(new BjBetChip(m_context, chipId));
     }
     return (betChips);
+  }
+
+  //-------------------------------------------------------------------------
+  // initBackgroundViewManager
+  //-------------------------------------------------------------------------
+  private void initBackgroundViewManager() {
+    m_bgViewMgr = new BackgroundViewManager(m_layoutComps.gameBackground.image);
+    m_bgViewMgr.startAnimation();
   }
 
   //-------------------------------------------------------------------------
@@ -474,8 +494,6 @@ public class BjEngine implements IBjEngine {
       //-------------------------------------------------------------------------
       @Override
       public void onInflateFinished(@NonNull View view, int resid, @Nullable ViewGroup parent) {
-        m_binding.progressBar.setVisibility(View.GONE);
-
         m_binding.activityMain.addView(view);
 
         final View _view = view;
@@ -493,6 +511,8 @@ public class BjEngine implements IBjEngine {
             m_binding.activityMain.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
               @Override
               public void onGlobalLayout() {
+                m_binding.progressBar.setVisibility(View.GONE);
+
                 m_binding.activityMain.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 float xDeck = m_layoutComps.settingsButtonAndDeck.deckImage.getX();
                 float yDeck = m_layoutComps.settingsButtonAndDeck.deckImage.getY();
@@ -501,7 +521,7 @@ public class BjEngine implements IBjEngine {
                 PlayersCreator creator = new PlayersCreator(m_layoutComps, m_binding.activityMain, xDeck,
                   yDeck, MAX_CARDS, m_cardMoveStartListener);
 
-                changeBackgroundColor();
+                initBackgroundViewManager();
 
                 m_dealer = creator.getDealer();
                 m_players = creator.getPlayers();
@@ -593,6 +613,15 @@ public class BjEngine implements IBjEngine {
     Intent intent = new Intent(m_context, StatsActivity.class);
     intent.putExtra(Settings.INTENT_KEY, m_settings);
     m_activity.startActivity(intent);
+  }
+
+  //-------------------------------------------------------------------------
+  // updateLastGameClosedTimeWithLowCredits
+  //-------------------------------------------------------------------------
+  private void updateLastGameClosedTimeWithLowCredits() {
+    long time = new Date().getTime();
+    m_settings.setLastGameClosedTimeWithLowCredits(time);
+    writeSettings();
   }
 
   //-------------------------------------------------------------------------
