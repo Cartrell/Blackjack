@@ -312,7 +312,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private void beginPlayerBlackjack(PlayerIds playerId) {
     PlayerData playerData = (PlayerData)getPlayerData(playerId);
     playerData.setBlackjack();
-    playerData.setResultImage(R.drawable.result_label_blackjack);
+    playerData.setResultImage(R.drawable.anim_result_label_blackjack);
     playerData.setResultImageVisible(true);
     playerData.setBetValueVisible(false);
 
@@ -337,7 +337,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private void beginPlayerBlitzWin() {
     PlayerData playerData = (PlayerData)getTurnPlayerData();
     playerData.setBlitzWin();
-    playerData.setResultImage(R.drawable.result_label_blitz);
+    playerData.setResultImage(R.drawable.anim_result_label_blitz);
     playerData.setResultImageVisible(true);
     playerData.setBetValueVisible(false);
 
@@ -394,7 +394,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     PlayerData playerData = (PlayerData)getPlayerData(playerId);
     playerData.setBlackjack();
     playerData.setThunderjack();
-    playerData.setResultImage(R.drawable.result_label_thunderjack);
+    playerData.setResultImage(R.drawable.anim_result_label_thunderjack);
     playerData.setResultImageVisible(true);
     playerData.setBetValueVisible(false);
 

@@ -37,7 +37,7 @@
         android:id="@+id/resultsUpperMid"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/result_label_thunderjack"
+        android:src="@drawable/result_label_win"
         android:adjustViewBounds="true"
         app:layout_constraintLeft_toRightOf="@+id/guideMidCardsLeft"
         app:layout_constraintRight_toLeftOf="@+id/guideMidCardsRight"

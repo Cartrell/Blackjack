@@ -6,6 +6,8 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.support.constraint.Guideline;
 import android.view.View;
 import android.view.ViewGroup;
@@ -192,8 +194,15 @@ public class BaseHandData {
   // setResultImage
   //-------------------------------------------------------------------------
   void setResultImage(int drawableResourceId) {
-    if (m_resultImage != null) {
-      m_resultImage.setImageResource(drawableResourceId);
+    if (m_resultImage == null) {
+      return;
+    }
+
+    m_resultImage.setImageResource(drawableResourceId);
+
+    Drawable drawable = m_resultImage.getDrawable();
+    if (drawable instanceof Animatable) {
+      ((Animatable)drawable).start();
     }
   }
 
