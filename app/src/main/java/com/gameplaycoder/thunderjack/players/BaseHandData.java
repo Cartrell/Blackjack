@@ -181,7 +181,7 @@ public class BaseHandData {
   //-------------------------------------------------------------------------
   void setCardFaceUp(int index, boolean isFaceUp) {
     if (index >= m_cards.size()) {
-      return; //sanity checl
+      return; //sanity check
     }
 
     Card card = m_cards.get(index);
