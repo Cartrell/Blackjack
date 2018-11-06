@@ -33,7 +33,6 @@ public class BaseHandData {
   // members
   //=========================================================================
   ViewGroup m_viewGroup;
-  float m_yCardsBottom;
 
   private OnCardMoveStartListener m_onCardMoveStartListener;
 
@@ -42,6 +41,7 @@ public class BaseHandData {
   private float m_xCardsLeft;
   private float m_xCardsRight;
   private float m_yCardsTop;
+  private float m_yCardsBottom;
   private int m_maxCardsPerHand;
   private int m_cardImageWidth;
 
