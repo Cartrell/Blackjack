@@ -21,7 +21,7 @@
     <!-- when credits are low enough, this much time, in ms, must pass since close of last game to be eligible for renewal -->
     <string name="renewalTime">60000</string>
 
-    <!-- durating, in ms, at which the cards move -->
+    <!-- duration, in ms, at which the cards move -->
     <integer name="cardMoveDuration">250</integer>
 
     <!-- specified the points needed for blackjack; bust if player exceeds -->
