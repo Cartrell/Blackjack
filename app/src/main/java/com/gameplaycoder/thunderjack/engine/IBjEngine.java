@@ -31,12 +31,12 @@ public interface IBjEngine {
   Deck getDeck();
   int getColorResource(int resourceId);
   int getIndexOf(View view);
-  PlayerData getPlayer(PlayerIds playerId);
-  HashMap<PlayerIds, PlayerData> getPlayers();
   int getIntegerResource(int resourceId);
   BjLayoutComps getLayoutComps();
+  PlayerData getPlayer(PlayerIds playerId);
+  HashMap<PlayerIds, PlayerData> getPlayers();
   Settings getSettings();
-  public SoundSystem getSoundSystem();
+  SoundSystem getSoundSystem();
   String getStringResource(int resourceId);
   boolean isSplitPlayerId(PlayerIds playerId);
   void setAtLeastOneRoundPlayed();

@@ -288,9 +288,7 @@ public class BaseHandData {
     AnimatorSet animSetXY = cardsMover.getAnimatorSet();
     final BaseHandData thisBaseHandData = this;
 
-    Iterator iterator = positions.entrySet().iterator();
-    while (iterator.hasNext()) {
-      Map.Entry entry = (Map.Entry)iterator.next();
+    for (Map.Entry entry : positions.entrySet()) {
       final View cardImage = (View)entry.getKey();
       PointF position = (PointF)entry.getValue();
 
