@@ -8,6 +8,7 @@ import com.gameplaycoder.thunderjack.R;
 import com.gameplaycoder.thunderjack.cards.Card;
 import com.gameplaycoder.thunderjack.cards.CardValues;
 import com.gameplaycoder.thunderjack.cards.Deck;
+import com.gameplaycoder.thunderjack.engine.thunderjackvfx.ThunderjackVfx;
 import com.gameplaycoder.thunderjack.layouts.BetAndCreditsTexts;
 import com.gameplaycoder.thunderjack.players.BasePlayerData;
 import com.gameplaycoder.thunderjack.players.PlayerData;
@@ -61,6 +62,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private SoundChannel m_sndChAutoWin2;
   private SoundChannel m_sndChAutoWin3;
   private SoundChannel m_sndChAutoWin4;
+  private ThunderjackVfx m_thunderjackVfx;
 
   //=========================================================================
   // public
@@ -402,6 +404,12 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     playerData.setAmountWonValue(creditsWon);
     playerData.setAmountWonValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
+
+    if (m_thunderjackVfx == null) {
+      m_thunderjackVfx = new ThunderjackVfx(m_engine);
+    }
+
+    m_thunderjackVfx.begin(playerId);
   }
 
   //-------------------------------------------------------------------------

@@ -26,17 +26,22 @@ import com.gameplaycoder.thunderjack.layouts.MidScoreTexts;
 import com.gameplaycoder.thunderjack.layouts.MidTurnPlayerIndicators;
 import com.gameplaycoder.thunderjack.layouts.PlayBetChipsContainer;
 import com.gameplaycoder.thunderjack.layouts.PlayerBetButtons;
+import com.gameplaycoder.thunderjack.layouts.ScreenFlashImage;
 import com.gameplaycoder.thunderjack.layouts.SettingsButtonAndDeck;
+import com.gameplaycoder.thunderjack.layouts.ThunderboltImages;
 import com.gameplaycoder.thunderjack.layouts.UpperResultsImages;
 import com.gameplaycoder.thunderjack.layouts.UpperScoreTexts;
 import com.gameplaycoder.thunderjack.utils.Metrics;
 
 import java.util.ArrayList;
 
-class BjLayoutComps {
+public class BjLayoutComps {
   //=========================================================================
   // members
   //=========================================================================
+  public ScreenFlashImage screenFlashImage;
+  public ThunderboltImages thunderboltImages;
+
   GameBackground gameBackground;
   LowerScoreTexts lowerScoreTexts;
   MidScoreTexts midScoreTexts;
@@ -143,6 +148,11 @@ class BjLayoutComps {
 
     playerBetButtons = new PlayerBetButtons(inflate(R.layout.player_bet_buttons));
     addGuidelines(playerBetButtons);
+
+    screenFlashImage = new ScreenFlashImage(inflate(R.layout.screen_flash_image));
+
+    thunderboltImages = new ThunderboltImages(inflate(R.layout.thunderbolt_images));
+    addGuidelines(thunderboltImages);
 
     initCardSize();
     initChipSize();
