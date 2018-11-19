@@ -3,9 +3,9 @@ package com.gameplaycoder.thunderjack.layouts;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Guideline;
 import android.support.v7.widget.AppCompatTextView;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
@@ -23,13 +23,29 @@ public abstract class BaseLayoutComp {
   //-------------------------------------------------------------------------
   // getGuideLines
   //-------------------------------------------------------------------------
-  abstract public ArrayList<Guideline> getGuideLines();
+  public ArrayList<Guideline> getGuideLines() {
+    return(null);
+  }
 
   //-------------------------------------------------------------------------
   // getLayout
   //-------------------------------------------------------------------------
   public ConstraintLayout getLayout() {
     return(m_layout);
+  }
+
+  //-------------------------------------------------------------------------
+  // isVisible
+  //-------------------------------------------------------------------------
+  public boolean isVisible() {
+    return(getLayout().getVisibility() == View.VISIBLE);
+  }
+
+  //-------------------------------------------------------------------------
+  // setIsVisible
+  //-------------------------------------------------------------------------
+  public void setIsVisible(boolean isVisible) {
+    getLayout().setVisibility(isVisible ? View.VISIBLE : View.INVISIBLE);
   }
 
   //=========================================================================
@@ -74,7 +90,7 @@ public abstract class BaseLayoutComp {
   //-------------------------------------------------------------------------
   // setText
   //-------------------------------------------------------------------------
-  public void setText(AppCompatTextView textView, String text) {
+  void setText(AppCompatTextView textView, String text) {
     if (textView != null) {
       textView.setText(text);
     }
