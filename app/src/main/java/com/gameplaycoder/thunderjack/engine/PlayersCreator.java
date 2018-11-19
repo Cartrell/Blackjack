@@ -22,6 +22,7 @@ class PlayersCreator {
   // members
   //=========================================================================
   private HashMap<PlayerIds, PlayerData> m_players;
+  private final BjLayoutComps m_layoutComps;
   private BasePlayerData m_dealer;
 
   //=========================================================================
@@ -33,6 +34,8 @@ class PlayersCreator {
   //-------------------------------------------------------------------------
   PlayersCreator(BjLayoutComps layoutComps, ViewGroup targetLayout, float xDeck,
   float yDeck, int maxCards, BaseHandData.OnCardMoveStartListener cardMoveStartListener) {
+    m_layoutComps = layoutComps;
+
     Point cardSize = layoutComps.getCardSize();
     Point chipSize = layoutComps.getChipSize();
 
@@ -218,6 +221,7 @@ class PlayersCreator {
     extraParams.put("betValueText", betValueText);
     extraParams.put("turnIndicatorImage", turnIndicatorImage);
     extraParams.put("amountWonValueText", amountWonValueText);
+    extraParams.put("betChipsContainer", m_layoutComps.playBetChipsContainer.getLayout());
 
     m_players.put(playerId, new PlayerData(viewGroup, playerId, xDeck, yDeck, maxCards,
       guideCardsLeft, guideCardsRight, guideCardsTop, guideCardsBottom, guideCardsUi,

@@ -24,6 +24,7 @@ import com.gameplaycoder.thunderjack.layouts.MidScoreAmountWonTexts;
 import com.gameplaycoder.thunderjack.layouts.MidScoreBetValueTexts;
 import com.gameplaycoder.thunderjack.layouts.MidScoreTexts;
 import com.gameplaycoder.thunderjack.layouts.MidTurnPlayerIndicators;
+import com.gameplaycoder.thunderjack.layouts.PlayBetChipsContainer;
 import com.gameplaycoder.thunderjack.layouts.PlayerBetButtons;
 import com.gameplaycoder.thunderjack.layouts.SettingsButtonAndDeck;
 import com.gameplaycoder.thunderjack.layouts.UpperResultsImages;
@@ -54,6 +55,7 @@ class BjLayoutComps {
   BetAndCreditsTexts betAndCreditsTexts;
   SettingsButtonAndDeck settingsButtonAndDeck;
   PlayerBetButtons playerBetButtons;
+  PlayBetChipsContainer playBetChipsContainer;
 
   private SparseArray<Guideline> m_guidelines;
   private ConstraintLayout m_containerLayout;
@@ -91,6 +93,8 @@ class BjLayoutComps {
 
     settingsButtonAndDeck = new SettingsButtonAndDeck(inflate(R.layout.settings_button_and_deck));
     addGuidelines(settingsButtonAndDeck);
+
+    playBetChipsContainer = new PlayBetChipsContainer(inflate(R.layout.play_bet_chips_container));
 
     lowerScoreTexts = new LowerScoreTexts(inflate(R.layout.lower_score_texts));
     addGuidelines(lowerScoreTexts);

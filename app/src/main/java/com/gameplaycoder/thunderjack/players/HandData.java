@@ -3,6 +3,7 @@ package com.gameplaycoder.thunderjack.players;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.drawable.AnimationDrawable;
+import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Guideline;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +33,7 @@ class HandData extends BaseHandData {
   private ImageView m_turnIndicatorImage;
   private TextView m_amountWonValueText;
   private TextView m_betValueText;
+  private ConstraintLayout m_betChipsContainer;
   private Point m_chipSize;
   private float m_xChipsLeft;
   private float m_xChipsRight;
@@ -64,7 +66,7 @@ class HandData extends BaseHandData {
     ImageView betChipImage = betChip.getImage();
 
     ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(m_chipSize.x, m_chipSize.y);
-    m_viewGroup.addView(betChipImage, params);
+    m_betChipsContainer.addView(betChipImage, params);
 
     if (m_betChipsViewDistributor == null) {
       m_betChipsViewDistributor = new ViewDistributor(m_xChipsLeft,
@@ -89,7 +91,7 @@ class HandData extends BaseHandData {
   //-------------------------------------------------------------------------
   void removeBetChips() {
     for (BjBetChip betChip : m_betChips) {
-      m_viewGroup.removeView(betChip.getImage());
+      m_betChipsContainer.removeView(betChip.getImage());
     }
 
     m_betChips.clear();
@@ -175,6 +177,7 @@ class HandData extends BaseHandData {
     m_yChipsTop = Metrics.CalcGuidelinePosition((Guideline)extraParams.get("guideChipsTop"));
     m_chipSize = (Point)extraParams.get("chipSize");
     m_turnIndicatorImage = (ImageView)extraParams.get("turnIndicatorImage");
+    m_betChipsContainer = (ConstraintLayout)extraParams.get("betChipsContainer");
 
     showTurnIndicatorImage(false);
   }
