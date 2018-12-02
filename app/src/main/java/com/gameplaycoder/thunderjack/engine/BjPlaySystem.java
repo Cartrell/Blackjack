@@ -49,6 +49,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private int m_nextCardImageChildIndex;
   private int m_totalCreditsWonOnRound;
   private boolean m_wereAcesSplit;
+  private boolean m_wasThunderjackRound;
   private SoundChannel m_sndChHit;
   private SoundChannel m_sndChStand;
   private SoundChannel m_sndChSplit1;
@@ -410,6 +411,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     }
 
     m_thunderjackVfx.begin(playerId);
+
+    m_wasThunderjackRound = true;
   }
 
   //-------------------------------------------------------------------------
@@ -978,6 +981,11 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   // playEndRoundSound
   //-------------------------------------------------------------------------
   private void playEndRoundSound() {
+    if (m_wasThunderjackRound) {
+      m_wasThunderjackRound = false;
+      return;
+    }
+
     int endCredits = m_engine.getCredits();
     int startCredits = m_engine.getCreditsAtStartOfRound();
 
