@@ -8,7 +8,7 @@ class ThunderjackVfxFlash {
   //=========================================================================
   // static / const
   //=========================================================================
-  private static final long FLASH_DELAY = 35;
+  private static final long FLASH_DELAY = 30;
   private static final int NUM_FLASHES = 8;
 
   //=========================================================================
