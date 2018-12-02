@@ -25,14 +25,9 @@ import java.util.Map;
 
 public class BaseHandData {
   //=========================================================================
-  // const
-  //=========================================================================
-  private final String LOG_TAG = "BaseHandData";
-
-  //=========================================================================
   // members
   //=========================================================================
-  ViewGroup m_viewGroup;
+  private ViewGroup m_viewGroup;
 
   private OnCardMoveStartListener m_onCardMoveStartListener;
 
