@@ -6,11 +6,7 @@
         android:id="@+id/activity_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000080"
+        android:background="#808080"
         tools:context="com.gameplaycoder.thunderjack.MainActivity" >
-
-        <include
-            android:id="@+id/progress_bar"
-            layout="@layout/content_loading_progress_bar" />
     </android.support.constraint.ConstraintLayout>
 </layout>
