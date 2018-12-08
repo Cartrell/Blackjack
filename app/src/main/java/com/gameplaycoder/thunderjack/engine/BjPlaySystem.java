@@ -8,6 +8,7 @@ import com.gameplaycoder.thunderjack.R;
 import com.gameplaycoder.thunderjack.cards.Card;
 import com.gameplaycoder.thunderjack.cards.CardValues;
 import com.gameplaycoder.thunderjack.cards.Deck;
+import com.gameplaycoder.thunderjack.engine.debug.DebugCardKeys;
 import com.gameplaycoder.thunderjack.engine.thunderjackvfx.ThunderjackVfx;
 import com.gameplaycoder.thunderjack.layouts.BetAndCreditsTexts;
 import com.gameplaycoder.thunderjack.players.BasePlayerData;
@@ -30,11 +31,6 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   // members
   //=========================================================================
   private final String LOG_TAG = BjPlaySystem.class.getName();
-
-  private final String[] DEBUG_CARD_KEYS = {
-    /*"j_h_0", "10_c_0",
-    "a_h_0", "5_d_0",*/
-  };
 
   private ArrayList<PlayerIds> m_playerIdsOrder;
   private IBjEngine m_engine;
@@ -136,7 +132,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private void aceUpSleeve() {
     Deck deck = m_engine.getDeck();
     int targetIndex = 0;
-    for (String cardKey : DEBUG_CARD_KEYS) {
+    for (String cardKey : DebugCardKeys.DEBUG_CARD_KEYS) {
       deck.setCardAt(cardKey, targetIndex++);
     }
   }
