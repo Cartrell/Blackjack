@@ -47,18 +47,14 @@ public final class CardsMatcher {
 
     String cardKey0 = playerData.getCardKetAt(0);
     CardValues card0Value = CardValues.GetValueFromCardKey(cardKey0);
-    if (card0Value == null) {
-      return(false);
-    }
 
     String cardKey1 = playerData.getCardKetAt(1);
     CardValues card1Value = CardValues.GetValueFromCardKey(cardKey1);
-    if (card1Value == null) {
-      return(false);
-    }
 
-    return(card0Value.getValue() == card1Value.getValue());
-
+    return(
+      card0Value != null &&
+      card1Value != null &&
+      card0Value.getKey().equals(card1Value.getKey()));
   }
 
   //-------------------------------------------------------------------------
