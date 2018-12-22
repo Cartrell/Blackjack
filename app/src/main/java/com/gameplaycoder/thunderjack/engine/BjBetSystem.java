@@ -7,6 +7,7 @@ import android.widget.ToggleButton;
 
 import com.gameplaycoder.thunderjack.R;
 import com.gameplaycoder.thunderjack.layouts.BetAndChipButtons;
+import com.gameplaycoder.thunderjack.layouts.BetButtons;
 import com.gameplaycoder.thunderjack.layouts.PlayerBetButtons;
 import com.gameplaycoder.thunderjack.players.BasePlayerData;
 import com.gameplaycoder.thunderjack.players.PlayerData;
@@ -92,6 +93,7 @@ class BjBetSystem {
     m_engine.showView(m_engine.getLayoutComps().betAndCreditsTexts.txtTotalWon, false);
   }
 
+  /*
   //-------------------------------------------------------------------------
   // initBetButtons
   //-------------------------------------------------------------------------
@@ -204,6 +206,13 @@ class BjBetSystem {
       }
     });
   }
+  */
+
+  //-------------------------------------------------------------------------
+  // initNewBetButton
+  //-------------------------------------------------------------------------
+  private void initNewBetButton() {
+  }
 
   //-------------------------------------------------------------------------
   // initPlayersUis
@@ -225,15 +234,24 @@ class BjBetSystem {
   }
 
   //-------------------------------------------------------------------------
+  // initRebetButton
+  //-------------------------------------------------------------------------
+  private void initRebetButton() {
+
+  }
+
+  //-------------------------------------------------------------------------
   // initUis
   //-------------------------------------------------------------------------
   private void initUis() {
     initPlayersUis();
     hideTotalWon();
-    initClearButton();
-    initDealButton();
-    initBetChipButtons();
-    initBetButtons();
+    //initClearButton();
+    //initDealButton();
+    //initBetChipButtons();
+    //initBetButtons();
+    initNewBetButton();
+    initRebetButton();
   }
 
   //-------------------------------------------------------------------------
@@ -361,9 +379,12 @@ class BjBetSystem {
   // setBetButtonsVisibility
   //-------------------------------------------------------------------------
   private void setBetButtonsVisibility(boolean isVisible) {
+    /*
     BetAndChipButtons betAndChipButtons = m_engine.getLayoutComps().betAndChipButtons;
     m_engine.showView(betAndChipButtons.clearButton, isVisible);
     m_engine.showView(betAndChipButtons.dealButton, isVisible);
+    */
+    m_engine.getLayoutComps().betButtons.setIsVisible(isVisible);
   }
 
   //-------------------------------------------------------------------------
@@ -401,9 +422,11 @@ class BjBetSystem {
   // updateDealButtonEnability
   //-------------------------------------------------------------------------
   private void updateDealButtonEnability() {
-    m_engine.getLayoutComps().betAndChipButtons.dealButton.setEnabled(m_engine.getBetValue() > 0);
+    //m_engine.getLayoutComps().betAndChipButtons.dealButton.setEnabled(m_engine.getBetValue() > 0);
+    m_engine.getLayoutComps().betButtons.rebetButton.setEnabled(m_engine.getBetValue() > 0);
   }
 
+  /*
   //-------------------------------------------------------------------------
   // unselectAllBetChips
   //-------------------------------------------------------------------------
@@ -415,6 +438,7 @@ class BjBetSystem {
     unselectBetChip(betAndChipButtons.redChipButton);
     m_selectedChipId = null;
   }
+  */
 
   //-------------------------------------------------------------------------
   // unselectBetChip

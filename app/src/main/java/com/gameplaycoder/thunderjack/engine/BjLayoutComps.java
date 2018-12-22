@@ -12,6 +12,7 @@ import com.gameplaycoder.thunderjack.R;
 import com.gameplaycoder.thunderjack.layouts.BaseLayoutComp;
 import com.gameplaycoder.thunderjack.layouts.BetAndChipButtons;
 import com.gameplaycoder.thunderjack.layouts.BetAndCreditsTexts;
+import com.gameplaycoder.thunderjack.layouts.BetButtons;
 import com.gameplaycoder.thunderjack.layouts.GameBackground;
 import com.gameplaycoder.thunderjack.layouts.GameButtons;
 import com.gameplaycoder.thunderjack.layouts.LowerResultsImages;
@@ -55,7 +56,8 @@ public class BjLayoutComps {
   UpperResultsImages upperResultsImages;
   LowerTurnPlayerIndicators lowerTurnPlayerIndicators;
   MidTurnPlayerIndicators midTurnPlayerIndicators;
-  BetAndChipButtons betAndChipButtons;
+  //BetAndChipButtons betAndChipButtons;
+  BetButtons betButtons;
   GameButtons gameButtons;
   BetAndCreditsTexts betAndCreditsTexts;
   SettingsButtonAndDeck settingsButtonAndDeck;
@@ -137,8 +139,10 @@ public class BjLayoutComps {
     midTurnPlayerIndicators = new MidTurnPlayerIndicators(inflate(R.layout.mid_turn_player_indicators));
     addGuidelines(midTurnPlayerIndicators);
 
-    betAndChipButtons = new BetAndChipButtons(inflate(R.layout.bet_and_chip_buttons));
-    addGuidelines(betAndChipButtons);
+    //betAndChipButtons = new BetAndChipButtons(inflate(R.layout.bet_and_chip_buttons));
+    //addGuidelines(betAndChipButtons);
+    betButtons = new BetButtons(inflate(R.layout.bet_buttons));
+    addGuidelines(betButtons);
 
     gameButtons = new GameButtons(inflate(R.layout.game_buttons));
     addGuidelines(gameButtons);
