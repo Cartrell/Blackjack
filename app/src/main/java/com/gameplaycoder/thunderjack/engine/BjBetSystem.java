@@ -2,7 +2,6 @@ package com.gameplaycoder.thunderjack.engine;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
