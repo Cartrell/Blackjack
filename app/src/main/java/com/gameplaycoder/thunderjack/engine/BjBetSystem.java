@@ -156,8 +156,10 @@ class BjBetSystem {
   // placeStartingPlayerBets
   //-------------------------------------------------------------------------
   private void placeStartingPlayerBets() {
-    int defaultBetValue = m_engine.getBetChipData("green").getValue();
-    placeBets(defaultBetValue, 0, 0);
+    placeBets(
+      m_engine.getIntegerResource(R.integer.startingBetLeftPlayer),
+      m_engine.getIntegerResource(R.integer.startingBetMiddlePlayer),
+      m_engine.getIntegerResource(R.integer.startingBetRightPlayer));
   }
 
   //-------------------------------------------------------------------------
