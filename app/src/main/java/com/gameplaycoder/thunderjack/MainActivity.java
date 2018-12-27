@@ -1,5 +1,6 @@
 package com.gameplaycoder.thunderjack;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,18 +22,18 @@ public class MainActivity extends AppCompatActivity {
   private BjEngine m_engine;
 
   //=========================================================================
-  // public
-  //=========================================================================
-
-  //=========================================================================
   // protected
   //=========================================================================
 
   //-------------------------------------------------------------------------
-  // initEngine
+  // onActivityResult
   //-------------------------------------------------------------------------
-  private void initEngine() {
-    m_engine = new BjEngine(this, m_binding);
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (m_engine != null) {
+      m_engine.onActivityResult(requestCode, resultCode, data);
+    }
   }
 
   //-------------------------------------------------------------------------
@@ -78,4 +79,16 @@ public class MainActivity extends AppCompatActivity {
       m_engine.stop();
     }
   }
+
+  //=========================================================================
+  // private
+  //=========================================================================
+
+  //-------------------------------------------------------------------------
+  // initEngine
+  //-------------------------------------------------------------------------
+  private void initEngine() {
+    m_engine = new BjEngine(this, m_binding);
+  }
+
 }

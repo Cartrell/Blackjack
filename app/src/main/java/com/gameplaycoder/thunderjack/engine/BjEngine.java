@@ -39,6 +39,8 @@ public class BjEngine implements IBjEngine {
   //=========================================================================
   private HashMap<PlayerIds, PlayerData> m_players;
 
+  private IBjEngineOnActivityResult m_onActivityResult;
+
   private BjBetChips m_betChips;
   private BjBetSystem m_betSystem;
   private BjCardsPrepSystem m_cardsPrepSystem;
@@ -125,14 +127,6 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
-  // getBetChipIds
-  //-------------------------------------------------------------------------
-  @Override
-  public List<String> getBetChipIds() {
-    return (m_betChips.getChipIds());
-  }
-
-  //-------------------------------------------------------------------------
   // getBetValue
   //-------------------------------------------------------------------------
   @Override
@@ -146,14 +140,6 @@ public class BjEngine implements IBjEngine {
   @Override
   public ActivityMainBinding getBinding() {
     return (m_binding);
-  }
-
-  //-------------------------------------------------------------------------
-  // getColorResource
-  //-------------------------------------------------------------------------
-  @Override
-  public int getColorResource(int resourceId) {
-    return (ContextCompat.getColor(m_context, resourceId));
   }
 
   //-------------------------------------------------------------------------
@@ -274,6 +260,15 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
+  // onActivityResult
+  //-------------------------------------------------------------------------
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (m_onActivityResult != null) {
+      m_onActivityResult.onResult(requestCode, resultCode, data);
+    }
+  }
+
+  //-------------------------------------------------------------------------
   // pause
   //-------------------------------------------------------------------------
   public void pause() {
@@ -300,15 +295,6 @@ public class BjEngine implements IBjEngine {
   }
 
   //-------------------------------------------------------------------------
-  // setBetChipVisibility
-  //-------------------------------------------------------------------------
-  @Override
-  public void setBetChipVisibility(String chipId, boolean isVisible) {
-    View chipImage = m_binding.getRoot().findViewWithTag(chipId);
-    showView(chipImage, isVisible);
-  }
-
-  //-------------------------------------------------------------------------
   // setCredits
   //-------------------------------------------------------------------------
   @Override
@@ -328,6 +314,13 @@ public class BjEngine implements IBjEngine {
     } else {
       setCredits(credits);
     }
+  }
+
+  //-------------------------------------------------------------------------
+  // setOnActivityResult
+  //-------------------------------------------------------------------------
+  public void setOnActivityResult(IBjEngineOnActivityResult value) {
+    m_onActivityResult = value;
   }
 
   //-------------------------------------------------------------------------
@@ -525,8 +518,9 @@ public class BjEngine implements IBjEngine {
 
                 m_dealer = creator.getDealer();
                 m_players = creator.getPlayers();
-                m_betChips = new BjBetChips(engine);
-                m_betSystem = new BjBetSystem(engine);
+                //m_betChips = new BjBetChips(engine);
+                m_betChips = new BjBetChips(m_context);
+                m_betSystem = new BjBetSystem(engine, m_activity);
                 m_cardsPrepSystem = new BjCardsPrepSystem(engine);
                 m_playSystem = new BjPlaySystem(engine);
 

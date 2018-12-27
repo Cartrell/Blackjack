@@ -1,5 +1,6 @@
 package com.gameplaycoder.thunderjack.engine;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.JsonReader;
 import android.util.Log;
@@ -26,11 +27,19 @@ public class BjBetChips {
   //=========================================================================
   private HashMap<String, BjBetChipData> m_betChipData;
   private List<String> m_chipIds;
-  private IBjEngine m_engine;
+  private Context m_context;
 
   //=========================================================================
   // public
   //=========================================================================
+
+  //-------------------------------------------------------------------------
+  // ctor
+  //-------------------------------------------------------------------------
+  public BjBetChips(Context context) {
+    m_context = context;
+    initBetChips();
+  }
 
   //-------------------------------------------------------------------------
   // getChipIdsFor
@@ -60,18 +69,6 @@ public class BjBetChips {
   //-------------------------------------------------------------------------
   public BjBetChipData getData(String betChipId) {
     return(m_betChipData.get(betChipId));
-  }
-
-  //=========================================================================
-  // package-private
-  //=========================================================================
-
-  //-------------------------------------------------------------------------
-  // ctor
-  //-------------------------------------------------------------------------
-  BjBetChips(IBjEngine engine) {
-    m_engine = engine;
-    initBetChips();
   }
 
   //=========================================================================
@@ -107,7 +104,7 @@ public class BjBetChips {
   private void initBetChips() {
     m_betChipData = new HashMap<>();
 
-    AssetManager manager = m_engine.getContext().getResources().getAssets();
+    AssetManager manager = m_context.getResources().getAssets();
 
     try {
       InputStream stream = manager.open("betChips.json");

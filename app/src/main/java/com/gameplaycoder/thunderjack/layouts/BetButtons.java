@@ -12,7 +12,7 @@ public class BetButtons extends BaseLayoutComp {
   //=========================================================================
   // members
   //=========================================================================
-  public ImageButton rebetButton;
+  public ImageButton okButton;
   public ImageButton newBetButton;
 
   //=========================================================================
@@ -24,7 +24,7 @@ public class BetButtons extends BaseLayoutComp {
   //-------------------------------------------------------------------------
   public BetButtons(ConstraintLayout layout) {
     super(layout);
-    rebetButton = getImageButton(R.id.btnRebet);
+    okButton = getImageButton(R.id.btnOk);
     newBetButton = getImageButton(R.id.btnNewBet);
   }
 
@@ -40,5 +40,19 @@ public class BetButtons extends BaseLayoutComp {
     guidelines.add((Guideline)layout.findViewById(R.id.betButtonsTopGuide));
     guidelines.add((Guideline)layout.findViewById(R.id.betButtonsBottomGuide));
     return(guidelines);
+  }
+
+  //-------------------------------------------------------------------------
+  // setDealButton
+  //-------------------------------------------------------------------------
+  public void setDealButton() {
+    okButton.setBackgroundResource(R.drawable.button_selector_deal);
+  }
+
+  //-------------------------------------------------------------------------
+  // setRebetButton
+  //-------------------------------------------------------------------------
+  public void setRebetButton() {
+    okButton.setBackgroundResource(R.drawable.button_selector_rebet);
   }
 }

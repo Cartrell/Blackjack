@@ -31,7 +31,7 @@ public class BetAndChipButtons extends BaseLayoutComp {
   public BetAndChipButtons(ConstraintLayout layout) {
     super(layout);
     clearButton = getImageButton(R.id.btnClear);
-    dealButton = getImageButton(R.id.btnDeal);
+    //dealButton = getImageButton(R.id.btnDeal);
     greenChipButton = getToggleButton(R.id.chipButtonGreen);
     purpleChipButton = getToggleButton(R.id.chipButtonPurple);
     redChipButton = getToggleButton(R.id.chipButtonRed);

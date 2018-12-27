@@ -22,14 +22,12 @@ public interface IBjEngine {
   void beginRound();
   Context getContext();
   BjBetChipData getBetChipData(String betChipId);
-  List<String> getBetChipIds();
   int getBetValue();
   ActivityMainBinding getBinding();
   int getCredits();
   int getCreditsAtStartOfRound();
   BasePlayerData getDealerData();
   Deck getDeck();
-  int getColorResource(int resourceId);
   int getIndexOf(View view);
   int getIntegerResource(int resourceId);
   BjLayoutComps getLayoutComps();
@@ -40,9 +38,9 @@ public interface IBjEngine {
   String getStringResource(int resourceId);
   boolean isSplitPlayerId(PlayerIds playerId);
   void setAtLeastOneRoundPlayed();
-  void setBetChipVisibility(String chipId, boolean isVisible);
   void setCredits(int value);
   void setCredits(int credits, boolean isOffset);
+  void setOnActivityResult(IBjEngineOnActivityResult value);
   void setPlayerBet(PlayerIds playerId, int betValue, boolean isOrigBet);
   void showGameButtons(EnumSet<BjGameButtonFlags> flags);
   void showView(View view, boolean isVisible);

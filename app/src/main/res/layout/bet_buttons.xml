@@ -34,12 +34,12 @@
         app:layout_constraintGuide_percent="1.0" />
 
     <ImageButton
-        android:id="@+id/btnRebet"
+        android:id="@+id/btnOk"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/button_selector_rebet"
+        android:background="@drawable/button_selector_deal"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintTop_toBottomOf="@+id/betButtonsTopGuide"
         app:layout_constraintBottom_toBottomOf="@+id/betButtonsBottomGuide"
@@ -57,7 +57,7 @@
         android:background="@drawable/button_selector_new_bet"
         app:layout_constraintTop_toBottomOf="@+id/betButtonsTopGuide"
         app:layout_constraintBottom_toBottomOf="@+id/betButtonsBottomGuide"
-        app:layout_constraintLeft_toRightOf="@+id/btnRebet"
+        app:layout_constraintLeft_toRightOf="@+id/btnOk"
         app:layout_constraintRight_toRightOf="@+id/parentRight"
         app:layout_constraintDimensionRatio="W,212:59"
         />
