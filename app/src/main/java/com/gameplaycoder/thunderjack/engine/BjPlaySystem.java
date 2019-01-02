@@ -563,7 +563,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     }
 
     float winRatio = divisor / dividend;
-    float betValue = (float)playerData.getBetValue();
+    float betValue = (float)playerData.getOrigBetValue();
     float amountWonF = betValue + betValue * winRatio;
     int amountWon = (int)amountWonF;
     if (playerData.getIsDoubleDown() && !playerData.getIsPush()) {
