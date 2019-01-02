@@ -13,3 +13,4 @@
 .externalNativeBuild
 _resources
 .idea/assetWizardSettings.xml
+app/release
