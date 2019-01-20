@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".AboutActivity">
+
+        <!-- =========================================== -->
+        <!-- guides -->
+        <!-- =========================================== -->
+        <android.support.constraint.Guideline
+            android:id="@+id/about_guide_row0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.30" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/about_guide_row1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.43" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/about_guide_row2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.57" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/about_guide_row3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.70" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/about_guide_row4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.84" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/about_guide_vt_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.45" />
+
+        <!-- =========================================== -->
+        <!-- background image -->
+        <!-- =========================================== -->
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/background"
+            tools:ignore="ContentDescription" />
+
+
+        <!-- =========================================== -->
+        <!-- thunderjack label -->
+        <!-- =========================================== -->
+
+        <ImageView
+            android:id="@+id/about_thunderjack_label"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:src="@drawable/thunderjack_label"
+            android:adjustViewBounds="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/about_guide_row0"
+            />
+
+        <!-- =========================================== -->
+        <!-- texts - labels -->
+        <!-- =========================================== -->
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txt_version_label"
+            android:text="version:"
+            style="@style/AboutLabelText"
+            app:layout_constraintTop_toBottomOf="@+id/about_guide_row0"
+            app:layout_constraintBottom_toTopOf="@+id/about_guide_row1"
+            app:layout_constraintRight_toRightOf="@+id/about_guide_vt_center"
+            />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txt_developer_label"
+            android:text="developer:"
+            style="@style/AboutLabelText"
+            app:layout_constraintTop_toBottomOf="@+id/about_guide_row1"
+            app:layout_constraintBottom_toTopOf="@+id/about_guide_row2"
+            app:layout_constraintRight_toRightOf="@+id/about_guide_vt_center"
+            />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txt_website_label"
+            android:text="website:"
+            style="@style/AboutLabelText"
+            app:layout_constraintTop_toBottomOf="@+id/about_guide_row2"
+            app:layout_constraintBottom_toTopOf="@+id/about_guide_row3"
+            app:layout_constraintRight_toRightOf="@+id/about_guide_vt_center"
+            />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txt_feedback_label"
+            android:text="feedback"
+            style="@style/AboutLabelText"
+            app:layout_constraintTop_toBottomOf="@+id/about_guide_row3"
+            app:layout_constraintBottom_toTopOf="@+id/about_guide_row4"
+            app:layout_constraintRight_toRightOf="@+id/about_guide_vt_center"
+            />
+
+        <!-- =========================================== -->
+        <!-- texts - values -->
+        <!-- =========================================== -->
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txt_version_value"
+            style="@style/AboutValueText"
+            app:layout_constraintTop_toBottomOf="@+id/about_guide_row0"
+            app:layout_constraintBottom_toTopOf="@+id/about_guide_row1"
+            app:layout_constraintLeft_toLeftOf="@+id/about_guide_vt_center"
+            tools:text="[version value]" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txt_developer_value"
+            style="@style/AboutValueText"
+            app:layout_constraintTop_toBottomOf="@+id/about_guide_row1"
+            app:layout_constraintBottom_toTopOf="@+id/about_guide_row2"
+            app:layout_constraintLeft_toLeftOf="@+id/about_guide_vt_center"
+            tools:text="[developer value]" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/txt_website_value"
+            style="@style/AboutValueText"
+            app:layout_constraintTop_toBottomOf="@+id/about_guide_row2"
+            app:layout_constraintBottom_toTopOf="@+id/about_guide_row3"
+            app:layout_constraintLeft_toLeftOf="@+id/about_guide_vt_center"
+            tools:text="[website value]" />
+
+        <!-- =========================================== -->
+        <!-- buttons -->
+        <!-- =========================================== -->
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:background="@drawable/button_selector_send"
+            app:layout_constraintTop_toBottomOf="@+id/about_guide_row3"
+            app:layout_constraintBottom_toTopOf="@+id/about_guide_row4"
+            app:layout_constraintLeft_toLeftOf="@+id/about_guide_vt_center"
+            app:layout_constraintDimensionRatio="W,212:59"
+            />
+
+        <Button
+            android:id="@+id/btn_close"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:background="@drawable/button_selector_close"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="W,212:59"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/about_guide_row4" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

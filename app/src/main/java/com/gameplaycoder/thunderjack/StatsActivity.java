@@ -43,6 +43,7 @@ public class StatsActivity extends AppCompatActivity {
     m_settings = intent.getParcelableExtra(Settings.INTENT_KEY);
     initResetButton();
     initCloseButton();
+    initAboutButton();
     updateUi();
   }
 
@@ -56,8 +57,23 @@ public class StatsActivity extends AppCompatActivity {
   }
 
   //=========================================================================
-  // protected
+  // private
   //=========================================================================
+
+  //-------------------------------------------------------------------------
+  // initAboutButton
+  //-------------------------------------------------------------------------
+  private void initAboutButton() {
+    m_binding.btnAbout.setOnClickListener(new View.OnClickListener() {
+      //-------------------------------------------------------------------------
+      // onClick
+      //-------------------------------------------------------------------------
+      @Override
+      public void onClick(View v) {
+        openAboutActivity();
+      }
+    });
+  }
 
   //-------------------------------------------------------------------------
   // initCloseButton
@@ -87,6 +103,14 @@ public class StatsActivity extends AppCompatActivity {
         showResetConfirmationDialog();
       }
     });
+  }
+
+  //-------------------------------------------------------------------------
+  // openAboutActivity
+  //-------------------------------------------------------------------------
+  private void openAboutActivity() {
+    Intent intent = new Intent(this, AboutActivity.class);
+    startActivity(intent);
   }
 
   //-------------------------------------------------------------------------

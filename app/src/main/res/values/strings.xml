@@ -1,7 +1,26 @@
 <resources>
     <string name="app_name">Thunderjack!</string>
+
+    <!-- ====================================================== -->
+    <!-- common -->
+    <string name="ok">OK</string>
+
+    <!-- ====================================================== -->
+    <!-- Confirm reset stats on stats activity -->
     <string name="ask_reset_stats">Are you sure you want to reset all stats?</string>
     <string name="no_way_man">No way man!</string>
     <string name="yeah_do_it">Yeah, do it!</string>
+
     <string name="number_of_thunderjacks">Number of Thunderjacks</string>
+
+    <!-- ====================================================== -->
+    <!-- about activity -->
+    <string name="developetName">Cartrell \"Ziro\" Hampton</string>
+    <string name="developetWebSiteUrl">https://gameplaycoder.com/</string>
+    <string name="developetWebSite">&lt;u>Visit Gameplay Coder&lt;/u></string>
+    <string name="developerEmail">cartrell@gameplaycoder.com</string>
+    <string name="feedbackEmailSubject">Thunderjack! Feedback</string>
+    <string name="noEmailAppDialogHeader">Send E-mail</string>
+    <string name="noEmailAppDialogMessage">No apps can perform this action.</string>
+
 </resources>
