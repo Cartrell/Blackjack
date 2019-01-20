@@ -143,7 +143,6 @@
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/txt_website_value"
             style="@style/AboutValueText"
-            android:autoLink="web"
             android:linksClickable="true"
             app:layout_constraintTop_toBottomOf="@+id/about_guide_row2"
             app:layout_constraintBottom_toTopOf="@+id/about_guide_row3"
