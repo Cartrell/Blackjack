@@ -20,9 +20,18 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".StatsActivity" />
-        <activity android:name=".placeBets.PlaceBetsActivity" />
-        <activity android:name=".AboutActivity" />
+
+        <activity
+            android:name=".StatsActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".placeBets.PlaceBetsActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".AboutActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>
