@@ -6,15 +6,12 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.os.Debug;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import com.gameplaycoder.thunderjack.databinding.ActivityAboutBinding;
 
@@ -83,7 +80,6 @@ public class AboutActivity extends AppCompatActivity {
   //-------------------------------------------------------------------------
   private void openEmailAppForSend() {
     Intent intent = new Intent(Intent.ACTION_SENDTO);
-    intent.setType("*/*");
     intent.setData(Uri.parse("mailto:"));
 
     String[] addresses = { getResources().getString(R.string.developerEmail) };
@@ -123,14 +119,8 @@ public class AboutActivity extends AppCompatActivity {
   // setDeveloperText
   //-------------------------------------------------------------------------
   private void setDeveloperText() {
-    setTextViewFromResource(m_binding.txtDeveloperValue, R.string.developetName);
-  }
-
-  //-------------------------------------------------------------------------
-  // setTextViewFromResource
-  //-------------------------------------------------------------------------
-  private void setTextViewFromResource(TextView textView, int stringResourceId) {
-    textView.setText(getResources().getString(stringResourceId));
+    String text = getResources().getString(R.string.developetName);
+    m_binding.txtDeveloperValue.setText(text);
   }
 
   //-------------------------------------------------------------------------
