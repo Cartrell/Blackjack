@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.gameplaycoder.thunderjack.databinding.ActivityMainBinding;
 import com.gameplaycoder.thunderjack.engine.BjEngine;
 import com.gameplaycoder.thunderjack.utils.CreditsRenewalChecker;
+import com.gameplaycoder.thunderjack.utils.cardsTweener.CardsTweener;
 
 public class MainActivity extends AppCompatActivity {
   //=========================================================================

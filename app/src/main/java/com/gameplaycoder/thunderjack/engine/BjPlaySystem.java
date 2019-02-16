@@ -18,15 +18,14 @@ import com.gameplaycoder.thunderjack.sound.SoundChannel;
 import com.gameplaycoder.thunderjack.sound.SoundSystem;
 import com.gameplaycoder.thunderjack.utils.CalculateScore;
 import com.gameplaycoder.thunderjack.utils.CardsMatcher;
-import com.gameplaycoder.thunderjack.utils.CardsMover;
-import com.gameplaycoder.thunderjack.utils.ICardsMoverCallbacks;
+import com.gameplaycoder.thunderjack.utils.cardsTweener.CardsTweener;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-class BjPlaySystem implements ICardsMoverCallbacks {
+class BjPlaySystem /*implements  ICardsMoverCallbacks*/ {
   //=========================================================================
   // members
   //=========================================================================
@@ -36,7 +35,11 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   private IBjEngine m_engine;
   private BjPlayStates m_state;
   private BjPlaySettingsManager m_playSettingsManager;
-  private CardsMover m_cardsMover;
+
+  private CardsTweener m_cardsTweener;
+  private CardsTweener.OnCompletedListener m_cardsTweenerCompleteListener;
+  private CardsTweener.OnUnitStartedListener m_cardsTweenerUnitStartedListener;
+
   private CardsMatcher m_cardsMatcher;
   private SoundSystem.OnSoundCompleteListener m_onDealerBustSoundCompleteListener;
   private BjWinSound m_winSound;
@@ -65,26 +68,6 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   // public
   //=========================================================================
 
-  //-------------------------------------------------------------------------
-  // cardsMoverOnComplete
-  //-------------------------------------------------------------------------
-  @Override
-  public void cardsMoverOnComplete(CardsMover cardsMover) {
-    updatePlayersPoints();
-
-    switch (m_state) {
-      case DEAL_CARDS:
-        beginRoundStart();
-        break;
-
-      case HIT:
-      case DOUBLE:
-      case SPLIT:
-        resolveCardsAfterHit();
-        break;
-    }
-  }
-
   //=========================================================================
   // package-private
   //=========================================================================
@@ -95,7 +78,9 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   BjPlaySystem(IBjEngine engine) {
     m_engine = engine;
     m_playerIdsOrder  = new ArrayList<>();
-    m_cardsMover = new CardsMover(this);
+
+    initCardsTweener();
+
     m_cardsMatcher = new CardsMatcher(m_engine.getIntegerResource(R.integer.blackjackPoints),
       m_engine.getIntegerResource(R.integer.maxCardsPerHand));
     m_baseCardImageChildIndex = m_engine.getIndexOf(m_engine.getLayoutComps().settingsButtonAndDeck.getLayout());
@@ -667,15 +652,18 @@ class BjPlaySystem implements ICardsMoverCallbacks {
 
     long moveStartDelay = 0;
     final long MOVE_DURATION = m_engine.getIntegerResource(R.integer.cardMoveDuration);
-
-    for (int cardsRound = 0; cardsRound < 2; cardsRound++) {
+    final int NUM_CARDS_TO_DEAL = 2;
+    for (int cardsRound = 0; cardsRound < NUM_CARDS_TO_DEAL; cardsRound++) {
       for (PlayerIds playerId : m_playerIdsOrder) {
         drawCard(playerId, true, moveStartDelay, false);
         moveStartDelay += MOVE_DURATION;
       }
 
       //only the dealer's first card is face up
-      drawCard(PlayerIds.DEALER, cardsRound == 0, moveStartDelay, true);
+      boolean isFaceUp = cardsRound == 0;
+
+      boolean shouldStartAnimation = cardsRound == (NUM_CARDS_TO_DEAL - 1);
+      drawCard(PlayerIds.DEALER, isFaceUp, moveStartDelay, shouldStartAnimation);
       moveStartDelay += MOVE_DURATION;
     }
   }
@@ -713,7 +701,7 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     BasePlayerData basePlayerData = getPlayerData(playerId);
     final long MOVE_DURATION = m_engine.getIntegerResource(R.integer.cardMoveDuration);
     card.setFaceUp(isFaceUp);
-    basePlayerData.addCard(card, m_cardsMover, moveStartDelay, MOVE_DURATION, startAnimation,
+    basePlayerData.addCard(card, m_cardsTweener /*m_cardsMover*/, moveStartDelay, MOVE_DURATION, startAnimation,
       m_nextCardImageChildIndex++);
   }
 
@@ -785,13 +773,68 @@ class BjPlaySystem implements ICardsMoverCallbacks {
   }
 
   //-------------------------------------------------------------------------
+  // initCardsTweener
+  //-------------------------------------------------------------------------
+  private void initCardsTweener() {
+    m_cardsTweener = new CardsTweener();
+    initCardsTweenerCompleteListener();
+    initCardsTweenerUnitStartedListener();
+  }
+
+  //-------------------------------------------------------------------------
+  // initCardsTweenerUnitStartedListener
+  //-------------------------------------------------------------------------
+  private void initCardsTweenerUnitStartedListener() {
+    m_cardsTweenerUnitStartedListener = new CardsTweener.OnUnitStartedListener() {
+      //-------------------------------------------------------------------------
+      // onStarted
+      //-------------------------------------------------------------------------
+      @Override
+      public void onStarted(CardsTweener cardsTweener, View cardImage) {
+        cardImage.setVisibility(View.VISIBLE);
+      }
+    };
+
+    m_cardsTweener.setOnUnitStartedListener(m_cardsTweenerUnitStartedListener);
+  }
+
+  //-------------------------------------------------------------------------
+  // initCardsTweenerCompleteListener
+  //-------------------------------------------------------------------------
+  private void initCardsTweenerCompleteListener() {
+    m_cardsTweenerCompleteListener = new CardsTweener.OnCompletedListener() {
+      @Override
+      //-------------------------------------------------------------------------
+      // onCompleted
+      //-------------------------------------------------------------------------
+      public void onCompleted(CardsTweener cardsTweener) {
+        updatePlayersPoints();
+
+        switch (m_state) {
+          case DEAL_CARDS:
+            beginRoundStart();
+            break;
+
+          case HIT:
+          case DOUBLE:
+          case SPLIT:
+            resolveCardsAfterHit();
+            break;
+        }
+      }
+    };
+
+    m_cardsTweener.setOnCompletedListener(m_cardsTweenerCompleteListener);
+  }
+
+  //-------------------------------------------------------------------------
   // initDealerBustSoundCompleteListener
   //-------------------------------------------------------------------------
   private void initDealerBustSoundCompleteListener() {
     m_onDealerBustSoundCompleteListener = new SoundSystem.OnSoundCompleteListener() {
 
       //-------------------------------------------------------------------------
-      // onComplete
+      // onCompleted
       //-------------------------------------------------------------------------
       @Override
       public void onComplete(SoundSystem soundSystem) {
@@ -947,8 +990,8 @@ class BjPlaySystem implements ICardsMoverCallbacks {
     m_engine.showGameButtons(BjGameButtonFlags.NONE);
 
     final long MOVE_DURATION = m_engine.getIntegerResource(R.integer.cardMoveDuration);
-    Card card = sourcePlayerData.popTopCard(m_cardsMover, 0, MOVE_DURATION, false);
-    targetPlayerData.addCard(card, m_cardsMover, 0, MOVE_DURATION, false, -1);
+    Card card = sourcePlayerData.popTopCard(m_cardsTweener /*m_cardsMover*/, 0, MOVE_DURATION, false);
+    targetPlayerData.addCard(card, m_cardsTweener /*m_cardsMover*/, 0, MOVE_DURATION, false, -1);
     drawCard(sourcePlayerData.getId(), true, MOVE_DURATION, false);
     drawCard(targetPlayerData.getId(), true, MOVE_DURATION * 2, true);
   }

@@ -7,15 +7,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gameplaycoder.thunderjack.R;
-import com.gameplaycoder.thunderjack.databinding.ActivityMainBinding;
-import com.gameplaycoder.thunderjack.players.BaseHandData;
 import com.gameplaycoder.thunderjack.players.BasePlayerData;
 import com.gameplaycoder.thunderjack.players.PlayerData;
 import com.gameplaycoder.thunderjack.players.PlayerIds;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 class PlayersCreator {
   //=========================================================================
@@ -33,7 +29,7 @@ class PlayersCreator {
   // ctor
   //-------------------------------------------------------------------------
   PlayersCreator(BjLayoutComps layoutComps, ViewGroup targetLayout, float xDeck,
-  float yDeck, int maxCards, BaseHandData.OnCardMoveStartListener cardMoveStartListener) {
+  float yDeck, int maxCards) {
     m_layoutComps = layoutComps;
 
     Point cardSize = layoutComps.getCardSize();
@@ -182,8 +178,6 @@ class PlayersCreator {
       layoutComps.midScoreBetValueTexts.txtMidLeftBetValue,
       layoutComps.midScoreAmountWonTexts.txtMidLeftAmountWon,
       layoutComps.midTurnPlayerIndicators.turnPlayerMidLeft);
-
-    setCardMoveStartListeners(cardMoveStartListener);
   }
 
   //-------------------------------------------------------------------------
@@ -226,19 +220,5 @@ class PlayersCreator {
     m_players.put(playerId, new PlayerData(viewGroup, playerId, xDeck, yDeck, maxCards,
       guideCardsLeft, guideCardsRight, guideCardsTop, guideCardsBottom, guideCardsUi,
       cardImageWidth, scoreText, resultImage, extraParams));
-  }
-
-  //-------------------------------------------------------------------------
-  // setCardMoveStartListeners
-  //-------------------------------------------------------------------------
-  private void setCardMoveStartListeners(BaseHandData.OnCardMoveStartListener cardMoveStartListener) {
-    m_dealer.setCardMoveStartListener(cardMoveStartListener);
-
-    Iterator iterator = m_players.entrySet().iterator();
-    while (iterator.hasNext()) {
-      Map.Entry entry = (Map.Entry) iterator.next();
-      PlayerData playerData = (PlayerData) entry.getValue();
-      playerData.setCardMoveStartListener(cardMoveStartListener);
-    }
   }
 }

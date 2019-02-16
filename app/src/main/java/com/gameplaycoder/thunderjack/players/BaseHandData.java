@@ -1,9 +1,5 @@
 package com.gameplaycoder.thunderjack.players;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.drawable.Animatable;
@@ -15,12 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gameplaycoder.thunderjack.cards.Card;
-import com.gameplaycoder.thunderjack.utils.CardsMover;
 import com.gameplaycoder.thunderjack.utils.Metrics;
+import com.gameplaycoder.thunderjack.utils.cardsTweener.CardsTweener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class BaseHandData {
@@ -28,8 +23,6 @@ public class BaseHandData {
   // members
   //=========================================================================
   private ViewGroup m_viewGroup;
-
-  private OnCardMoveStartListener m_onCardMoveStartListener;
 
   private float m_xDeck;
   private float m_yDeck;
@@ -41,7 +34,6 @@ public class BaseHandData {
   private int m_cardImageWidth;
 
   private ArrayList<Card> m_cards;
-  private ArrayList<View> m_cardImagesBeingAdded;
   private ViewDistributor m_cardsViewDistributor;
   private TextView m_scoreText;
   private ImageView m_resultImage;
@@ -49,13 +41,6 @@ public class BaseHandData {
   //=========================================================================
   // public
   //=========================================================================
-
-  //-------------------------------------------------------------------------
-  // setCardMoveStartListener
-  //-------------------------------------------------------------------------
-  public void setCardMoveStartListener(OnCardMoveStartListener cardMoveStartListener) {
-    m_onCardMoveStartListener = cardMoveStartListener;
-  }
 
   //=========================================================================
   // package-private
@@ -69,7 +54,6 @@ public class BaseHandData {
   Guideline guideCardsBottom, Guideline guideCardsUi, int cardImageWidth, TextView scoreText,
   ImageView resultImage, HashMap<String, Object> extraParams) {
     m_cards = new ArrayList<>();
-    m_cardImagesBeingAdded = new ArrayList<>();
     m_viewGroup = viewGroup;
     m_xDeck = xDeck;
     m_yDeck = yDeck;
@@ -83,7 +67,7 @@ public class BaseHandData {
   //-------------------------------------------------------------------------
   // addCard
   //-------------------------------------------------------------------------
-  void addCard(Card card, CardsMover cardsMover, long moveStartDelay, long moveDuration,
+  void addCard(Card card, CardsTweener cardsTweener, long moveStartDelay, long moveDuration,
   boolean startAnimation, int cardImageIndex) {
     m_cards.add(card);
 
@@ -115,23 +99,19 @@ public class BaseHandData {
     }
 
     m_cardsViewDistributor.add(cardImage);
-    m_cardImagesBeingAdded.add(cardImage);
-    updateCardPositions(cardsMover, moveStartDelay, moveDuration, startAnimation);
+    updateCardPositions(cardsTweener, moveStartDelay, moveDuration, startAnimation);
   }
 
   //-------------------------------------------------------------------------
   // fadeOutAllCards
   //-------------------------------------------------------------------------
-  void fadeOutAllCards(CardsMover cardsMover, long fadeOutDelay, boolean startAnimation) {
-    AnimatorSet animSetAlpha = cardsMover.getAnimatorSet();
+  void fadeOutAllCards(CardsTweener cardsTweener, long fadeOutDelay, boolean startAnimation) {
     for (Card card : m_cards) {
-      ObjectAnimator anim = ObjectAnimator.ofFloat(card.getImage(), "alpha", 0f);
-      anim.setDuration(fadeOutDelay);
-      animSetAlpha.play(anim);
+      cardsTweener.addAlpha(card.getImage(), 0f, fadeOutDelay, 0);
     }
 
     if (startAnimation) {
-      animSetAlpha.start();
+      cardsTweener.play();
     }
   }
 
@@ -145,7 +125,7 @@ public class BaseHandData {
   //-------------------------------------------------------------------------
   // popTopCard
   //-------------------------------------------------------------------------
-  Card popTopCard(CardsMover cardsMover, long startDelay, long moveDuration,
+  Card popTopCard(CardsTweener cardsTweener, long startDelay, long moveDuration,
   boolean startAnimation) {
     if (m_cards.size() == 0) {
       return(null); //nothing to remove
@@ -153,7 +133,7 @@ public class BaseHandData {
 
     Card card = m_cards.remove(m_cards.size() - 1);
     m_cardsViewDistributor.remove(card.getImage());
-    updateCardPositions(cardsMover, startDelay, moveDuration, startAnimation);
+    updateCardPositions(cardsTweener, startDelay, moveDuration, startAnimation);
     return(card);
   }
 
@@ -166,7 +146,6 @@ public class BaseHandData {
     }
 
     m_cards.clear();
-    m_cardImagesBeingAdded.clear();
 
     if (m_cardsViewDistributor != null) {
       m_cardsViewDistributor.removeAll();
@@ -262,66 +241,20 @@ public class BaseHandData {
   }
 
   //-------------------------------------------------------------------------
-  // processCardBeingAdded
-  //-------------------------------------------------------------------------
-  private boolean processCardBeingAdded(View cardImage) {
-    int index = m_cardImagesBeingAdded.indexOf(cardImage);
-    if (index == -1) {
-      return(false);
-    }
-
-    m_cardImagesBeingAdded.remove(index);
-    return(true);
-  }
-
-  //-------------------------------------------------------------------------
   // updateCardPositions
   //-------------------------------------------------------------------------
-  private void updateCardPositions(CardsMover cardsMover, long moveStartDelay, long moveDuration,
+  private void updateCardPositions(CardsTweener cardsTweener, long moveStartDelay, long moveDuration,
   boolean startAnimation) {
     HashMap<View, PointF>positions = m_cardsViewDistributor.getPositions();
-    AnimatorSet animSetXY = cardsMover.getAnimatorSet();
-    final BaseHandData thisBaseHandData = this;
 
     for (Map.Entry entry : positions.entrySet()) {
       final View cardImage = (View)entry.getKey();
       PointF position = (PointF)entry.getValue();
-
-      ObjectAnimator animX = ObjectAnimator.ofFloat(cardImage, "x", position.x);
-      animX.setDuration(moveDuration);
-      animX.addListener(new AnimatorListenerAdapter() {
-        //---------------------------------------------------------------------
-        // onAnimationStart
-        //---------------------------------------------------------------------
-        @Override
-        public void onAnimationStart(Animator animation) {
-          cardImage.setVisibility(View.VISIBLE);
-
-          if (processCardBeingAdded(cardImage)) {
-            if (m_onCardMoveStartListener != null) {
-              m_onCardMoveStartListener.onComplete(thisBaseHandData);
-            }
-          }
-        }
-      });
-
-      animX.setStartDelay(moveStartDelay);
-
-      ObjectAnimator animY = ObjectAnimator.ofFloat(cardImage, "y", position.y);
-      animY.setDuration(moveDuration);
-
-      animSetXY.playTogether(animX, animY);
+      cardsTweener.addPosition(cardImage, position.x, position.y, moveDuration, moveStartDelay);
     }
 
     if (startAnimation) {
-      animSetXY.start();
+      cardsTweener.play();
     }
-  }
-
-  //=========================================================================
-  // OnCardMoveStartListener
-  //=========================================================================
-  public interface OnCardMoveStartListener {
-    void onComplete(BaseHandData baseHandData);
   }
 }

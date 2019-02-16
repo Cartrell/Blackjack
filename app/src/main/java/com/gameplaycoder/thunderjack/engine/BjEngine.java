@@ -50,7 +50,6 @@ public class BjEngine implements IBjEngine {
   private Deck m_deck;
   private BasePlayerData m_dealer;
   private SoundSystem m_soundSystem;
-  private BaseHandData.OnCardMoveStartListener m_cardMoveStartListener;
   private BackgroundViewManager m_bgViewMgr;
   private Settings m_settings;
 
@@ -80,7 +79,6 @@ public class BjEngine implements IBjEngine {
     m_context = m_activity;
     m_binding = binding;
     initSettings();
-    initCardMoveStartListener();
     initDecks();
     initUi();
     m_soundSystem = new SoundSystem(m_context, getIntegerResource(R.integer.maxSoundPoolStreams));
@@ -435,11 +433,12 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   // initCardMoveStartListener
   //-------------------------------------------------------------------------
+  /*
   private void initCardMoveStartListener() {
     m_cardMoveStartListener = new BaseHandData.OnCardMoveStartListener() {
 
       //-------------------------------------------------------------------------
-      // onComplete
+      // onCompleted
       //-------------------------------------------------------------------------
       @Override
       public void onComplete(BaseHandData baseHandData) {
@@ -457,6 +456,7 @@ public class BjEngine implements IBjEngine {
       }
     };
   }
+  */
 
   //-------------------------------------------------------------------------
   // initDecks
@@ -512,13 +512,12 @@ public class BjEngine implements IBjEngine {
                 final int MAX_CARDS = getIntegerResource(R.integer.maxCardsPerHand);
 
                 PlayersCreator creator = new PlayersCreator(m_layoutComps, m_binding.activityMain, xDeck,
-                  yDeck, MAX_CARDS, m_cardMoveStartListener);
+                  yDeck, MAX_CARDS);
 
                 initBackgroundViewManager();
 
                 m_dealer = creator.getDealer();
                 m_players = creator.getPlayers();
-                //m_betChips = new BjBetChips(engine);
                 m_betChips = new BjBetChips(m_context);
                 m_betSystem = new BjBetSystem(engine, m_activity);
                 m_cardsPrepSystem = new BjCardsPrepSystem(engine);

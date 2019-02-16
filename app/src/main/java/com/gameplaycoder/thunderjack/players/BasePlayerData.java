@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gameplaycoder.thunderjack.cards.Card;
-import com.gameplaycoder.thunderjack.utils.CardsMover;
+import com.gameplaycoder.thunderjack.utils.cardsTweener.CardsTweener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,22 +47,22 @@ public class BasePlayerData {
   //-------------------------------------------------------------------------
   // addCard
   //-------------------------------------------------------------------------
-  public void addCard(Card card, CardsMover cardsMover, long startDelay, long moveDuration,
+  public void addCard(Card card, CardsTweener cardsTweener, long startDelay, long moveDuration,
   boolean startAnimation, int cardImageIndex) {
-    if (card == null || cardsMover == null) {
+    if (card == null || cardsTweener == null) {
       return; //sanity check
     }
 
     m_cardKeys.add(card.getKey());
-    m_handData.addCard(card, cardsMover, startDelay, moveDuration, startAnimation, cardImageIndex);
+    m_handData.addCard(card, cardsTweener, startDelay, moveDuration, startAnimation, cardImageIndex);
   }
 
   //-------------------------------------------------------------------------
   // fadeOutAllCards
   //-------------------------------------------------------------------------
-  public void fadeOutAllCards(CardsMover cardsMover, long fadeOutDelay,
+  public void fadeOutAllCards(CardsTweener cardsTweener, long fadeOutDelay,
   boolean startAnimation) {
-    m_handData.fadeOutAllCards(cardsMover, fadeOutDelay, startAnimation);
+    m_handData.fadeOutAllCards(cardsTweener, fadeOutDelay, startAnimation);
   }
 
   //-------------------------------------------------------------------------
@@ -151,9 +151,9 @@ public class BasePlayerData {
   //-------------------------------------------------------------------------
   // popTopCard
   //-------------------------------------------------------------------------
-  public Card popTopCard(CardsMover cardsMover, long startDelay, long moveDuration,
+  public Card popTopCard(CardsTweener cardsTweener, long startDelay, long moveDuration,
   boolean startAnimation) {
-    if (cardsMover == null) {
+    if (cardsTweener == null) {
       return(null); //sanity check
     }
 
@@ -162,7 +162,7 @@ public class BasePlayerData {
     }
 
     m_cardKeys.remove(m_cardKeys.size() - 1);
-    return(m_handData.popTopCard(cardsMover, startDelay, moveDuration, startAnimation));
+    return(m_handData.popTopCard(cardsTweener, startDelay, moveDuration, startAnimation));
   }
 
   //-------------------------------------------------------------------------
@@ -191,13 +191,6 @@ public class BasePlayerData {
   //-------------------------------------------------------------------------
   public void setCardFaceUp(int cardIndex, boolean isFaceUp) {
     m_handData.setCardFaceUp(cardIndex, isFaceUp);
-  }
-
-  //-------------------------------------------------------------------------
-  // setCardMoveStartListener
-  //-------------------------------------------------------------------------
-  public void setCardMoveStartListener(BaseHandData.OnCardMoveStartListener cardMoveStartListener) {
-    m_handData.setCardMoveStartListener(cardMoveStartListener);
   }
 
   //-------------------------------------------------------------------------

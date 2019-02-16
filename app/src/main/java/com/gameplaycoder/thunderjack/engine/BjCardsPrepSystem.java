@@ -4,15 +4,14 @@ import android.util.Log;
 
 import com.gameplaycoder.thunderjack.R;
 import com.gameplaycoder.thunderjack.sound.SoundSystem;
-import com.gameplaycoder.thunderjack.utils.CardsMover;
 import com.gameplaycoder.thunderjack.cards.Deck;
-import com.gameplaycoder.thunderjack.utils.ICardsMoverCallbacks;
 import com.gameplaycoder.thunderjack.players.PlayerData;
+import com.gameplaycoder.thunderjack.utils.cardsTweener.CardsTweener;
 
 import java.util.Iterator;
 import java.util.Map;
 
-class BjCardsPrepSystem implements ICardsMoverCallbacks {
+class BjCardsPrepSystem {
   //=========================================================================
   // const
   //=========================================================================
@@ -23,29 +22,14 @@ class BjCardsPrepSystem implements ICardsMoverCallbacks {
   // members
   //=========================================================================
   private IBjEngine m_engine;
-  private CardsMover m_cardsMover;
   private boolean m_isRemovingAllCards;
+  private CardsTweener m_cardsTweener;
+  private CardsTweener.OnCompletedListener m_cardsTweenerCompleteListener;
   private SoundSystem.OnSoundCompleteListener m_shuffleSoundCompleteListener;
 
   //=========================================================================
   // public
   //=========================================================================
-
-  //-------------------------------------------------------------------------
-  // cardsMoverOnComplete
-  //-------------------------------------------------------------------------
-  @Override
-  public void cardsMoverOnComplete(CardsMover cardsMover) {
-    if (!m_isRemovingAllCards) {
-      return;
-    }
-
-    if (shouldDeckBeRefreshed()) {
-      refreshDeck();
-    } else {
-      beginPlay();
-    }
-  }
 
   //=========================================================================
   // package-private
@@ -56,7 +40,7 @@ class BjCardsPrepSystem implements ICardsMoverCallbacks {
   //-------------------------------------------------------------------------
   BjCardsPrepSystem(IBjEngine engine) {
     m_engine = engine;
-    m_cardsMover = new CardsMover(this);
+    initCardsTweener();
     initShuffleSoundCompleteListener();
   }
 
@@ -98,10 +82,43 @@ class BjCardsPrepSystem implements ICardsMoverCallbacks {
     while (iterator.hasNext()) {
       Map.Entry entry = (Map.Entry)iterator.next();
       PlayerData playerData = (PlayerData) entry.getValue();
-      playerData.fadeOutAllCards(m_cardsMover, FADE_OUT_DELAY, false);
+      playerData.fadeOutAllCards(m_cardsTweener, FADE_OUT_DELAY, false);
     }
 
-    m_engine.getDealerData().fadeOutAllCards(m_cardsMover, FADE_OUT_DELAY, true);
+    m_engine.getDealerData().fadeOutAllCards(m_cardsTweener, FADE_OUT_DELAY, true);
+  }
+
+  //-------------------------------------------------------------------------
+  // initCardsTweener
+  //-------------------------------------------------------------------------
+  private void initCardsTweener() {
+    m_cardsTweener = new CardsTweener();
+    initCardsTweenerCompleteListener();
+  }
+
+  //-------------------------------------------------------------------------
+  // initCardsTweenerCompleteListener
+  //-------------------------------------------------------------------------
+  private void initCardsTweenerCompleteListener() {
+    m_cardsTweenerCompleteListener = new CardsTweener.OnCompletedListener() {
+      @Override
+      //-------------------------------------------------------------------------
+      // onCompleted
+      //-------------------------------------------------------------------------
+      public void onCompleted(CardsTweener cardsTweener) {
+        if (!m_isRemovingAllCards) {
+          return;
+        }
+
+        if (shouldDeckBeRefreshed()) {
+          refreshDeck();
+        } else {
+          beginPlay();
+        }
+      }
+    };
+
+    m_cardsTweener.setOnCompletedListener(m_cardsTweenerCompleteListener);
   }
 
   //-------------------------------------------------------------------------
@@ -110,7 +127,7 @@ class BjCardsPrepSystem implements ICardsMoverCallbacks {
   private void initShuffleSoundCompleteListener() {
     m_shuffleSoundCompleteListener = new SoundSystem.OnSoundCompleteListener() {
       //-------------------------------------------------------------------------
-      // onComplete
+      // onCompleted
       //-------------------------------------------------------------------------
       @Override
       public void onComplete(SoundSystem soundSystem) {
