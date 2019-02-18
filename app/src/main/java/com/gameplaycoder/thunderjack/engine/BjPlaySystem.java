@@ -25,7 +25,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-class BjPlaySystem /*implements  ICardsMoverCallbacks*/ {
+class BjPlaySystem {
   //=========================================================================
   // members
   //=========================================================================
@@ -63,10 +63,6 @@ class BjPlaySystem /*implements  ICardsMoverCallbacks*/ {
   private SoundChannel m_sndChAutoWin3;
   private SoundChannel m_sndChAutoWin4;
   private ThunderjackVfx m_thunderjackVfx;
-
-  //=========================================================================
-  // public
-  //=========================================================================
 
   //=========================================================================
   // package-private
