@@ -71,13 +71,13 @@ public class CardsTweener {
   // addPosition
   //-------------------------------------------------------------------------
   public void addPosition(View cardImage, float xTarget, float yTarget, float durationMs,
-  float startDelayMs) {
+  float startDelayMs, Object customData) {
     if (cardImage == null) {
       return;
     }
 
     CardsTweenerUnit unit = new CardsTweenerUnit(cardImage, xTarget, yTarget, Float.NaN,
-      durationMs, startDelayMs);
+      durationMs, startDelayMs, customData);
     m_units.add(unit);
   }
 
@@ -94,7 +94,7 @@ public class CardsTweener {
 
     m_firstFrameSinceStart = true;
     m_isStopRequested = false;
-    m_choreographer.postFrameCallbackDelayed(m_chorCallback, 50);
+    m_choreographer.postFrameCallbackDelayed(m_chorCallback, FRAME_DELAY_MS);
     return(true);
   }
 
@@ -120,7 +120,7 @@ public class CardsTweener {
   }
 
   public interface OnUnitStartedListener {
-    void onStarted(CardsTweener cardsTweener, View cardImage);
+    void onStarted(CardsTweener cardsTweener, View cardImage, Object customData);
   }
 
   //=========================================================================
@@ -190,7 +190,7 @@ public class CardsTweener {
   //-------------------------------------------------------------------------
   private void notifyUnitStarted(CardsTweenerUnit unit) {
     if (m_onUnitStartedListener != null) {
-      m_onUnitStartedListener.onStarted(this, unit.getCardImage());
+      m_onUnitStartedListener.onStarted(this, unit.getCardImage(), unit.getCustomData());
     }
   }
 

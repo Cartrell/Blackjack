@@ -244,7 +244,7 @@ class BjBetSystem {
               data.getIntExtra(PlaceBetsIntentKeys.LEFT_PLAYER_BET_VALUE, 0),
               data.getIntExtra(PlaceBetsIntentKeys.MIDDLE_PLAYER_BET_VALUE, 0),
               data.getIntExtra(PlaceBetsIntentKeys.RIGHT_PLAYER_BET_VALUE, 0));
-            m_engine.getSoundSystem().playSound(null, R.raw.snd_bet_add, 1, true);
+            m_engine.getSoundSystem().playAddBet();
             updateDealButtonMode(true);
             break;
         }

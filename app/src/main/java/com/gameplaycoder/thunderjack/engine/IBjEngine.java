@@ -5,15 +5,14 @@ import android.view.View;
 
 import com.gameplaycoder.thunderjack.cards.Deck;
 import com.gameplaycoder.thunderjack.databinding.ActivityMainBinding;
+import com.gameplaycoder.thunderjack.engine.sound.BjSoundSystem;
 import com.gameplaycoder.thunderjack.players.BasePlayerData;
 import com.gameplaycoder.thunderjack.players.PlayerData;
 import com.gameplaycoder.thunderjack.players.PlayerIds;
 import com.gameplaycoder.thunderjack.settings.Settings;
-import com.gameplaycoder.thunderjack.sound.SoundSystem;
 
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.List;
 
 public interface IBjEngine {
   boolean atLeastOneRoundPlayed();
@@ -34,7 +33,7 @@ public interface IBjEngine {
   PlayerData getPlayer(PlayerIds playerId);
   HashMap<PlayerIds, PlayerData> getPlayers();
   Settings getSettings();
-  SoundSystem getSoundSystem();
+  BjSoundSystem getSoundSystem();
   String getStringResource(int resourceId);
   boolean isSplitPlayerId(PlayerIds playerId);
   void setAtLeastOneRoundPlayed();

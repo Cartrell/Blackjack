@@ -3,6 +3,10 @@ package com.gameplaycoder.thunderjack.sound;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.HashMap;
+import java.util.Random;
+import java.util.Set;
+
 public class SoundSystem {
   //=========================================================================
   // static / const
@@ -47,14 +51,6 @@ public class SoundSystem {
   }
 
   //-------------------------------------------------------------------------
-  // playSound
-  //-------------------------------------------------------------------------
-  public SoundChannel playSound(SoundChannel channel,
-  int soundResourceId, int priority, boolean autoPlay) {
-    return(m_soundPoolManager.play(channel, soundResourceId, priority, autoPlay));
-  }
-
-  //-------------------------------------------------------------------------
   // playMedia
   //-------------------------------------------------------------------------
   public void playMedia(int... soundResourceIds) {
@@ -67,6 +63,44 @@ public class SoundSystem {
   public void playMedia(OnSoundCompleteListener onSoundCompleteListener, int... soundResourceIds) {
     setSoundCompleteListener(onSoundCompleteListener);
     m_mediaPlayerManager.play(soundResourceIds);
+  }
+
+  //-------------------------------------------------------------------------
+  // playRandomSound
+  //-------------------------------------------------------------------------
+  public int playRandomSound(HashMap<Integer, SoundChannel> soundChannelsByResourceId_in_out) {
+    if (soundChannelsByResourceId_in_out == null || soundChannelsByResourceId_in_out.size() == 0) {
+      return (0);
+    }
+
+    Set<Integer> resourceIdsSet = soundChannelsByResourceId_in_out.keySet();
+    Integer[] resourceIds = resourceIdsSet.toArray(new Integer[soundChannelsByResourceId_in_out.size()]);
+
+    Random rnd = new Random();
+    int index = rnd.nextInt(resourceIds.length);
+    Integer resourceId = resourceIds[index];
+
+    SoundChannel soundChannel = soundChannelsByResourceId_in_out.get(resourceId);
+    soundChannel = playSound(soundChannel, resourceId);
+    soundChannelsByResourceId_in_out.put(resourceId, soundChannel);
+    return(resourceId);
+  }
+
+  //-------------------------------------------------------------------------
+  // playSound
+  //-------------------------------------------------------------------------
+  public SoundChannel playSound(SoundChannel channel, int soundResourceId) {
+    final int priority = 1;
+    final boolean autoPlay = true;
+    return(playSound(channel, soundResourceId, priority, autoPlay));
+  }
+
+  //-------------------------------------------------------------------------
+  // playSound
+  //-------------------------------------------------------------------------
+  public SoundChannel playSound(SoundChannel channel, int soundResourceId, int priority,
+  boolean autoPlay) {
+    return(m_soundPoolManager.play(channel, soundResourceId, priority, autoPlay));
   }
 
   //-----------------------------------------------------------------------------------
@@ -83,6 +117,21 @@ public class SoundSystem {
     uninitMediaPlayerManager();
     uninitSoundPoolManager();
   }
+
+  //=========================================================================
+  // callback interfaces
+  //=========================================================================
+
+  //-----------------------------------------------------------------------------------
+  // OnSoundCompleteListener
+  //-----------------------------------------------------------------------------------
+  public interface OnSoundCompleteListener {
+    void onComplete(SoundSystem soundSystem);
+  }
+
+  //=========================================================================
+  // private
+  //=========================================================================
 
   //-----------------------------------------------------------------------------------
   // uninitMediaPlayerManager
@@ -103,15 +152,4 @@ public class SoundSystem {
       m_soundPoolManager = null;
     }
   }
-
-  //=========================================================================
-  // OnSoundCompleteListener
-  //=========================================================================
-  public interface OnSoundCompleteListener {
-    void onComplete(SoundSystem soundSystem);
-  }
-
-  //=========================================================================
-  // private
-  //=========================================================================
 }

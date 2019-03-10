@@ -9,13 +9,12 @@ import com.gameplaycoder.thunderjack.cards.Card;
 import com.gameplaycoder.thunderjack.cards.CardValues;
 import com.gameplaycoder.thunderjack.cards.Deck;
 import com.gameplaycoder.thunderjack.engine.debug.DebugCardKeys;
+import com.gameplaycoder.thunderjack.engine.sound.BjSoundSystem;
 import com.gameplaycoder.thunderjack.engine.thunderjackvfx.ThunderjackVfx;
 import com.gameplaycoder.thunderjack.layouts.BetAndCreditsTexts;
 import com.gameplaycoder.thunderjack.players.BasePlayerData;
 import com.gameplaycoder.thunderjack.players.PlayerData;
 import com.gameplaycoder.thunderjack.players.PlayerIds;
-import com.gameplaycoder.thunderjack.sound.SoundChannel;
-import com.gameplaycoder.thunderjack.sound.SoundSystem;
 import com.gameplaycoder.thunderjack.utils.CalculateScore;
 import com.gameplaycoder.thunderjack.utils.CardsMatcher;
 import com.gameplaycoder.thunderjack.utils.cardsTweener.CardsTweener;
@@ -41,27 +40,13 @@ class BjPlaySystem {
   private CardsTweener.OnUnitStartedListener m_cardsTweenerUnitStartedListener;
 
   private CardsMatcher m_cardsMatcher;
-  private SoundSystem.OnSoundCompleteListener m_onDealerBustSoundCompleteListener;
-  private BjWinSound m_winSound;
+  private BjSoundSystem.OnSoundCompleteListener m_onDealerBustSoundCompleteListener;
   private PlayerIds m_turnPlayerId;
   private int m_baseCardImageChildIndex;
   private int m_nextCardImageChildIndex;
   private int m_totalCreditsWonOnRound;
   private boolean m_wereAcesSplit;
   private boolean m_wasThunderjackRound;
-  private SoundChannel m_sndChHit;
-  private SoundChannel m_sndChStand;
-  private SoundChannel m_sndChSplit1;
-  private SoundChannel m_sndChSplit2;
-  private SoundChannel m_sndChSurrender1;
-  private SoundChannel m_sndChSurrender2;
-  private SoundChannel m_sndChBust;
-  private SoundChannel m_sndChThunderjack;
-  private SoundChannel m_sndChDealerBj;
-  private SoundChannel m_sndChAutoWin1;
-  private SoundChannel m_sndChAutoWin2;
-  private SoundChannel m_sndChAutoWin3;
-  private SoundChannel m_sndChAutoWin4;
   private ThunderjackVfx m_thunderjackVfx;
 
   //=========================================================================
@@ -81,7 +66,6 @@ class BjPlaySystem {
       m_engine.getIntegerResource(R.integer.maxCardsPerHand));
     m_baseCardImageChildIndex = m_engine.getIndexOf(m_engine.getLayoutComps().settingsButtonAndDeck.getLayout());
     m_playSettingsManager = new BjPlaySettingsManager(m_engine);
-    m_winSound = new BjWinSound(m_engine);
     initGameButtons();
     initDealerBustSoundCompleteListener();
   }
@@ -202,8 +186,7 @@ class BjPlaySystem {
       }
     }
 
-    m_engine.getSoundSystem().playMedia(m_onDealerBustSoundCompleteListener,
-      R.raw.snd_dealer_bust1, R.raw.snd_dealer_bust2);
+    m_engine.getSoundSystem().playDealerBust(m_onDealerBustSoundCompleteListener);
   }
 
   //-------------------------------------------------------------------------
@@ -255,7 +238,7 @@ class BjPlaySystem {
     m_state = BjPlayStates.DOUBLE;
     drawCard(m_turnPlayerId, true, 0, true);
 
-    m_engine.getSoundSystem().playSound(null, R.raw.snd_double_down, 1, true);
+    m_engine.getSoundSystem().playDoubleDown();
   }
 
   //-------------------------------------------------------------------------
@@ -264,7 +247,7 @@ class BjPlaySystem {
   private void beginHit() {
     m_state = BjPlayStates.HIT;
     drawCard(m_turnPlayerId, true, 0, true);
-    m_sndChHit = m_engine.getSoundSystem().playSound(m_sndChHit, R.raw.snd_hit, 1, true);
+    m_engine.getSoundSystem().playHit();
   }
 
   //-------------------------------------------------------------------------
@@ -363,7 +346,7 @@ class BjPlaySystem {
   // beginPlayerStand
   //-------------------------------------------------------------------------
   private void beginPlayerStand() {
-    m_sndChStand = m_engine.getSoundSystem().playSound(m_sndChStand, R.raw.snd_stand, 1, true);
+    m_engine.getSoundSystem().playStand();
     beginNextTurnPlayer();
   }
 
@@ -454,13 +437,7 @@ class BjPlaySystem {
     m_wereAcesSplit = wereAcesSplit();
     moveTopCardFromTo(turnPlayerData, splitPlayerData);
 
-    if (Math.random() > 0.5) {
-      m_sndChSplit1 = m_engine.getSoundSystem().playSound(m_sndChSplit1, R.raw.snd_split1,
-        1, true);
-    } else {
-      m_sndChSplit2 = m_engine.getSoundSystem().playSound(m_sndChSplit2, R.raw.snd_split1,
-        1, true);
-    }
+    m_engine.getSoundSystem().playSplit();
   }
 
   //-------------------------------------------------------------------------
@@ -477,13 +454,7 @@ class BjPlaySystem {
     playerData.setBetValueVisible(true);
     m_totalCreditsWonOnRound += creditsWon;
 
-    if (Math.random() > 0.5) {
-      m_sndChSurrender1 = m_engine.getSoundSystem().playSound(m_sndChSurrender1, R.raw.snd_surrender1,
-        1, true);
-    } else {
-      m_sndChSurrender2 = m_engine.getSoundSystem().playSound(m_sndChSurrender2, R.raw.snd_surrender2,
-        1, true);
-    }
+    m_engine.getSoundSystem().playSurrender();
 
     beginNextTurnPlayer();
   }
@@ -492,7 +463,7 @@ class BjPlaySystem {
   // beginTurnPlayerBust
   //-------------------------------------------------------------------------
   private void beginTurnPlayerBust() {
-    m_sndChBust = m_engine.getSoundSystem().playSound(m_sndChBust, R.raw.snd_bust, 1, true);
+    m_engine.getSoundSystem().playBust();
     BasePlayerData playerData = getTurnPlayerData();
     playerData.setBust();
     playerData.setResultImage(R.drawable.result_label_bust);
@@ -697,8 +668,8 @@ class BjPlaySystem {
     BasePlayerData basePlayerData = getPlayerData(playerId);
     final long MOVE_DURATION = m_engine.getIntegerResource(R.integer.cardMoveDuration);
     card.setFaceUp(isFaceUp);
-    basePlayerData.addCard(card, m_cardsTweener /*m_cardsMover*/, moveStartDelay, MOVE_DURATION, startAnimation,
-      m_nextCardImageChildIndex++);
+    basePlayerData.addCard(card, m_cardsTweener, moveStartDelay, MOVE_DURATION, startAnimation,
+      m_nextCardImageChildIndex++, true);
   }
 
   //-------------------------------------------------------------------------
@@ -786,8 +757,13 @@ class BjPlaySystem {
       // onStarted
       //-------------------------------------------------------------------------
       @Override
-      public void onStarted(CardsTweener cardsTweener, View cardImage) {
+      public void onStarted(CardsTweener cardsTweener, View cardImage, Object customData) {
         cardImage.setVisibility(View.VISIBLE);
+
+        boolean isCardImageBeingDealt = (boolean)customData;
+        if (isCardImageBeingDealt) {
+          m_engine.getSoundSystem().playDealCard();
+        }
       }
     };
 
@@ -827,14 +803,13 @@ class BjPlaySystem {
   // initDealerBustSoundCompleteListener
   //-------------------------------------------------------------------------
   private void initDealerBustSoundCompleteListener() {
-    m_onDealerBustSoundCompleteListener = new SoundSystem.OnSoundCompleteListener() {
+    m_onDealerBustSoundCompleteListener = new BjSoundSystem.OnSoundCompleteListener() {
 
       //-------------------------------------------------------------------------
       // onCompleted
       //-------------------------------------------------------------------------
       @Override
-      public void onComplete(SoundSystem soundSystem) {
-        m_engine.getSoundSystem().setSoundCompleteListener(null);
+      public void onComplete(BjSoundSystem soundSystem) {
         endRound();
       }
     };
@@ -986,8 +961,9 @@ class BjPlaySystem {
     m_engine.showGameButtons(BjGameButtonFlags.NONE);
 
     final long MOVE_DURATION = m_engine.getIntegerResource(R.integer.cardMoveDuration);
-    Card card = sourcePlayerData.popTopCard(m_cardsTweener /*m_cardsMover*/, 0, MOVE_DURATION, false);
-    targetPlayerData.addCard(card, m_cardsTweener /*m_cardsMover*/, 0, MOVE_DURATION, false, -1);
+    Card card = sourcePlayerData.popTopCard(m_cardsTweener, 0, MOVE_DURATION, false);
+    targetPlayerData.addCard(card, m_cardsTweener, 0, MOVE_DURATION,
+      false, -1, false);
     drawCard(sourcePlayerData.getId(), true, MOVE_DURATION, false);
     drawCard(targetPlayerData.getId(), true, MOVE_DURATION * 2, true);
   }
@@ -996,20 +972,7 @@ class BjPlaySystem {
   // playBjBlitzSound
   //-------------------------------------------------------------------------
   private void playBjBlitzSound() {
-    int index = (int)(Math.random() * 4);
-    if (index == 0) {
-      m_sndChAutoWin1 = m_engine.getSoundSystem().playSound(m_sndChAutoWin1, R.raw.snd_auto_win1,
-        1, true);
-    } else if (index == 1) {
-      m_sndChAutoWin2 = m_engine.getSoundSystem().playSound(m_sndChAutoWin2, R.raw.snd_auto_win1,
-        1, true);
-    } else if (index == 2) {
-      m_sndChAutoWin3 = m_engine.getSoundSystem().playSound(m_sndChAutoWin3, R.raw.snd_auto_win1,
-        1, true);
-    } else if (index == 3) {
-      m_sndChAutoWin4 = m_engine.getSoundSystem().playSound(m_sndChAutoWin4, R.raw.snd_auto_win1,
-        1, true);
-    }
+    m_engine.getSoundSystem().playBjBlitz();
   }
 
   //-------------------------------------------------------------------------
@@ -1025,12 +988,11 @@ class BjPlaySystem {
     int startCredits = m_engine.getCreditsAtStartOfRound();
 
     if (endCredits > startCredits) {
-      m_winSound.play();
+      m_engine.getSoundSystem().playWin();
     } else if (endCredits < startCredits) {
-      m_winSound.retract();
+      m_engine.getSoundSystem().retractWin();
       if (m_engine.getDealerData().getHasBlackjack()) {
-        m_sndChDealerBj = m_engine.getSoundSystem().playSound(m_sndChDealerBj,
-          R.raw.snd_dealer_bj, 1, true);
+        m_engine.getSoundSystem().playDealerBj();
       }
     }
   }
@@ -1039,8 +1001,7 @@ class BjPlaySystem {
   // playThunderjackSound
   //-------------------------------------------------------------------------
   private void playThunderjackSound() {
-    m_sndChThunderjack = m_engine.getSoundSystem().playSound(m_sndChThunderjack,
-      R.raw.snd_thunderjack,1, true);
+    m_engine.getSoundSystem().playTj();
   }
 
   //-------------------------------------------------------------------------

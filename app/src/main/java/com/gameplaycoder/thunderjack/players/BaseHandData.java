@@ -68,7 +68,7 @@ public class BaseHandData {
   // addCard
   //-------------------------------------------------------------------------
   void addCard(Card card, CardsTweener cardsTweener, long moveStartDelay, long moveDuration,
-  boolean startAnimation, int cardImageIndex) {
+  boolean startAnimation, int cardImageIndex, boolean isCardBeingDealt) {
     m_cards.add(card);
 
     ImageView cardImage = card.getImage();
@@ -99,7 +99,8 @@ public class BaseHandData {
     }
 
     m_cardsViewDistributor.add(cardImage);
-    updateCardPositions(cardsTweener, moveStartDelay, moveDuration, startAnimation);
+    updateCardPositions(cardsTweener, moveStartDelay, moveDuration, startAnimation,
+      isCardBeingDealt ? cardImage : null);
   }
 
   //-------------------------------------------------------------------------
@@ -245,12 +246,22 @@ public class BaseHandData {
   //-------------------------------------------------------------------------
   private void updateCardPositions(CardsTweener cardsTweener, long moveStartDelay, long moveDuration,
   boolean startAnimation) {
+    updateCardPositions(cardsTweener, moveStartDelay, moveDuration, startAnimation,
+      null);
+  }
+
+  //-------------------------------------------------------------------------
+  // updateCardPositions
+  //-------------------------------------------------------------------------
+  private void updateCardPositions(CardsTweener cardsTweener, long moveStartDelay, long moveDuration,
+  boolean startAnimation, View cardImageBeingDealt) {
     HashMap<View, PointF>positions = m_cardsViewDistributor.getPositions();
 
     for (Map.Entry entry : positions.entrySet()) {
-      final View cardImage = (View)entry.getKey();
+      View cardImage = (View)entry.getKey();
       PointF position = (PointF)entry.getValue();
-      cardsTweener.addPosition(cardImage, position.x, position.y, moveDuration, moveStartDelay);
+      cardsTweener.addPosition(cardImage, position.x, position.y, moveDuration, moveStartDelay,
+        cardImage == cardImageBeingDealt);
     }
 
     if (startAnimation) {

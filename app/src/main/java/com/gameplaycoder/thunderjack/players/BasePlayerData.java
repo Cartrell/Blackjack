@@ -48,13 +48,14 @@ public class BasePlayerData {
   // addCard
   //-------------------------------------------------------------------------
   public void addCard(Card card, CardsTweener cardsTweener, long startDelay, long moveDuration,
-  boolean startAnimation, int cardImageIndex) {
+  boolean startAnimation, int cardImageIndex, boolean isCardBeingDealt) {
     if (card == null || cardsTweener == null) {
       return; //sanity check
     }
 
     m_cardKeys.add(card.getKey());
-    m_handData.addCard(card, cardsTweener, startDelay, moveDuration, startAnimation, cardImageIndex);
+    m_handData.addCard(card, cardsTweener, startDelay, moveDuration, startAnimation,
+      cardImageIndex, isCardBeingDealt);
   }
 
   //-------------------------------------------------------------------------

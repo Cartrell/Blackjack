@@ -1,6 +1,7 @@
-package com.gameplaycoder.thunderjack.engine;
+package com.gameplaycoder.thunderjack.engine.sound;
 
 import com.gameplaycoder.thunderjack.R;
+import com.gameplaycoder.thunderjack.engine.IBjEngine;
 import com.gameplaycoder.thunderjack.sound.SoundSystem;
 
 final class BjWinSound {
@@ -8,28 +9,23 @@ final class BjWinSound {
   // package-private
   //=========================================================================
   private int[] m_soundResourceIds;
-  private SoundSystem m_soundSystem;
   private int m_soundIndex;
 
   //-------------------------------------------------------------------------
   // ctor
   //-------------------------------------------------------------------------
-  BjWinSound(IBjEngine engine) {
-    m_soundSystem = engine.getSoundSystem();
+  BjWinSound() {
     initSoundResourceIds();
     m_soundIndex = 0;
   }
 
   //-------------------------------------------------------------------------
-  // play
+  // advanceSoundId
   //-------------------------------------------------------------------------
-  void play() {
-    if (m_soundSystem == null) {
-      return;
-    }
-
-    m_soundSystem.load(m_soundResourceIds[m_soundIndex], 1, true);
+  int advanceSoundId() {
+    int currentSoundIndex = m_soundIndex;
     m_soundIndex = (m_soundIndex + 1) % m_soundResourceIds.length;
+    return(m_soundResourceIds[currentSoundIndex]);
   }
 
   //-------------------------------------------------------------------------
@@ -62,5 +58,4 @@ final class BjWinSound {
       R.raw.snd_win12_12
     };
   }
-
 }

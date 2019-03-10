@@ -15,14 +15,12 @@ import com.gameplaycoder.thunderjack.R;
 import com.gameplaycoder.thunderjack.StatsActivity;
 import com.gameplaycoder.thunderjack.cards.Deck;
 import com.gameplaycoder.thunderjack.databinding.ActivityMainBinding;
-import com.gameplaycoder.thunderjack.players.BaseHandData;
+import com.gameplaycoder.thunderjack.engine.sound.BjSoundSystem;
 import com.gameplaycoder.thunderjack.players.BasePlayerData;
 import com.gameplaycoder.thunderjack.players.PlayerData;
 import com.gameplaycoder.thunderjack.players.PlayerIds;
 import com.gameplaycoder.thunderjack.settings.Settings;
 import com.gameplaycoder.thunderjack.settings.SettingsStorage;
-import com.gameplaycoder.thunderjack.sound.SoundChannel;
-import com.gameplaycoder.thunderjack.sound.SoundSystem;
 import com.gameplaycoder.thunderjack.utils.CreditsRenewalChecker;
 import com.gameplaycoder.thunderjack.utils.Metrics;
 
@@ -49,7 +47,7 @@ public class BjEngine implements IBjEngine {
 
   private Deck m_deck;
   private BasePlayerData m_dealer;
-  private SoundSystem m_soundSystem;
+  private BjSoundSystem m_soundSystem;
   private BackgroundViewManager m_bgViewMgr;
   private Settings m_settings;
 
@@ -61,9 +59,6 @@ public class BjEngine implements IBjEngine {
   private int m_betValue;
   private int m_creditsAtStartOfRound;
   private boolean m_atLeastOneRoundPlayed;
-  private SoundChannel m_sndChCardDeal1;
-  private SoundChannel m_sndChCardDeal2;
-  private SoundChannel m_sndChCardDeal3;
 
   private AsyncLayoutInflater.OnInflateFinishedListener m_onInflateFinished;
 
@@ -81,7 +76,7 @@ public class BjEngine implements IBjEngine {
     initSettings();
     initDecks();
     initUi();
-    m_soundSystem = new SoundSystem(m_context, getIntegerResource(R.integer.maxSoundPoolStreams));
+    m_soundSystem = new BjSoundSystem(m_context, getIntegerResource(R.integer.maxSoundPoolStreams));
   }
 
   //-------------------------------------------------------------------------
@@ -243,7 +238,7 @@ public class BjEngine implements IBjEngine {
   //-------------------------------------------------------------------------
   // getSoundSystem
   //-------------------------------------------------------------------------
-  public SoundSystem getSoundSystem() {
+  public BjSoundSystem getSoundSystem() {
     return(m_soundSystem);
   }
 

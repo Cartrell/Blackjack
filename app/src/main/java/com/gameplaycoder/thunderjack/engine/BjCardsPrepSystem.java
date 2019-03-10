@@ -2,9 +2,8 @@ package com.gameplaycoder.thunderjack.engine;
 
 import android.util.Log;
 
-import com.gameplaycoder.thunderjack.R;
-import com.gameplaycoder.thunderjack.sound.SoundSystem;
 import com.gameplaycoder.thunderjack.cards.Deck;
+import com.gameplaycoder.thunderjack.engine.sound.BjSoundSystem;
 import com.gameplaycoder.thunderjack.players.PlayerData;
 import com.gameplaycoder.thunderjack.utils.cardsTweener.CardsTweener;
 
@@ -25,7 +24,7 @@ class BjCardsPrepSystem {
   private boolean m_isRemovingAllCards;
   private CardsTweener m_cardsTweener;
   private CardsTweener.OnCompletedListener m_cardsTweenerCompleteListener;
-  private SoundSystem.OnSoundCompleteListener m_shuffleSoundCompleteListener;
+  private BjSoundSystem.OnSoundCompleteListener m_shuffleSoundCompleteListener;
 
   //=========================================================================
   // package-private
@@ -121,13 +120,12 @@ class BjCardsPrepSystem {
   // initShuffleSoundCompleteListener
   //-------------------------------------------------------------------------
   private void initShuffleSoundCompleteListener() {
-    m_shuffleSoundCompleteListener = new SoundSystem.OnSoundCompleteListener() {
+    m_shuffleSoundCompleteListener = new BjSoundSystem.OnSoundCompleteListener() {
       //-------------------------------------------------------------------------
       // onCompleted
       //-------------------------------------------------------------------------
       @Override
-      public void onComplete(SoundSystem soundSystem) {
-        m_engine.getSoundSystem().setSoundCompleteListener(null);
+      public void onComplete(BjSoundSystem soundSystem) {
         beginPlay();
       }
     };
@@ -142,8 +140,7 @@ class BjCardsPrepSystem {
     deck.shuffle();
     deck.setIndex(0);
 
-    m_engine.getSoundSystem().playMedia(m_shuffleSoundCompleteListener,
-      R.raw.snd_card_shuffle0, R.raw.snd_card_shuffle1);
+    m_engine.getSoundSystem().playShuffle(m_shuffleSoundCompleteListener);
   }
 
   //-------------------------------------------------------------------------

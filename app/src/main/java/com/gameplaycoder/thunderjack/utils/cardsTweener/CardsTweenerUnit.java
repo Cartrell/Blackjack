@@ -8,6 +8,8 @@ public class CardsTweenerUnit {
   //=========================================================================
   private View m_cardImage;
 
+  private Object m_customData;
+
   private float m_xStart;
   private float m_yStart;
   private float m_xAlphaStart;
@@ -30,6 +32,14 @@ public class CardsTweenerUnit {
   //-------------------------------------------------------------------------
   public CardsTweenerUnit(View cardImage, float xTarget, float yTarget, float alphaTarget,
   float durationMs, float startDelayMs) {
+    this(cardImage, xTarget, yTarget, alphaTarget, durationMs, startDelayMs, null);
+  }
+
+  //-------------------------------------------------------------------------
+  // ctor
+  //-------------------------------------------------------------------------
+  public CardsTweenerUnit(View cardImage, float xTarget, float yTarget, float alphaTarget,
+  float durationMs, float startDelayMs, Object customData) {
     m_cardImage = cardImage;
 
     m_xTarget = xTarget;
@@ -38,6 +48,8 @@ public class CardsTweenerUnit {
 
     m_durationMs = durationMs;
     m_startDelayMs = startDelayMs;
+
+    m_customData = customData;
 
     m_isFirstUpdate = true;
   }
@@ -54,6 +66,13 @@ public class CardsTweenerUnit {
   //-------------------------------------------------------------------------
   public View getCardImage() {
     return(m_cardImage);
+  }
+
+  //-------------------------------------------------------------------------
+  // getCustomData
+  //-------------------------------------------------------------------------
+  public Object getCustomData() {
+    return(m_customData);
   }
 
   //-------------------------------------------------------------------------
