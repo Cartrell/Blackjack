@@ -4,22 +4,25 @@
     <integer name="maxSoundPoolStreams">8</integer>
 
     <!-- number of decks used -->
-    <integer name="numDecks">1</integer>
+    <integer name="numDecks">4</integer>
 
     <!-- max cards per hand -->
     <integer name="maxCardsPerHand">6</integer>
 
     <!-- starting credits -->
-    <string name="startingCredits">1200</string>
+    <string name="startingCredits">5000</string>
 
     <!-- renewal credits -->
-    <string name="renewalCredits">500</string>
+    <string name="renewalCredits">1250</string>
 
-    <!-- low-credits threshold - creduts must be at or below this value to be eligible for renewal-->
-    <string name="lowCreditsThreshold">50</string>
+    <!-- low-credits threshold - credits must be at or below this value to be eligible for renewal-->
+    <string name="lowCreditsThreshold">100</string>
 
-    <!-- when credits are low enough, this much time, in ms, must pass since close of last game to be eligible for renewal -->
-    <string name="renewalTime">60000</string>
+    <!--
+      when credits are low enough, this much time, in ms, must pass since close of last game to be eligible for renewal
+      currently 1 hour: 60 secs * 60 minutes * 1000 milliseconds
+    -->
+    <string name="renewalTime">3600000</string>
 
     <!-- duration, in ms, at which the cards move -->
     <integer name="cardMoveDuration">250</integer>
